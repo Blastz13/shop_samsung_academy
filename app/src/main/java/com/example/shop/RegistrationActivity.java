@@ -19,12 +19,7 @@ public class RegistrationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//        if (user != null) {
-//            startActivity(new Intent(this, MainActivity.class));
-//        } else {
-//            // Отправляем на авторизацию
-//        }
+
         frameLayout = findViewById(R.id.registration_framelayout);
         setFragment(new SignInFragment());
     }

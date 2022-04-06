@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "494452900916",
+    "project_id": "shop-samsung-academy",
+    "storage_bucket": "shop-samsung-academy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:494452900916:android:7551b8943e2636d6af3661",
+        "android_client_info": {
+          "package_name": "com.example.shop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "494452900916-ma6e0i6bt5uhenju3r4jjkqb4hstmmn3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1yFc_2HBBWHsYOSWvihhx7p4TL8lnRE4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "494452900916-ma6e0i6bt5uhenju3r4jjkqb4hstmmn3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

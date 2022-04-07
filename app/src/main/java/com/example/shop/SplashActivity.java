@@ -20,8 +20,8 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        new Handler().postDelayed(new Runnable() {
-            public void run() {
+//        new Handler().postDelayed(new Runnable() {
+//            public void run() {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                 if (user != null) {
@@ -29,8 +29,8 @@ public class SplashActivity extends AppCompatActivity {
                 } else {
                     startActivity(new Intent(SplashActivity.this, RegistrationActivity.class));
                 }
-            }
-        },  1000);
+//            }
+//        },  1000);
         super.onStart();
     }
 }

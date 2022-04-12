@@ -26,6 +26,8 @@ public class ProductDetailActivity extends AppCompatActivity {
     private TabLayout viewPagerIndicator;
     private FloatingActionButton addToWishListBtn;
     private static boolean isAddedToWishList = false;
+    private ViewPager productDetailViewPager;
+    private TabLayout productDetailTabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,9 @@ public class ProductDetailActivity extends AppCompatActivity {
         productImagesViewPager = findViewById(R.id.product_images_viewpager);
         viewPagerIndicator = findViewById(R.id.view_pager_indicator);
         addToWishListBtn = findViewById(R.id.add_to_wish_btn);
+        productDetailViewPager = findViewById(R.id.product_detail_viewpager_tab);
+        productDetailTabLayout = findViewById(R.id.product_detail_tablayout);
+
 
         List<Integer> productImages = new ArrayList<>();
         productImages.add(R.drawable.product_item);
@@ -63,6 +68,25 @@ public class ProductDetailActivity extends AppCompatActivity {
                     isAddedToWishList = true;
                     addToWishListBtn.setSupportBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.red)));
                 }
+            }
+        });
+        ProductDetailAdapter productDetailAdapter = new ProductDetailAdapter(getSupportFragmentManager(), productDetailTabLayout.getTabCount());
+        productDetailViewPager.setAdapter(productDetailAdapter);
+        productDetailViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(productDetailTabLayout));
+        productDetailTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                productDetailViewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
             }
         });
     }

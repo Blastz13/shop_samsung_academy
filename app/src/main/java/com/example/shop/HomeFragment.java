@@ -1,5 +1,6 @@
 package com.example.shop;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,10 +9,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -169,6 +172,15 @@ public class HomeFragment extends Fragment {
         GridView gridView = view.findViewById(R.id.grid_product_layout_gridview);
 
         gridView.setAdapter(new GridProductLayoutAdapter(horizontalProductScrollModelList));
+
+//        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Log.d("QQQQ", horizontalProductScrollModelList.get(position).getProductTitle());
+//                Intent productDetailIntent = new Intent(view.getContext(), ProductDetailActivity.class);
+//                view.getContext().startActivity(productDetailIntent);
+//            }
+//        });
 
         return view;
     }

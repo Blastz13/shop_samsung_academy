@@ -23,7 +23,7 @@
         app:layout_constraintTop_toBottomOf="@+id/product_images_viewpager"
         app:tabBackground="@drawable/dot_selector"
         app:tabIndicatorHeight="0dp"
-        app:tabRippleColor="@null"/>
+        app:tabRippleColor="@null" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_to_wish_btn"
@@ -114,17 +114,20 @@
         android:layout_marginStart="8dp"
         android:text="1500 $"
         app:layout_constraintBottom_toBottomOf="@+id/product_price"
-        app:layout_constraintStart_toEndOf="@+id/product_price" />
+        app:layout_constraintStart_toEndOf="@+id/product_price"
+        app:layout_constraintTop_toTopOf="@+id/product_price" />
 
     <View
         android:id="@+id/divider5"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:background="@color/grey"
+        android:background="@color/black"
+        android:backgroundTint="#000000"
         app:layout_constraintBottom_toBottomOf="@+id/textView9"
         app:layout_constraintEnd_toEndOf="@+id/textView9"
         app:layout_constraintStart_toStartOf="@+id/textView9"
-        app:layout_constraintTop_toTopOf="@+id/textView9" />
+        app:layout_constraintTop_toTopOf="@+id/textView9"
+        app:layout_constraintVertical_bias="0.444" />
 
     <TextView
         android:id="@+id/textView10"

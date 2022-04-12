@@ -40,6 +40,14 @@ public class GridProductLayoutAdapter extends BaseAdapter {
         if (convertView == null){
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.horizontal_scroll_item_layout, null);
             view.setElevation(0);
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent productDetailIntent = new Intent(parent.getContext(), ProductDetailActivity.class);
+                    parent.getContext().startActivity(productDetailIntent);
+                }
+            });
             ImageView productImage = view.findViewById(R.id.horizontal_scroll_product_image);
             TextView productTitle = view.findViewById(R.id.horizontal_scroll_product_title);
             TextView productPrice = view.findViewById(R.id.horizontal_scroll_product_price);

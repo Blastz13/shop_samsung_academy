@@ -63,16 +63,16 @@ public class ProductDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (isAddedToWishList){
-                    // TODO: fix fill color
                     isAddedToWishList = false;
-                    addToWishListBtn.setSupportBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#9e9e9e")));
+                    addToWishListBtn.setImageTintList(ColorStateList.valueOf(Color.parseColor("#9e9e9e")));
                 }
                 else{
                     isAddedToWishList = true;
-                    addToWishListBtn.setSupportBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+                    addToWishListBtn.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.red)));
                 }
             }
         });
+
         ProductDetailAdapter productDetailAdapter = new ProductDetailAdapter(getSupportFragmentManager(), productDetailTabLayout.getTabCount());
         productDetailViewPager.setAdapter(productDetailAdapter);
         productDetailViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(productDetailTabLayout));

@@ -3,10 +3,17 @@ package com.example.shop;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.firebase.auth.internal.RecaptchaActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,10 +62,30 @@ public class WishFragment extends Fragment {
         }
     }
 
+    private RecyclerView wishlistRecyclerView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_wish, container, false);
+        View view = inflater.inflate(R.layout.fragment_wish, container, false);
+
+        wishlistRecyclerView = view.findViewById(R.id.wishlist_recyclerview);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        wishlistRecyclerView.setLayoutManager(linearLayoutManager);
+
+        List<WishlistModel> wishlistModelList = new ArrayList<>();
+        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 0, 5, "Macbook", "22", "90$", "88$", "no"));
+        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 2, 5, "Macbook", "22", "90$", "88$", "no"));
+        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 1, 5, "Macbook", "22", "90$", "88$", "no"));
+        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 4, 5, "Macbook", "22", "90$", "88$", "no"));
+        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 4, 5, "Macbook", "22", "90$", "88$", "no"));
+        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 4, 5, "Macbook", "22", "90$", "88$", "no"));
+        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 4, 5, "Macbook", "22", "90$", "88$", "no"));
+        WishlistAdapter wishlistAdapter = new WishlistAdapter(wishlistModelList);
+        wishlistRecyclerView.setAdapter(wishlistAdapter);
+        wishlistAdapter.notifyDataSetChanged();
+        return view;
     }
 }

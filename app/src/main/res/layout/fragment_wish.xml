@@ -5,10 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".WishFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/wishlist_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="wish" />
-
+        android:background="@color/white"
+        android:backgroundTint="@color/grey"/>
 </FrameLayout>

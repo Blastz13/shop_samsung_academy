@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="4dp"
     android:layout_marginBottom="4dp"
-    android:elevation="3dp">
+    android:elevation="3dp"
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/order_product_image"
@@ -19,7 +20,7 @@
         app:srcCompat="@drawable/product_item_1" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/order_product_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -37,7 +38,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7"
+        app:layout_constraintTop_toBottomOf="@+id/order_product_title"
         app:srcCompat="@drawable/default_dot"
         app:tint="@color/green" />
 

@@ -6,9 +6,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -134,6 +138,9 @@ public class ProductDetailActivity extends AppCompatActivity {
             return true;
         }
         else if (id == R.id.main_cart_icon){
+            Intent mainIntent = new Intent(this, MainActivity.class);
+            mainIntent.putExtra("is_cart", true);
+            this.startActivity(mainIntent);
             return true;
         }
         return super.onOptionsItemSelected(item);

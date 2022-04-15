@@ -5,7 +5,9 @@
     android:id="@+id/discount_price_cart_divider"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:elevation="3dp">
+    android:elevation="3dp"
+    android:layout_marginTop="2dp"
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/product_image_cart"
@@ -64,6 +66,7 @@
         android:id="@+id/discount_price_cart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
         android:layout_marginBottom="2dp"
         android:text="1200 $"
         app:layout_constraintBottom_toBottomOf="@+id/product_price_cart"

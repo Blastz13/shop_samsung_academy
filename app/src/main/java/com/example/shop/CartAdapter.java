@@ -148,7 +148,7 @@ public class CartAdapter extends RecyclerView.Adapter {
             totalItems = itemView.findViewById(R.id.total_items);
             totalItemPrice = itemView.findViewById(R.id.total_items_price);
             deliveryPrice = itemView.findViewById(R.id.delivery_charge_price);
-            totalAmount = itemView.findViewById(R.id.total_cart_amount);
+            totalAmount = itemView.findViewById(R.id.total_price);
             savedAmount = itemView.findViewById(R.id.saved_amount);
         }
 

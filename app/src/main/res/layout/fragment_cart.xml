@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyCartFragment">
+    tools:context=".MyCartFragment"
+    android:id="@+id/cart">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cart_items_recyclerview"
@@ -15,7 +16,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        android:background="@color/grey"/>
 
     <LinearLayout
         android:id="@+id/linearLayout5"
@@ -67,12 +69,4 @@
             android:textStyle="bold" />
 
     </LinearLayout>
-
-<!--    <include-->
-<!--        layout="@layout/cart_total_amount_layout"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="bottom"-->
-<!--        tools:layout_editor_absoluteX="0dp"-->
-<!--        tools:layout_editor_absoluteY="458dp" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

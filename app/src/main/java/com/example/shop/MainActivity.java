@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.homeFragment, R.id.cartFragment, R.id.wishFragment, R.id.accountFragment, R.id.orderFragment).build();
+                R.id.homeFragment, R.id.cartFragment, R.id.wishFragment, R.id.accountFragment, R.id.orderFragment, R.id.orderDetailFragment).build();
         if(getIntent().getBooleanExtra("is_cart", false)){
             navController.navigate(R.id.cartFragment);
         }

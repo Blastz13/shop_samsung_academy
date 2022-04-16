@@ -1,5 +1,6 @@
 package com.example.shop;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.media.Image;
@@ -60,6 +61,14 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Viewholder> 
             deliveryIndicator = itemView.findViewById(R.id.indicator_status_order);
             deliveryStatus = itemView.findViewById(R.id.delivared_order_date);
             rateNowLayoutContainer = itemView.findViewById(R.id.rate_now_container);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent orderDetailIntent = new Intent(itemView.getContext(), OrderDetailActivity.class);
+                    itemView.getContext().startActivity(orderDetailIntent);
+                }
+            });
         }
         private void setData(int resource, String title, String deliveryDate, int rating){
             productImage.setImageResource(resource);

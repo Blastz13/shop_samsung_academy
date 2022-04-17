@@ -15,7 +15,9 @@
             android:orientation="vertical">
             <include layout="@layout/profile_layout"/>
             <include layout="@layout/recent_orders_layout"/>
-            <include layout="@layout/address_layout"/>
+
+            <include layout="@layout/address_layout" />
+
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

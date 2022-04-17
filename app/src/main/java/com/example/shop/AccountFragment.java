@@ -1,5 +1,6 @@
 package com.example.shop;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.IdRes;
@@ -15,6 +16,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -65,6 +67,9 @@ public class AccountFragment extends Fragment {
         }
     }
 
+    public static final int MANAGE_ADDRESS = 1;
+    private Button viewAllAddressesButton;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -74,6 +79,16 @@ public class AccountFragment extends Fragment {
 //        NavHostFragment.findNavController(this).navigate(R.id.orderFragment);
 
         TextView recent_orders = view.findViewById(R.id.recent_orders);
+        viewAllAddressesButton = view.findViewById(R.id.viewall_btn_address);
+        viewAllAddressesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addressesIntent = new Intent(getContext(), MyAddressesActivity.class);
+                addressesIntent.putExtra("MODE", MANAGE_ADDRESS);
+                getContext().startActivity(addressesIntent);
+            }
+        });
+
         recent_orders.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

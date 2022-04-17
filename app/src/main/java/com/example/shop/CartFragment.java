@@ -92,7 +92,7 @@ public class CartFragment extends Fragment {
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent deliveryIntent = new Intent(getContext(), AddressActivity.class);
+                Intent deliveryIntent = new Intent(getContext(), DeliveryActivity.class);
                 getContext().startActivity(deliveryIntent);
             }
         });

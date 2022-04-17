@@ -12,8 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Shop">
         <activity
+            android:name=".MyAddressesActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddressActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".DeliveryActivity"
             android:exported="false" />

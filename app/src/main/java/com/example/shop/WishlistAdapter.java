@@ -1,5 +1,6 @@
 package com.example.shop;
 
+import android.content.Intent;
 import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +18,11 @@ import java.util.stream.Stream;
 public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHolder> {
 
     private List<WishlistModel> wishlistModelList;
+    private Boolean isWishList;
 
-    public WishlistAdapter(List<WishlistModel> wishlistModelList) {
+    public WishlistAdapter(List<WishlistModel> wishlistModelList, boolean isWishList) {
         this.wishlistModelList = wishlistModelList;
+        this.isWishList = isWishList;
     }
 
     @NonNull
@@ -98,10 +101,23 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
             productDiscountPrice.setText(discountPrice);
             paymentMethod.setText(payMethod);
 
+            if(isWishList){
+                removeButton.setVisibility(View.VISIBLE);
+            }
+            else{
+                removeButton.setVisibility(View.GONE);
+            }
             removeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
+                }
+            });
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent productDetailIntent = new Intent(itemView.getContext(), ProductDetailActivity.class);
+                    itemView.getContext().startActivity(productDetailIntent);
                 }
             });
         }

@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Shop">
         <activity
+            android:name=".AllProductsActivity"
+            android:exported="false" />
+        <activity
             android:name=".MyAddressesActivity"
             android:exported="false" />
         <activity

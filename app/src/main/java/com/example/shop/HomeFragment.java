@@ -182,6 +182,24 @@ public class HomeFragment extends Fragment {
 //            }
 //        });
 
+        horizontalViewAllBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent viewAllIntent = new Intent(getContext(), AllProductsActivity.class);
+                viewAllIntent.putExtra("type_layout", 0);
+                getContext().startActivity(viewAllIntent);
+            }
+        });
+
+        gridLayoutAllBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent viewAllIntent = new Intent(getContext(), AllProductsActivity.class);
+                viewAllIntent.putExtra("type_layout", 1);
+                getContext().startActivity(viewAllIntent);
+            }
+        });
+
         return view;
     }
 

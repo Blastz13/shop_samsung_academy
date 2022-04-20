@@ -10,6 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
@@ -31,7 +34,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public void onBindViewHolder(@NonNull CategoryAdapter.ViewHolder holder, int position) {
         String ico = categoryModelList.get(position).getCategoryIco();
         String title = categoryModelList.get(position).getCategoryTitle();
-
+        holder.setCategoryIco(ico);
         holder.setCategory(title);
     }
 
@@ -51,8 +54,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             categoryTitle = itemView.findViewById(R.id.category_title);
         }
 
-        private void setCategoryIco(){
-
+        private void setCategoryIco(String url){
+            if(!url.equals("null")) {
+                Glide.with(itemView.getContext()).load(url).apply(new RequestOptions().placeholder(R.drawable.ic_home)).into(categoryIco);
+            }
         }
 
         private void setCategory(String title){

@@ -1,17 +1,17 @@
 package com.example.shop;
 
 public class SliderModel {
-    private int banner;
+    private String banner;
 
-    public SliderModel(int banner) {
+    public SliderModel(String banner) {
         this.banner = banner;
     }
 
-    public int getBanner() {
+    public String getBanner() {
         return banner;
     }
 
-    public void setBanner(int banner) {
+    public void setBanner(String banner) {
         this.banner = banner;
     }
 

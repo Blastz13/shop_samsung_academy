@@ -3,6 +3,7 @@ package com.example.shop;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +19,12 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +77,7 @@ public class HomeFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+    private FirebaseFirestore firebaseFirestore;
 
     private RecyclerView categoryRecyclerView;
     private CategoryAdapter categoryAdapter;
@@ -81,6 +89,7 @@ public class HomeFragment extends Fragment {
     private TextView horizontalLayoutTitle;
     private Button horizontalViewAllBtn;
     private RecyclerView horizontalRecycler;
+    private List<CategoryModel> categoryModelList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -90,27 +99,34 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         categoryRecyclerView.setLayoutManager(layoutManager);
-        List<CategoryModel> categoryModelList = new ArrayList<CategoryModel>();
-        categoryModelList.add(new CategoryModel("link", "Cat"));
-        categoryModelList.add(new CategoryModel("link", "Dog"));
-        categoryModelList.add(new CategoryModel("link", "Tiger"));
-        categoryModelList.add(new CategoryModel("link", "Elephant"));
-        categoryModelList.add(new CategoryModel("link", "Leon"));
-        categoryModelList.add(new CategoryModel("link", "Fish"));
-        categoryModelList.add(new CategoryModel("link", "Crocodile"));
-
+        categoryModelList = new ArrayList<CategoryModel>();
         categoryAdapter = new CategoryAdapter(categoryModelList);
         categoryRecyclerView.setAdapter(categoryAdapter);
-        categoryAdapter.notifyDataSetChanged();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        firebaseFirestore.collection("CATEGORIES").orderBy("index").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    for(QueryDocumentSnapshot documentSnapshot: task.getResult()){
+                        categoryModelList.add(new CategoryModel(documentSnapshot.get("icon").toString(), documentSnapshot.get("categoryName").toString()));
+                    }
+                    categoryAdapter.notifyDataSetChanged();
+                }
+                else{
+;
+                } }
+        });
 
         bannerSlider = view.findViewById(R.id.banner_view_page);
 
         sliderModelList = new ArrayList<SliderModel>();
-        sliderModelList.add(new SliderModel(R.mipmap.slider));
-        sliderModelList.add(new SliderModel(R.mipmap.slider));
-        sliderModelList.add(new SliderModel(R.mipmap.slider));
-        sliderModelList.add(new SliderModel(R.mipmap.slider));
-        sliderModelList.add(new SliderModel(R.mipmap.logo));
+        sliderModelList.add(new SliderModel("https://firebasestorage.googleapis.com/v0/b/shop-samsung-academy.appspot.com/o/banners_slider%2F1.jpeg?alt=media&token=6125413f-8922-4339-b9de-2fdfadf3e1b1"));
+        sliderModelList.add(new SliderModel("https://firebasestorage.googleapis.com/v0/b/shop-samsung-academy.appspot.com/o/banners_slider%2F1.jpeg?alt=media&token=6125413f-8922-4339-b9de-2fdfadf3e1b1"));
+        sliderModelList.add(new SliderModel("https://firebasestorage.googleapis.com/v0/b/shop-samsung-academy.appspot.com/o/banners_slider%2F1.jpeg?alt=media&token=6125413f-8922-4339-b9de-2fdfadf3e1b1"));
+//        sliderModelList.add(new SliderModel(R.mipmap.slider));
+//        sliderModelList.add(new SliderModel(R.mipmap.slider));
+//        sliderModelList.add(new SliderModel(R.mipmap.slider));
+//        sliderModelList.add(new SliderModel(R.mipmap.logo));
 
         SliderAdapter sliderAdapter = new SliderAdapter(sliderModelList);
         bannerSlider.setClipToPadding(false);

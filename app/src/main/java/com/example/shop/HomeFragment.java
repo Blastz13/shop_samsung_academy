@@ -192,10 +192,7 @@ public class HomeFragment extends Fragment {
         horizontalRecycler = view.findViewById(R.id.horizontal_scroll_recyclerview);
 
         List<HorizontalProductScrollModel> horizontalProductScrollModelList = new ArrayList<>();
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.product_item, "NoteBook", "700 $"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.product_item_1, "Personal Computer", "200 $"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.product_item_1, "Phone", "1700 $"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.product_item, "Watch", "7300 $"));
+//        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.product_item, "NoteBook", "700 $"));
 
         HorizontalProductScrollAdapter horizontalProductScrollAdapter = new HorizontalProductScrollAdapter(horizontalProductScrollModelList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -204,11 +201,64 @@ public class HomeFragment extends Fragment {
         horizontalRecycler.setAdapter(horizontalProductScrollAdapter);
         horizontalProductScrollAdapter.notifyDataSetChanged();
 
+        List<HorizontalProductScrollModel> gridProductScrollModelList = new ArrayList<>();
         TextView gridLayoutTitle = view.findViewById(R.id.grid_product_layout_title);
         Button gridLayoutAllBtn = view.findViewById(R.id.grid_product_layout_view_all_btn);
         GridView gridView = view.findViewById(R.id.grid_product_layout_gridview);
+        GridProductLayoutAdapter gridProductLayoutAdapter = new GridProductLayoutAdapter(gridProductScrollModelList);
+        gridView.setAdapter(gridProductLayoutAdapter);
 
-        gridView.setAdapter(new GridProductLayoutAdapter(horizontalProductScrollModelList));
+
+        firebaseFirestore.collection("CATEGORIES").document("HOME").collection("POPULAR_PRODUCTS").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            for(QueryDocumentSnapshot documentSnapshot: task.getResult()){
+                                    if ((long)documentSnapshot.get("type") == 1) {
+                                        for (int i = 1; i <= (long) documentSnapshot.get("count_products"); i++) {
+                                            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(documentSnapshot.get("product_id_" + i).toString(),
+                                                    documentSnapshot.get("product_image_" + i).toString(),
+                                                    documentSnapshot.get("product_title_" + i).toString(),
+                                                    documentSnapshot.get("product_price_" + i).toString()));
+                                            horizontalProductScrollAdapter.notifyDataSetChanged();
+                                            gridProductLayoutAdapter.notifyDataSetChanged();
+                                        }
+                                    }
+                                    else if((long)documentSnapshot.get("type") == 2){
+                                        for(int i=1; i <= (long) documentSnapshot.get("count_products"); i++){
+                                            gridProductScrollModelList.add(new HorizontalProductScrollModel(documentSnapshot.get("product_id_"+i).toString(),
+                                                    documentSnapshot.get("product_image_"+i).toString(),
+                                                    documentSnapshot.get("product_title_"+i).toString(),
+                                                    documentSnapshot.get("product_price_"+i).toString()));
+                                            horizontalProductScrollAdapter.notifyDataSetChanged();
+                                            gridProductLayoutAdapter.notifyDataSetChanged();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+        firebaseFirestore.collection("CATEGORIES").document("HOME").collection("POPULAR_PRODUCTS").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            for(QueryDocumentSnapshot documentSnapshot: task.getResult()){
+                                for(int i=1; i <= (long) documentSnapshot.get("count_products"); i++){
+                                    gridProductScrollModelList.add(new HorizontalProductScrollModel(documentSnapshot.get("product_id_"+i).toString(),
+                                            documentSnapshot.get("product_image_"+i).toString(),
+                                            documentSnapshot.get("product_title_"+i).toString(),
+                                            documentSnapshot.get("product_price_"+i).toString()));
+                                    Log.d("dbg", documentSnapshot.get("product_title_"+i).toString());
+                                    horizontalProductScrollAdapter.notifyDataSetChanged();
+                                    gridProductLayoutAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        }
+                    }
+                });
 
 
         horizontalViewAllBtn.setOnClickListener(new View.OnClickListener() {

@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -85,6 +86,7 @@ public class HomeFragment extends Fragment {
     private List<SliderModel> sliderModelList;
     private int currentPage = 2;
     private Timer timer;
+    SliderAdapter sliderAdapter;
 
     private TextView horizontalLayoutTitle;
     private Button horizontalViewAllBtn;
@@ -117,26 +119,13 @@ public class HomeFragment extends Fragment {
                 } }
         });
 
-        bannerSlider = view.findViewById(R.id.banner_view_page);
-        sliderModelList = new ArrayList<SliderModel>();
-        sliderModelList.add(new SliderModel("https://firebasestorage.googleapis.com/v0/b/shop-samsung-academy.appspot.com/o/banners_slider%2F1.jpeg?alt=media&token=6125413f-8922-4339-b9de-2fdfadf3e1b1"));
-        sliderModelList.add(new SliderModel("https://firebasestorage.googleapis.com/v0/b/shop-samsung-academy.appspot.com/o/banners_slider%2F2.jpeg?alt=media&token=6125413f-8922-4339-b9de-2fdfadf3e1b1"));
-        sliderModelList.add(new SliderModel("https://firebasestorage.googleapis.com/v0/b/shop-samsung-academy.appspot.com/o/banners_slider%2F1.jpeg?alt=media&token=6125413f-8922-4339-b9de-2fdfadf3e1b1"));
 
-        currentPage = 2;
+        bannerSlider = view.findViewById(R.id.banner_view_page);
+        currentPage = 1;
         if(timer != null){
             timer.cancel();
         }
-        List<SliderModel> adapterSliderList = new ArrayList<>();
-        for(int i=0; i < sliderModelList.size(); i++){
-            adapterSliderList.add(i, sliderModelList.get(i));
-        }
-        adapterSliderList.add(0, sliderModelList.get(sliderModelList.size()-2));
-        adapterSliderList.add(1, sliderModelList.get(sliderModelList.size()-1));
-        adapterSliderList.add(sliderModelList.get(0));
-        adapterSliderList.add(sliderModelList.get(1));
 
-        SliderAdapter sliderAdapter = new SliderAdapter(adapterSliderList);
         bannerSlider.setClipToPadding(false);
         bannerSlider.setPageMargin(20);
 
@@ -158,6 +147,28 @@ public class HomeFragment extends Fragment {
                 }
             }
         };
+        sliderModelList = new ArrayList<>();
+
+        sliderAdapter = new SliderAdapter(sliderModelList);
+
+        firebaseFirestore.collection("SLIDER").orderBy("index").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            for(QueryDocumentSnapshot documentSnapshot: task.getResult()){
+                                for(int i=1; i <= (long)documentSnapshot.get("count_banners"); i++) {
+                                    sliderModelList.add(new SliderModel(documentSnapshot.get("banner_"+i).toString()));
+                                }
+                            }
+                            sliderAdapter.notifyDataSetChanged();
+                        }
+                        else{
+                            Log.d("dbg", "error");
+                        }
+                    }
+                });
+
         bannerSlider.setAdapter(sliderAdapter);
         bannerSlider.addOnPageChangeListener(onPageChangeListener);
 
@@ -197,14 +208,6 @@ public class HomeFragment extends Fragment {
 
         gridView.setAdapter(new GridProductLayoutAdapter(horizontalProductScrollModelList));
 
-//        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Log.d("QQQQ", horizontalProductScrollModelList.get(position).getProductTitle());
-//                Intent productDetailIntent = new Intent(view.getContext(), ProductDetailActivity.class);
-//                view.getContext().startActivity(productDetailIntent);
-//            }
-//        });
 
         horizontalViewAllBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -228,14 +231,14 @@ public class HomeFragment extends Fragment {
     }
 
     private void pageLoop(){
-        if (currentPage == sliderModelList.size() - 2){
-            currentPage = 2;
-            bannerSlider.setCurrentItem(currentPage, false);
-        }
-        if (currentPage == 1){
-            currentPage = sliderModelList.size() - 3;
-            bannerSlider.setCurrentItem(currentPage, false);
-        }
+//        if (currentPage == sliderModelList.size() - 2){
+//            currentPage = 2;
+//            bannerSlider.setCurrentItem(currentPage, false);
+//        }
+//        if (currentPage == 1){
+//            currentPage = sliderModelList.size() - 3;
+//            bannerSlider.setCurrentItem(currentPage, false);
+//        }
     }
 
     private void startBannerSlideShow(){
@@ -244,7 +247,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void run() {
                 if (currentPage >= sliderModelList.size()) {
-                    currentPage = 1;
+                    currentPage = 0;
                 }
                 bannerSlider.setCurrentItem(currentPage++, true);
             }

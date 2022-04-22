@@ -110,6 +110,7 @@ public class HomeFragment extends Fragment {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
                     for(QueryDocumentSnapshot documentSnapshot: task.getResult()){
+                        Log.d("dbg", documentSnapshot.get("categoryName").toString());
                         categoryModelList.add(new CategoryModel(documentSnapshot.get("icon").toString(), documentSnapshot.get("categoryName").toString()));
                     }
                     categoryAdapter.notifyDataSetChanged();
@@ -157,6 +158,7 @@ public class HomeFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()){
                             for(QueryDocumentSnapshot documentSnapshot: task.getResult()){
+                                Log.d("dbg", documentSnapshot.get("count_banners").toString());
                                 for(int i=1; i <= (long)documentSnapshot.get("count_banners"); i++) {
                                     sliderModelList.add(new SliderModel(documentSnapshot.get("banner_"+i).toString()));
                                 }

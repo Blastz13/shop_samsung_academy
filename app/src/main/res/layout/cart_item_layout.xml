@@ -116,52 +116,23 @@
         app:layout_constraintTop_toBottomOf="@+id/discount_price_cart" />
 
     <LinearLayout
-        android:id="@+id/linearLayout6"
+        android:id="@+id/remove_item_cart_btn"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="#F15959"
-        android:gravity="right"
+        android:layout_height="56dp"
+        android:background="@color/white"
+        android:gravity="center"
         android:orientation="horizontal"
-        android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/coupon_applied_cart">
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Check price"
-            android:textAlignment="center"
-            android:textColor="@color/white" />
-
-        <Button
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:text="Redeem"
-            android:textColor="@color/white"
-            android:textSize="10sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/remove_item_cart_btn"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:orientation="horizontal"
-        android:background="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout6"
-        android:gravity="center">
-
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Remove item"
-            android:gravity="center"
+            android:drawableStart="@drawable/ic_trash"
             android:drawablePadding="4dp"
-            android:drawableStart="@drawable/ic_trash"/>
+            android:gravity="center"
+            android:text="Remove item" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

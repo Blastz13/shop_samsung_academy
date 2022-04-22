@@ -113,22 +113,30 @@ public class HomeFragment extends Fragment {
                     categoryAdapter.notifyDataSetChanged();
                 }
                 else{
-;
+                    ;
                 } }
         });
 
         bannerSlider = view.findViewById(R.id.banner_view_page);
-
         sliderModelList = new ArrayList<SliderModel>();
         sliderModelList.add(new SliderModel("https://firebasestorage.googleapis.com/v0/b/shop-samsung-academy.appspot.com/o/banners_slider%2F1.jpeg?alt=media&token=6125413f-8922-4339-b9de-2fdfadf3e1b1"));
+        sliderModelList.add(new SliderModel("https://firebasestorage.googleapis.com/v0/b/shop-samsung-academy.appspot.com/o/banners_slider%2F2.jpeg?alt=media&token=6125413f-8922-4339-b9de-2fdfadf3e1b1"));
         sliderModelList.add(new SliderModel("https://firebasestorage.googleapis.com/v0/b/shop-samsung-academy.appspot.com/o/banners_slider%2F1.jpeg?alt=media&token=6125413f-8922-4339-b9de-2fdfadf3e1b1"));
-        sliderModelList.add(new SliderModel("https://firebasestorage.googleapis.com/v0/b/shop-samsung-academy.appspot.com/o/banners_slider%2F1.jpeg?alt=media&token=6125413f-8922-4339-b9de-2fdfadf3e1b1"));
-//        sliderModelList.add(new SliderModel(R.mipmap.slider));
-//        sliderModelList.add(new SliderModel(R.mipmap.slider));
-//        sliderModelList.add(new SliderModel(R.mipmap.slider));
-//        sliderModelList.add(new SliderModel(R.mipmap.logo));
 
-        SliderAdapter sliderAdapter = new SliderAdapter(sliderModelList);
+        currentPage = 2;
+        if(timer != null){
+            timer.cancel();
+        }
+        List<SliderModel> adapterSliderList = new ArrayList<>();
+        for(int i=0; i < sliderModelList.size(); i++){
+            adapterSliderList.add(i, sliderModelList.get(i));
+        }
+        adapterSliderList.add(0, sliderModelList.get(sliderModelList.size()-2));
+        adapterSliderList.add(1, sliderModelList.get(sliderModelList.size()-1));
+        adapterSliderList.add(sliderModelList.get(0));
+        adapterSliderList.add(sliderModelList.get(1));
+
+        SliderAdapter sliderAdapter = new SliderAdapter(adapterSliderList);
         bannerSlider.setClipToPadding(false);
         bannerSlider.setPageMargin(20);
 

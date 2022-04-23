@@ -139,6 +139,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="?android:attr/listDivider"
+        android:backgroundTint="#000000"
         app:layout_constraintBottom_toBottomOf="@+id/product_discount_price_wishlist"
         app:layout_constraintEnd_toEndOf="@+id/product_discount_price_wishlist"
         app:layout_constraintStart_toStartOf="@+id/product_discount_price_wishlist"

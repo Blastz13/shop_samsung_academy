@@ -240,32 +240,13 @@ public class HomeFragment extends Fragment {
                         }
                     });
 
-        firebaseFirestore.collection("CATEGORIES").document("HOME").collection("POPULAR_PRODUCTS").get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            for(QueryDocumentSnapshot documentSnapshot: task.getResult()){
-                                for(int i=1; i <= (long) documentSnapshot.get("count_products"); i++){
-                                    gridProductScrollModelList.add(new HorizontalProductScrollModel(documentSnapshot.get("product_id_"+i).toString(),
-                                            documentSnapshot.get("product_image_"+i).toString(),
-                                            documentSnapshot.get("product_title_"+i).toString(),
-                                            documentSnapshot.get("product_price_"+i).toString()));
-                                    Log.d("dbg", documentSnapshot.get("product_title_"+i).toString());
-                                    horizontalProductScrollAdapter.notifyDataSetChanged();
-                                    gridProductLayoutAdapter.notifyDataSetChanged();
-                                }
-                            }
-                        }
-                    }
-                });
-
 
         horizontalViewAllBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent viewAllIntent = new Intent(getContext(), AllProductsActivity.class);
                 viewAllIntent.putExtra("type_layout", 0);
+                viewAllIntent.putExtra("category_title", "Popular products");
                 getContext().startActivity(viewAllIntent);
             }
         });
@@ -275,6 +256,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 Intent viewAllIntent = new Intent(getContext(), AllProductsActivity.class);
                 viewAllIntent.putExtra("type_layout", 1);
+                viewAllIntent.putExtra("category_title", "Up-sells");
                 getContext().startActivity(viewAllIntent);
             }
         });

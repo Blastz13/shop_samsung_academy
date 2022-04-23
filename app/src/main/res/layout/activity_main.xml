@@ -29,4 +29,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/nav" />
 
+    <ImageView
+        android:id="@+id/no_internet_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/no_internet" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

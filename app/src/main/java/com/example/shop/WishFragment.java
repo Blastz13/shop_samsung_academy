@@ -76,13 +76,13 @@ public class WishFragment extends Fragment {
         wishlistRecyclerView.setLayoutManager(linearLayoutManager);
 
         List<WishlistModel> wishlistModelList = new ArrayList<>();
-        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 0, 5, "Macbook", "22", "90$", "88$", "no"));
-        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 2, 5, "Macbook", "22", "90$", "88$", "no"));
-        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 1, 5, "Macbook", "22", "90$", "88$", "no"));
-        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 4, 5, "Macbook", "22", "90$", "88$", "no"));
-        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 4, 5, "Macbook", "22", "90$", "88$", "no"));
-        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 4, 5, "Macbook", "22", "90$", "88$", "no"));
-        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 4, 5, "Macbook", "22", "90$", "88$", "no"));
+//        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 0, 5, "Macbook", "22", "90$", "88$", "no"));
+//        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 2, 5, "Macbook", "22", "90$", "88$", "no"));
+//        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 1, 5, "Macbook", "22", "90$", "88$", "no"));
+//        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 4, 5, "Macbook", "22", "90$", "88$", "no"));
+//        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 4, 5, "Macbook", "22", "90$", "88$", "no"));
+//        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 4, 5, "Macbook", "22", "90$", "88$", "no"));
+//        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 4, 5, "Macbook", "22", "90$", "88$", "no"));
         WishlistAdapter wishlistAdapter = new WishlistAdapter(wishlistModelList, true);
         wishlistRecyclerView.setAdapter(wishlistAdapter);
         wishlistAdapter.notifyDataSetChanged();

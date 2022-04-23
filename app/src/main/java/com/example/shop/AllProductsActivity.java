@@ -12,6 +12,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +25,7 @@ public class AllProductsActivity extends AppCompatActivity {
 
     private RecyclerView allProductsRecyclerView;
     private GridView allProductsGridView;
+    private FirebaseFirestore firebaseFirestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,13 +34,16 @@ public class AllProductsActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(getIntent().getStringExtra("category_title"));
 
         allProductsRecyclerView = findViewById(R.id.all_products_recyclerview);
         allProductsGridView = findViewById(R.id.all_products_gridview);
 
         int type_layout = getIntent().getIntExtra("type_layout", -1);
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
         if(type_layout == 0){
 
@@ -44,29 +54,61 @@ public class AllProductsActivity extends AppCompatActivity {
             allProductsRecyclerView.setLayoutManager(layoutManager);
 
             List<WishlistModel> wishlistModelList = new ArrayList<>();
-            wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 0, 5, "Macbook", "22", "90$", "88$", "no"));
-            wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 2, 5, "Macbook", "22", "90$", "88$", "no"));
-            wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 1, 5, "Macbook", "22", "90$", "88$", "no"));
-            wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 4, 5, "Macbook", "22", "90$", "88$", "no"));
-            wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 4, 5, "Macbook", "22", "90$", "88$", "no"));
-            wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 4, 5, "Macbook", "22", "90$", "88$", "no"));
-            wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 4, 5, "Macbook", "22", "90$", "88$", "no"));
 
             WishlistAdapter wishlistAdapter = new WishlistAdapter(wishlistModelList, false);
             allProductsRecyclerView.setAdapter(wishlistAdapter);
             wishlistAdapter.notifyDataSetChanged();
+
+            firebaseFirestore.collection("CATEGORIES").document("HOME").collection("POPULAR_PRODUCTS").get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if(task.isSuccessful()){
+                                for(QueryDocumentSnapshot documentSnapshot: task.getResult()){
+                                    if((long)documentSnapshot.get("type") == 2){
+                                        for(int i=1; i <= (long) documentSnapshot.get("count_products"); i++){
+                                            wishlistModelList.add(new WishlistModel(documentSnapshot.get("product_image_"+i).toString(),
+                                                    Long.parseLong(documentSnapshot.get("product_coupon_"+i).toString()),
+                                                    Long.parseLong(documentSnapshot.get("total_rating_"+i).toString()),
+                                                    documentSnapshot.get("product_title_"+i).toString(),
+                                                    documentSnapshot.get("avg_rating_"+i).toString(),
+                                                    documentSnapshot.get("product_price_"+i).toString(),
+                                                    documentSnapshot.get("product_discount_price_"+i).toString()));
+                                            wishlistAdapter.notifyDataSetChanged();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
         }
         else if (type_layout == 1){
 
             allProductsGridView.setVisibility(View.VISIBLE);
 
             List<HorizontalProductScrollModel> horizontalProductScrollModelList = new ArrayList<>();
-            //horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.product_item, "NoteBook", "700 $"));
-            //horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.product_item_1, "Personal Computer", "200 $"));
-            //horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.product_item_1, "Phone", "1700 $"));
-            //horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.product_item, "Watch", "7300 $"));
-
             GridProductLayoutAdapter gridProductLayoutAdapter = new GridProductLayoutAdapter(horizontalProductScrollModelList);
+
+            firebaseFirestore.collection("CATEGORIES").document("HOME").collection("POPULAR_PRODUCTS").get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if(task.isSuccessful()){
+                                for(QueryDocumentSnapshot documentSnapshot: task.getResult()){
+                                    if((long)documentSnapshot.get("type") == 2){
+                                        for(int i=1; i <= (long) documentSnapshot.get("count_products"); i++){
+                                            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(documentSnapshot.get("product_id_"+i).toString(),
+                                                    documentSnapshot.get("product_image_"+i).toString(),
+                                                    documentSnapshot.get("product_title_"+i).toString(),
+                                                    documentSnapshot.get("product_price_"+i).toString()));
+                                            gridProductLayoutAdapter.notifyDataSetChanged();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+
             allProductsGridView.setAdapter(gridProductLayoutAdapter);
             gridProductLayoutAdapter.notifyDataSetChanged();
         }

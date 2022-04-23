@@ -1,16 +1,15 @@
 package com.example.shop;
 
 public class WishlistModel {
-    private int productImage;
-    private int freeCoupons;
-    private int totalRating;
+    private String productImage;
+    private long freeCoupons;
+    private long totalRating;
     private String productTitle;
     private String rating;
     private String productPrice;
     private String productDiscountPrice;
-    private String paymentMethod;
 
-    public WishlistModel(int productImage, int freeCoupons, int totalRating, String productTitle, String rating, String productPrice, String productDiscountPrice, String paymentMethod) {
+    public WishlistModel(String productImage, long freeCoupons, long totalRating, String productTitle, String rating, String productPrice, String productDiscountPrice) {
         this.productImage = productImage;
         this.freeCoupons = freeCoupons;
         this.totalRating = totalRating;
@@ -18,30 +17,29 @@ public class WishlistModel {
         this.rating = rating;
         this.productPrice = productPrice;
         this.productDiscountPrice = productDiscountPrice;
-        this.paymentMethod = paymentMethod;
     }
 
-    public int getProductImage() {
+    public String getProductImage() {
         return productImage;
     }
 
-    public void setProductImage(int productImage) {
+    public void setProductImage(String productImage) {
         this.productImage = productImage;
     }
 
-    public int getFreeCoupons() {
+    public long getFreeCoupons() {
         return freeCoupons;
     }
 
-    public void setFreeCoupons(int freeCoupons) {
+    public void setFreeCoupons(long freeCoupons) {
         this.freeCoupons = freeCoupons;
     }
 
-    public int getTotalRating() {
+    public long getTotalRating() {
         return totalRating;
     }
 
-    public void setTotalRating(int totalRating) {
+    public void setTotalRating(long totalRating) {
         this.totalRating = totalRating;
     }
 
@@ -75,13 +73,5 @@ public class WishlistModel {
 
     public void setProductDiscountPrice(String productDiscountPrice) {
         this.productDiscountPrice = productDiscountPrice;
-    }
-
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
     }
 }

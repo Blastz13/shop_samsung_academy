@@ -79,7 +79,7 @@
         app:layout_constraintTop_toBottomOf="@+id/total_ratings">
 
         <ProgressBar
-            android:id="@+id/progressBar1"
+            android:id="@+id/progressBar_mark_5"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
             android:progressTint="@color/green" />
 
         <ProgressBar
-            android:id="@+id/progressBar2"
+            android:id="@+id/progressBar_mark_4"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
             android:progressTint="@color/green" />
 
         <ProgressBar
-            android:id="@+id/progressBar3"
+            android:id="@+id/progressBar_mark_3"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
             android:progressTint="@color/yellow" />
 
         <ProgressBar
-            android:id="@+id/progressBar4"
+            android:id="@+id/progressBar_mark_2"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -127,7 +127,7 @@
             android:progressTint="@color/yellow" />
 
         <ProgressBar
-            android:id="@+id/progressBar5"
+            android:id="@+id/progressBar_mark_1"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -157,7 +157,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView10"
+                android:id="@+id/product_available"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="5"
@@ -293,7 +293,7 @@
         app:layout_constraintTop_toTopOf="@+id/rating_progressbar_container">
 
         <TextView
-            android:id="@+id/textView18"
+            android:id="@+id/product_rating_mark_5"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -302,7 +302,7 @@
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/textView19"
+            android:id="@+id/product_rating_mark_4"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -311,7 +311,7 @@
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/textView20"
+            android:id="@+id/product_rating_mark_3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -320,7 +320,7 @@
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/textView21"
+            android:id="@+id/product_rating_mark_2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -329,7 +329,7 @@
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/textView22"
+            android:id="@+id/product_rating_mark_1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"

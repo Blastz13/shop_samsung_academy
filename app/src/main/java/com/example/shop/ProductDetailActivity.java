@@ -16,15 +16,22 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TableLayout;
+import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +45,26 @@ public class ProductDetailActivity extends AppCompatActivity {
     private ViewPager productDetailViewPager;
     private TabLayout productDetailTabLayout;
     private LinearLayout rateNowLayoutContainer;
+    private FirebaseFirestore firebaseFirestore;
+    private TextView productTitle;
+    private TextView productRatingPreview;
+    private TextView productTotalRating;
+    private TextView productPrice;
+    private TextView productDiscountPrice;
+    private TextView productAvailable;
+    private TextView productTotalRatings;
+    private TextView productRatingMark1;
+    private TextView productRatingMark2;
+    private TextView productRatingMark3;
+    private TextView productRatingMark4;
+    private TextView productRatingMark5;
+    private TextView totalRatingFigure;
+    private TextView averageRating;
+    private ProgressBar progressBarMark1;
+    private ProgressBar progressBarMark2;
+    private ProgressBar progressBarMark3;
+    private ProgressBar progressBarMark4;
+    private ProgressBar progressBarMark5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,15 +81,75 @@ public class ProductDetailActivity extends AppCompatActivity {
         addToWishListBtn = findViewById(R.id.add_to_wish_btn);
         productDetailViewPager = findViewById(R.id.product_detail_viewpager_tab);
         productDetailTabLayout = findViewById(R.id.product_detail_tablayout);
+        productTitle = findViewById(R.id.product_title);
+        productRatingPreview = findViewById(R.id.product_rating_preview);
+        productTotalRating = findViewById(R.id.total_rating);
+        productTotalRatings = findViewById(R.id.total_ratings);
+        productPrice = findViewById(R.id.product_price);
+        productDiscountPrice = findViewById(R.id.product_discount_price);
+        productAvailable = findViewById(R.id.product_available);
+        productRatingMark1 = findViewById(R.id.product_rating_mark_1);
+        productRatingMark2 = findViewById(R.id.product_rating_mark_2);
+        productRatingMark3 = findViewById(R.id.product_rating_mark_3);
+        productRatingMark4 = findViewById(R.id.product_rating_mark_4);
+        productRatingMark5 = findViewById(R.id.product_rating_mark_5);
+        totalRatingFigure = findViewById(R.id.total_rating_figure);
+        progressBarMark1 = findViewById(R.id.progressBar_mark_1);
+        progressBarMark2 = findViewById(R.id.progressBar_mark_2);
+        progressBarMark3 = findViewById(R.id.progressBar_mark_3);
+        progressBarMark4 = findViewById(R.id.progressBar_mark_4);
+        progressBarMark5 = findViewById(R.id.progressBar_mark_5);
+        averageRating = findViewById(R.id.average_rating);
 
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
-        List<Integer> productImages = new ArrayList<>();
-        productImages.add(R.drawable.product_item);
-        productImages.add(R.drawable.product_item_1);
-        productImages.add(R.drawable.product_item);
-        productImages.add(R.drawable.product_item_1);
+        List<String> productImages = new ArrayList<>();
 
         ProductImagesAdapter productImagesAdapter = new ProductImagesAdapter(productImages);
+
+                firebaseFirestore.collection("PRODUCTS").document("BFK9SALISNJr4wCLZJPw").get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            DocumentSnapshot documentSnapshot = task.getResult();
+                            for(int i=1; i <= (long)documentSnapshot.get("count_image_product"); i++){
+                                productImages.add(documentSnapshot.get("product_image_"+i).toString());
+                            }
+                            productTitle.setText(documentSnapshot.get("product_title").toString());
+                            productRatingPreview.setText(documentSnapshot.get("avg_rating").toString());
+                            averageRating.setText(documentSnapshot.get("avg_rating").toString());
+                            productTotalRating.setText(documentSnapshot.get("total_rating").toString());
+                            productPrice.setText(documentSnapshot.get("product_price").toString());
+                            productDiscountPrice.setText(documentSnapshot.get("product_discount_price").toString());
+                            productAvailable.setText(documentSnapshot.get("product_available").toString());
+                            productTotalRatings.setText(documentSnapshot.get("total_rating").toString());
+
+                            productRatingMark1.setText(documentSnapshot.get("mark_1").toString());
+                            productRatingMark2.setText(documentSnapshot.get("mark_2").toString());
+                            productRatingMark3.setText(documentSnapshot.get("mark_3").toString());
+                            productRatingMark4.setText(documentSnapshot.get("mark_4").toString());
+                            productRatingMark5.setText(documentSnapshot.get("mark_5").toString());
+                            totalRatingFigure.setText(documentSnapshot.get("total_rating").toString());
+
+                            progressBarMark1.setMax(Integer.parseInt(documentSnapshot.get("total_rating").toString()));
+                            progressBarMark1.setProgress(Integer.parseInt(documentSnapshot.get("mark_1").toString()));
+                            progressBarMark2.setMax(Integer.parseInt(documentSnapshot.get("total_rating").toString()));
+                            progressBarMark2.setProgress(Integer.parseInt(documentSnapshot.get("mark_2").toString()));
+                            progressBarMark3.setMax(Integer.parseInt(documentSnapshot.get("total_rating").toString()));
+                            progressBarMark3.setProgress(Integer.parseInt(documentSnapshot.get("mark_3").toString()));
+                            progressBarMark4.setMax(Integer.parseInt(documentSnapshot.get("total_rating").toString()));
+                            progressBarMark4.setProgress(Integer.parseInt(documentSnapshot.get("mark_4").toString()));
+                            progressBarMark5.setMax(Integer.parseInt(documentSnapshot.get("total_rating").toString()));
+                            progressBarMark5.setProgress(Integer.parseInt(documentSnapshot.get("mark_5").toString()));
+
+                            productImagesAdapter.notifyDataSetChanged();
+                        }
+                        else{
+                            ;
+                        }
+                    }
+                });
         productImagesViewPager.setAdapter(productImagesAdapter);
         viewPagerIndicator.setupWithViewPager(productImagesViewPager, true);
 

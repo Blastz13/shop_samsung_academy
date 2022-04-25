@@ -36,10 +36,11 @@ public class HorizontalProductScrollAdapter extends RecyclerView.Adapter<Horizon
         String resource = horizontalProductScrollModelList.get(position).getProductImage();
         String title = horizontalProductScrollModelList.get(position).getProductTitle();
         String price = horizontalProductScrollModelList.get(position).getProductPrice();
+        String productId = horizontalProductScrollModelList.get(position).getProductId();
         holder.setProductImage(resource);
         holder.setProductTitle(title);
         holder.setProductPrice(price);
-
+        holder.setProductId(productId);
     }
 
     @Override
@@ -58,14 +59,6 @@ public class HorizontalProductScrollAdapter extends RecyclerView.Adapter<Horizon
             productImage = itemView.findViewById(R.id.horizontal_scroll_product_image);
             productTitle = itemView.findViewById(R.id.horizontal_scroll_product_title);
             productPrice = itemView.findViewById(R.id.horizontal_scroll_product_price);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent productDetailIntent = new Intent(itemView.getContext(), ProductDetailActivity.class);
-                    itemView.getContext().startActivity(productDetailIntent);
-                }
-            });
         }
 
         public void setProductImage(String resource) {
@@ -78,6 +71,17 @@ public class HorizontalProductScrollAdapter extends RecyclerView.Adapter<Horizon
 
         public void setProductPrice(String price) {
             productPrice.setText(price);
+        }
+
+        public void setProductId(String productId) {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent productDetailIntent = new Intent(itemView.getContext(), ProductDetailActivity.class);
+                    productDetailIntent.putExtra("product_id", productId);
+                    itemView.getContext().startActivity(productDetailIntent);
+                }
+            });
         }
     }
 }

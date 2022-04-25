@@ -48,6 +48,7 @@ public class GridProductLayoutAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     Intent productDetailIntent = new Intent(parent.getContext(), ProductDetailActivity.class);
+                    productDetailIntent.putExtra("product_id", horizontalProductScrollModelList.get(position).getProductId());
                     parent.getContext().startActivity(productDetailIntent);
                 }
             });

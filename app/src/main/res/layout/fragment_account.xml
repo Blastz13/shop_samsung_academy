@@ -19,12 +19,13 @@
             <include layout="@layout/address_layout" />
 
             <Button
+                android:id="@+id/sign_out_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Sign Out"
-                android:backgroundTint="@color/purple_500"
                 android:layout_margin="16dp"
-                android:padding="16dp"/>
+                android:backgroundTint="@color/purple_500"
+                android:padding="16dp"
+                android:text="Sign Out" />
         </LinearLayout>
     </ScrollView>
 

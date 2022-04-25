@@ -32,6 +32,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,49 +109,53 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         ProductImagesAdapter productImagesAdapter = new ProductImagesAdapter(productImages);
 
-                firebaseFirestore.collection("PRODUCTS").document("BFK9SALISNJr4wCLZJPw").get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                firebaseFirestore.collection("PRODUCTS").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
-                            DocumentSnapshot documentSnapshot = task.getResult();
-                            for(int i=1; i <= (long)documentSnapshot.get("count_image_product"); i++){
-                                productImages.add(documentSnapshot.get("product_image_"+i).toString());
+                            for(QueryDocumentSnapshot documentSnapshot: task.getResult()) {
+                                if(documentSnapshot.get("product_id").toString().equals(getIntent().getStringExtra("product_id"))) {
+                                    for (int i = 1; i <= (long) documentSnapshot.get("count_image_product"); i++) {
+                                        productImages.add(documentSnapshot.get("product_image_" + i).toString());
+                                    }
+                                    productTitle.setText(documentSnapshot.get("product_title").toString());
+                                    productRatingPreview.setText(documentSnapshot.get("avg_rating").toString());
+                                    averageRating.setText(documentSnapshot.get("avg_rating").toString());
+                                    productTotalRating.setText(documentSnapshot.get("total_rating").toString());
+                                    productPrice.setText(documentSnapshot.get("product_price").toString());
+                                    productDiscountPrice.setText(documentSnapshot.get("product_discount_price").toString());
+                                    productAvailable.setText(documentSnapshot.get("product_available").toString());
+                                    productTotalRatings.setText(documentSnapshot.get("total_rating").toString());
+
+                                    productRatingMark1.setText(documentSnapshot.get("mark_1").toString());
+                                    productRatingMark2.setText(documentSnapshot.get("mark_2").toString());
+                                    productRatingMark3.setText(documentSnapshot.get("mark_3").toString());
+                                    productRatingMark4.setText(documentSnapshot.get("mark_4").toString());
+                                    productRatingMark5.setText(documentSnapshot.get("mark_5").toString());
+                                    totalRatingFigure.setText(documentSnapshot.get("total_rating").toString());
+
+                                    progressBarMark1.setMax(Integer.parseInt(documentSnapshot.get("total_rating").toString()));
+                                    progressBarMark1.setProgress(Integer.parseInt(documentSnapshot.get("mark_1").toString()));
+                                    progressBarMark2.setMax(Integer.parseInt(documentSnapshot.get("total_rating").toString()));
+                                    progressBarMark2.setProgress(Integer.parseInt(documentSnapshot.get("mark_2").toString()));
+                                    progressBarMark3.setMax(Integer.parseInt(documentSnapshot.get("total_rating").toString()));
+                                    progressBarMark3.setProgress(Integer.parseInt(documentSnapshot.get("mark_3").toString()));
+                                    progressBarMark4.setMax(Integer.parseInt(documentSnapshot.get("total_rating").toString()));
+                                    progressBarMark4.setProgress(Integer.parseInt(documentSnapshot.get("mark_4").toString()));
+                                    progressBarMark5.setMax(Integer.parseInt(documentSnapshot.get("total_rating").toString()));
+                                    progressBarMark5.setProgress(Integer.parseInt(documentSnapshot.get("mark_5").toString()));
+
+                                    productImagesAdapter.notifyDataSetChanged();
+                                }
                             }
-                            productTitle.setText(documentSnapshot.get("product_title").toString());
-                            productRatingPreview.setText(documentSnapshot.get("avg_rating").toString());
-                            averageRating.setText(documentSnapshot.get("avg_rating").toString());
-                            productTotalRating.setText(documentSnapshot.get("total_rating").toString());
-                            productPrice.setText(documentSnapshot.get("product_price").toString());
-                            productDiscountPrice.setText(documentSnapshot.get("product_discount_price").toString());
-                            productAvailable.setText(documentSnapshot.get("product_available").toString());
-                            productTotalRatings.setText(documentSnapshot.get("total_rating").toString());
-
-                            productRatingMark1.setText(documentSnapshot.get("mark_1").toString());
-                            productRatingMark2.setText(documentSnapshot.get("mark_2").toString());
-                            productRatingMark3.setText(documentSnapshot.get("mark_3").toString());
-                            productRatingMark4.setText(documentSnapshot.get("mark_4").toString());
-                            productRatingMark5.setText(documentSnapshot.get("mark_5").toString());
-                            totalRatingFigure.setText(documentSnapshot.get("total_rating").toString());
-
-                            progressBarMark1.setMax(Integer.parseInt(documentSnapshot.get("total_rating").toString()));
-                            progressBarMark1.setProgress(Integer.parseInt(documentSnapshot.get("mark_1").toString()));
-                            progressBarMark2.setMax(Integer.parseInt(documentSnapshot.get("total_rating").toString()));
-                            progressBarMark2.setProgress(Integer.parseInt(documentSnapshot.get("mark_2").toString()));
-                            progressBarMark3.setMax(Integer.parseInt(documentSnapshot.get("total_rating").toString()));
-                            progressBarMark3.setProgress(Integer.parseInt(documentSnapshot.get("mark_3").toString()));
-                            progressBarMark4.setMax(Integer.parseInt(documentSnapshot.get("total_rating").toString()));
-                            progressBarMark4.setProgress(Integer.parseInt(documentSnapshot.get("mark_4").toString()));
-                            progressBarMark5.setMax(Integer.parseInt(documentSnapshot.get("total_rating").toString()));
-                            progressBarMark5.setProgress(Integer.parseInt(documentSnapshot.get("mark_5").toString()));
-
-                            productImagesAdapter.notifyDataSetChanged();
                         }
                         else{
                             ;
                         }
                     }
                 });
+
         productImagesViewPager.setAdapter(productImagesAdapter);
         viewPagerIndicator.setupWithViewPager(productImagesViewPager, true);
 

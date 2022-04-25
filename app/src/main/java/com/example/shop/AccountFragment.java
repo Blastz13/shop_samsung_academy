@@ -20,6 +20,8 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AccountFragment#newInstance} factory method to
@@ -69,6 +71,7 @@ public class AccountFragment extends Fragment {
 
     public static final int MANAGE_ADDRESS = 1;
     private Button viewAllAddressesButton;
+    private Button signOutButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,6 +83,17 @@ public class AccountFragment extends Fragment {
 
         TextView recent_orders = view.findViewById(R.id.recent_orders);
         viewAllAddressesButton = view.findViewById(R.id.viewall_btn_address);
+        signOutButton = view.findViewById(R.id.sign_out_btn);
+
+        signOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent registerIntent = new Intent(getContext(), RegistrationActivity.class);
+                getContext().startActivity(registerIntent);
+            }
+        });
+
         viewAllAddressesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

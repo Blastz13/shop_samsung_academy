@@ -67,7 +67,8 @@ public class AllProductsActivity extends AppCompatActivity {
                                 for(QueryDocumentSnapshot documentSnapshot: task.getResult()){
                                     if((long)documentSnapshot.get("type") == 2){
                                         for(int i=1; i <= (long) documentSnapshot.get("count_products"); i++){
-                                            wishlistModelList.add(new WishlistModel(documentSnapshot.get("product_image_"+i).toString(),
+                                            wishlistModelList.add(new WishlistModel(documentSnapshot.get("product_id_"+i).toString(),
+                                                    documentSnapshot.get("product_image_"+i).toString(),
                                                     Long.parseLong(documentSnapshot.get("product_coupon_"+i).toString()),
                                                     Long.parseLong(documentSnapshot.get("total_rating_"+i).toString()),
                                                     documentSnapshot.get("product_title_"+i).toString(),

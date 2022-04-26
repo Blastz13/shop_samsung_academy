@@ -74,6 +74,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private ProgressBar progressBarMark5;
     private FirebaseUser currentUser;
     private String productId;
+    public static DocumentSnapshot tempDocumentSnapshot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +124,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                         if(task.isSuccessful()){
                             for(QueryDocumentSnapshot documentSnapshot: task.getResult()) {
                                 if(documentSnapshot.get("product_id").toString().equals(getIntent().getStringExtra("product_id"))) {
+                                    tempDocumentSnapshot = documentSnapshot;
                                     for (int i = 1; i <= (long) documentSnapshot.get("count_image_product"); i++) {
                                         productImages.add(documentSnapshot.get("product_image_" + i).toString());
                                     }
@@ -186,15 +188,15 @@ public class ProductDetailActivity extends AppCompatActivity {
                     addToWishListBtn.setImageTintList(ColorStateList.valueOf(Color.parseColor("#9e9e9e")));
                 }
                 else{
-                    if(WishFragment.wishlistModelList.size() != 0){
-                        WishFragment.wishlistModelList.add(new WishlistModel(documentSnapshot.get("product_image_1").toString(),
-                                Long.parseLong(documentSnapshot.get("product_coupon").toString()),
-                                Long.parseLong(documentSnapshot.get("total_rating").toString()),
-                                documentSnapshot.get("product_title").toString(),
-                                documentSnapshot.get("avg_rating").toString(),
-                                documentSnapshot.get("product_price").toString(),
-                                documentSnapshot.get("product_discount_price").toString()));
-                    }
+
+                        WishFragment.wishlistModelList.add(new WishlistModel(productId,
+                                tempDocumentSnapshot.get("product_image_1").toString(),
+                                1,
+                                Long.parseLong(tempDocumentSnapshot.get("total_rating").toString()),
+                                tempDocumentSnapshot.get("product_title").toString(),
+                                tempDocumentSnapshot.get("avg_rating").toString(),
+                                tempDocumentSnapshot.get("product_price").toString(),
+                                tempDocumentSnapshot.get("product_discount_price").toString()));
 //                    Todo: FIX
                     Map<String, Object> add_product_id = new HashMap<>();
                     for(int j=0; j < WishFragment.wl.size(); j++){
@@ -202,6 +204,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                     }
                     add_product_id.put("product_id_"+String.valueOf(WishFragment.wl.size()), productId);
                     String f = FirebaseAuth.getInstance().getUid();
+
                     firebaseFirestore.collection("USERS").document(f).collection("USER_DATA").document("WISHLIST")
                             .set(add_product_id).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

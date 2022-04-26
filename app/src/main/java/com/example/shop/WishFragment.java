@@ -91,19 +91,57 @@ public class WishFragment extends Fragment {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         wishlistRecyclerView.setLayoutManager(linearLayoutManager);
 
-//        wishlistModelList = new ArrayList<>();
-//        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 0, 5, "Macbook", "22", "90$", "88$", "no"));
-//        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 2, 5, "Macbook", "22", "90$", "88$", "no"));
-//        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 1, 5, "Macbook", "22", "90$", "88$", "no"));
-//        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 4, 5, "Macbook", "22", "90$", "88$", "no"));
-//        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 4, 5, "Macbook", "22", "90$", "88$", "no"));
-//        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 4, 5, "Macbook", "22", "90$", "88$", "no"));
-//        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 4, 5, "Macbook", "22", "90$", "88$", "no"));
-        loadWishList();
+        wl.clear();
+        wishlistModelList.clear();
+        load();
+
         wishlistAdapter = new WishlistAdapter(wishlistModelList, true);
         wishlistRecyclerView.setAdapter(wishlistAdapter);
         wishlistAdapter.notifyDataSetChanged();
         return view;
+    }
+
+    public static void load(){
+        for(int i=0; i < wishlistModelList.size(); i++){
+            wishlistModelList.remove(i);
+        }
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        String f = FirebaseAuth.getInstance().getUid();
+        firebaseFirestore.collection("USERS").document(f).collection("USER_DATA").document("WISHLIST").get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            for(int i=0; i < (long)task.getResult().get("size_list"); i++){
+                                wl.add(task.getResult().get("product_id_"+i).toString());
+                                firebaseFirestore.collection("PRODUCTS").document(task.getResult().get("product_id_"+i).toString()).get()
+                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if(task.isSuccessful()){
+                                                    wishlistModelList.add(new WishlistModel(task.getResult().get("product_id").toString(),
+                                                            task.getResult().get("product_image_1").toString(),
+                                                            1,
+                                                            Long.parseLong(task.getResult().get("total_rating").toString()),
+                                                            task.getResult().get("product_title").toString(),
+                                                            task.getResult().get("avg_rating").toString(),
+                                                            task.getResult().get("product_price").toString(),
+                                                            task.getResult().get("product_discount_price").toString()));
+                                                    wishlistAdapter.notifyDataSetChanged();
+                                                }
+
+                                                else{
+                                                    ;
+                                                }
+                                            }
+                                        });
+                            }
+                        }
+                        else{
+                            ;
+                        }
+                    }
+                });
     }
 
     public static void loadWishList(){
@@ -131,7 +169,8 @@ public class WishFragment extends Fragment {
                                                 if(task.isSuccessful()){
                                                     Log.d("dbg", task.getResult().get("product_title").toString());
 
-                                                    wishlistModelList.add(new WishlistModel(task.getResult().get("product_image_1").toString(),
+                                                    wishlistModelList.add(new WishlistModel(task.getResult().get("product_id").toString(),
+                                                            task.getResult().get("product_image_1").toString(),
                                                             1,
                                                             Long.parseLong(task.getResult().get("total_rating").toString()),
                                                             task.getResult().get("product_title").toString(),

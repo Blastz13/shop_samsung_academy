@@ -37,6 +37,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull WishlistAdapter.ViewHolder holder, int position) {
+        String productId = wishlistModelList.get(position).getProductId();
         String resource = wishlistModelList.get(position).getProductImage();
         String title = wishlistModelList.get(position).getProductTitle();
         long freeCoupon = wishlistModelList.get(position).getFreeCoupons();
@@ -44,7 +45,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
         long totalRating = wishlistModelList.get(position).getTotalRating();
         String productPrice = wishlistModelList.get(position).getProductPrice();
         String discountPrice = wishlistModelList.get(position).getProductDiscountPrice();
-        holder.setData(resource, title, freeCoupon, rating, totalRating, productPrice, discountPrice);
+        holder.setData(productId, resource, title, freeCoupon, rating, totalRating, productPrice, discountPrice);
     }
 
     @Override
@@ -81,7 +82,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
             removeButton = itemView.findViewById(R.id.remove_product_wishlist);
         }
 
-        private void setData(String resource, String title, long freeCouponsNumber, String averageRate, long totalRatingsNumber, String price, String discountPrice){
+        private void setData(String productId, String resource, String title, long freeCouponsNumber, String averageRate, long totalRatingsNumber, String price, String discountPrice){
             Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.ic_home)).into(productImage);
             productTitle.setText(title);
             if (freeCouponsNumber != 0){
@@ -118,6 +119,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
                 @Override
                 public void onClick(View v) {
                     Intent productDetailIntent = new Intent(itemView.getContext(), ProductDetailActivity.class);
+                    productDetailIntent.putExtra("product_id", productId);
                     itemView.getContext().startActivity(productDetailIntent);
                 }
             });

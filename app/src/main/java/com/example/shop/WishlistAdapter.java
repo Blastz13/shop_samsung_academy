@@ -112,7 +112,8 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
             removeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    int index = WishFragment.wl.indexOf(productId);
+                    WishFragment.removeWishList(index);
                 }
             });
             itemView.setOnClickListener(new View.OnClickListener() {

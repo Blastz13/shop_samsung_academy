@@ -2,18 +2,28 @@ package com.example.shop;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.internal.RecaptchaActivity;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +36,7 @@ public class WishFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -63,6 +74,11 @@ public class WishFragment extends Fragment {
     }
 
     private RecyclerView wishlistRecyclerView;
+    private static FirebaseFirestore firebaseFirestore;
+    public static List<String> wl = new ArrayList<>();
+    public static List<WishlistModel> wlm = new ArrayList<>();
+    public static List<WishlistModel> wishlistModelList = new ArrayList<>();
+    public static WishlistAdapter wishlistAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,7 +91,7 @@ public class WishFragment extends Fragment {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         wishlistRecyclerView.setLayoutManager(linearLayoutManager);
 
-        List<WishlistModel> wishlistModelList = new ArrayList<>();
+//        wishlistModelList = new ArrayList<>();
 //        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 0, 5, "Macbook", "22", "90$", "88$", "no"));
 //        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 2, 5, "Macbook", "22", "90$", "88$", "no"));
 //        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 1, 5, "Macbook", "22", "90$", "88$", "no"));
@@ -83,9 +99,83 @@ public class WishFragment extends Fragment {
 //        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 4, 5, "Macbook", "22", "90$", "88$", "no"));
 //        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 4, 5, "Macbook", "22", "90$", "88$", "no"));
 //        wishlistModelList.add(new WishlistModel(R.drawable.product_item_1, 4, 5, "Macbook", "22", "90$", "88$", "no"));
-        WishlistAdapter wishlistAdapter = new WishlistAdapter(wishlistModelList, true);
+        loadWishList();
+        wishlistAdapter = new WishlistAdapter(wishlistModelList, true);
         wishlistRecyclerView.setAdapter(wishlistAdapter);
         wishlistAdapter.notifyDataSetChanged();
         return view;
+    }
+
+    public static void loadWishList(){
+        Log.d("dbg", FirebaseAuth.getInstance().getUid());
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        String f = FirebaseAuth.getInstance().getUid();
+        Log.d("dbg", f);
+        firebaseFirestore.collection("USERS").document(f).collection("USER_DATA").document("WISHLIST").get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        Log.d("dbg", "OK");
+                        if(task.isSuccessful()){
+                            for(int i=0; i < (long)task.getResult().get("size_list"); i++){
+                                wl.add(task.getResult().get("product_id_"+i).toString());
+                                Log.d("dbg", task.getResult().get("product_id_"+i).toString());
+                                Log.d("dbg", task.getResult().get("product_id_"+i).toString());
+                                Log.d("dbg", task.getResult().get("product_id_"+i).toString());
+                                Log.d("dbg", task.getResult().get("product_id_"+i).toString());
+                                Log.d("dbg", task.getResult().get("product_id_"+i).toString());
+                                firebaseFirestore.collection("PRODUCTS").document(task.getResult().get("product_id_"+i).toString()).get()
+                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if(task.isSuccessful()){
+                                                    Log.d("dbg", task.getResult().get("product_title").toString());
+
+                                                    wishlistModelList.add(new WishlistModel(task.getResult().get("product_image_1").toString(),
+                                                            1,
+                                                            Long.parseLong(task.getResult().get("total_rating").toString()),
+                                                            task.getResult().get("product_title").toString(),
+                                                            task.getResult().get("avg_rating").toString(),
+                                                            task.getResult().get("product_price").toString(),
+                                                            task.getResult().get("product_discount_price").toString()));
+                                                }
+                                                else{
+                                                    ;
+                                                }
+                                            }
+                                        });
+                            }
+                        }
+                        else{
+                            ;
+                        }
+                    }
+                });
+    }
+
+    public static void removeWishList(int index){
+        wl.remove(index);
+
+        Map<String, Object> updateWishList = new HashMap<>();
+        for (int i=0; i < wl.size(); i++){
+            updateWishList.put("product_id_"+i, wl.get(i));
+        }
+        updateWishList.put("size_list", (long)wl.size());
+
+        firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("WISHLIST").set(updateWishList)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            if(wishlistModelList.size() != 0){
+                                wishlistModelList.remove(index);
+                                WishFragment.wishlistAdapter.notifyDataSetChanged();
+                            }
+                        }
+                        else{
+                            ;
+                        }
+                    }
+                });
     }
 }

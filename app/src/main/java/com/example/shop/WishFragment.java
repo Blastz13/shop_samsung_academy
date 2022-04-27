@@ -101,6 +101,8 @@ public class WishFragment extends Fragment {
         return view;
     }
 
+//    TODO: Code review
+
     public static void load(){
         for(int i=0; i < wishlistModelList.size(); i++){
             wishlistModelList.remove(i);
@@ -153,8 +155,8 @@ public class WishFragment extends Fragment {
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        Log.d("dbg", "OK");
                         if(task.isSuccessful()){
+                            Log.d("dbg", task.getResult().toString());
                             for(int i=0; i < (long)task.getResult().get("size_list"); i++){
                                 wl.add(task.getResult().get("product_id_"+i).toString());
                                 Log.d("dbg", task.getResult().get("product_id_"+i).toString());

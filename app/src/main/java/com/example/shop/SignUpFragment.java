@@ -28,10 +28,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -259,9 +262,51 @@ public class SignUpFragment extends Fragment {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()){
+                                        CollectionReference userDataReference = firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA");
+
+                                        Map<String, Object> wishListMap = new HashMap<>();
+                                        wishListMap.put("size_list", 0);
+
+                                        Map<String, Object> ratingMap = new HashMap<>();
+                                        ratingMap.put("size_list", 0);
+
+                                        List<String> documentNames = new ArrayList<>();
+                                        documentNames.add("WISHLIST");
+                                        documentNames.add("RATINGS");
+
+                                        List<Map<String, Object>> documentFields = new ArrayList<>();
+                                        documentFields.add(wishListMap);
+                                        documentFields.add(ratingMap);
+
+                                        for(int i=0; i < documentNames.size(); i++){
+                                            int finalI = i;
+                                            userDataReference.document(documentNames.get(i)).set(documentFields.get(i)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()){
+                                                        if(finalI == documentNames.size() - 1) {
+                                                            startActivity(new Intent(getActivity(), MainActivity.class));
+                                                            getActivity().finish();
+                                                        }
+                                                    }
+                                                    else{
+                                                        progressBar.setVisibility(View.INVISIBLE);
+
+                                                        signUpBtn.setEnabled(true);
+                                                        signUpBtn.setTextColor(Color.rgb(255,255,255));
+
+                                                        Toast.makeText(getActivity(), task.getException().getMessage(),
+                                                                Toast.LENGTH_LONG).show();
+                                                    }
+                                                }
+                                            });
+                                        }
+
                                         Map<String, Object> sizeList = new HashMap<>();
                                         sizeList.put("size_list", (long)0);
-                                        firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("WISHLIST").set(sizeList).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                                        firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("WISHLIST")
+                                                .set(sizeList).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()){

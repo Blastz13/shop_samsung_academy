@@ -39,10 +39,10 @@ public class DeliveryActivity extends AppCompatActivity {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         deliveryItemsRecyclerView.setLayoutManager(layoutManager);
         List<CartItemModel> cartItemModelList = new ArrayList<>();
-        cartItemModelList.add(new CartItemModel(0, R.drawable.product_item, "NoteBook", 2, "500$", "200$", 1,0,0));
-        cartItemModelList.add(new CartItemModel(0, R.drawable.product_item_1, "NoteBook", 2, "500$", "200$", 1,1,0));
-        cartItemModelList.add(new CartItemModel(0, R.drawable.product_item, "NoteBook", 2, "500$", "200$", 1,1,0));
-        cartItemModelList.add(new CartItemModel(0, R.drawable.product_item_1, "NoteBook", 2, "500$", "200$", 1,1,0));
+//        cartItemModelList.add(new CartItemModel(0, R.drawable.product_item, "NoteBook", 2, "500$", "200$", 1,0,0));
+//        cartItemModelList.add(new CartItemModel(0, R.drawable.product_item_1, "NoteBook", 2, "500$", "200$", 1,1,0));
+//        cartItemModelList.add(new CartItemModel(0, R.drawable.product_item, "NoteBook", 2, "500$", "200$", 1,1,0));
+//        cartItemModelList.add(new CartItemModel(0, R.drawable.product_item_1, "NoteBook", 2, "500$", "200$", 1,1,0));
         cartItemModelList.add(new CartItemModel(1, "Price", "10000$", "Free", "10000$", "You saved 10$"));
 
         CartAdapter cartAdapter = new CartAdapter(cartItemModelList);

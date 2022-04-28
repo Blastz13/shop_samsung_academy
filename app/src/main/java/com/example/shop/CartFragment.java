@@ -65,6 +65,7 @@ public class CartFragment extends Fragment {
 
     private RecyclerView cartItemsRecyclerView;
     private Button continueButton;
+    public static CartAdapter cartAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,14 +79,16 @@ public class CartFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         cartItemsRecyclerView.setLayoutManager(layoutManager);
-        List<CartItemModel> cartItemModelList = new ArrayList<>();
-        cartItemModelList.add(new CartItemModel(0, R.drawable.product_item, "NoteBook", 2, "500$", "200$", 1,0,0));
-        cartItemModelList.add(new CartItemModel(0, R.drawable.product_item_1, "NoteBook", 2, "500$", "200$", 1,1,0));
-        cartItemModelList.add(new CartItemModel(0, R.drawable.product_item, "NoteBook", 2, "500$", "200$", 1,1,0));
-        cartItemModelList.add(new CartItemModel(0, R.drawable.product_item_1, "NoteBook", 2, "500$", "200$", 1,1,0));
-        cartItemModelList.add(new CartItemModel(1, "Price", "10000$", "Free", "10000$", "You saved 10$"));
 
-        CartAdapter cartAdapter = new CartAdapter(cartItemModelList);
+        if(Cart.cartItemModelList.size() == 0){
+            Cart.cartList.clear();
+            Cart.loadCart(true);
+        }
+
+//        List<CartItemModel> cartItemModelList = new ArrayList<>();
+//        cartItemModelList.add(new CartItemModel(1, "Price", "10000$", "Free", "10000$", "You saved 10$"));
+
+        cartAdapter = new CartAdapter(Cart.cartItemModelList);
         cartItemsRecyclerView.setAdapter(cartAdapter);
         cartAdapter.notifyDataSetChanged();
 

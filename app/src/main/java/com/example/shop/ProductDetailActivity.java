@@ -45,12 +45,14 @@ import java.util.Map;
 public class ProductDetailActivity extends AppCompatActivity {
 
     public static boolean is_rating_query = false;
+    public static boolean is_cart_query = false;
 
     private ViewPager productImagesViewPager;
     private TabLayout viewPagerIndicator;
     private DocumentSnapshot documentSnapshot;
     private FloatingActionButton addToWishListBtn;
     private static boolean isAddedToWishList = false;
+    public static boolean isAddedToCart = false;
     private ViewPager productDetailViewPager;
     private TabLayout productDetailTabLayout;
     public static LinearLayout rateNowLayoutContainer;
@@ -77,6 +79,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private ProgressBar progressBarMark5;
     private FirebaseUser currentUser;
     private LinearLayout ratingNumbersContainer;
+    private LinearLayout addToCartBtn;
     public static String productId;
     public static DocumentSnapshot tempDocumentSnapshot;
 
@@ -115,6 +118,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         progressBarMark4 = findViewById(R.id.progressBar_mark_4);
         progressBarMark5 = findViewById(R.id.progressBar_mark_5);
         averageRating = findViewById(R.id.average_rating);
+        addToCartBtn = findViewById(R.id.add_to_cart_btn);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         InitRating = -1;
@@ -166,11 +170,22 @@ public class ProductDetailActivity extends AppCompatActivity {
                                     if(Rating.Rating.size() == 0){
                                         Rating.loadRating();
                                     }
+                                    if(Cart.cartList.size() == 0){
+                                        Cart.loadCart(false);
+                                    }
                                     if(Rating.RatedId.contains(productId)){
                                         int index = Rating.RatedId.indexOf(productId);
                                         InitRating = Integer.parseInt(String.valueOf(Rating.Rating.get(index))) - 1;
                                         setRating(InitRating);
                                     }
+
+                                    if(Cart.cartList.contains(getIntent().getStringExtra("product_id"))){
+                                        isAddedToCart = true;
+                                    }
+                                    else{
+                                        isAddedToCart = false;
+                                    }
+
                                     if(WishFragment.wl.contains(getIntent().getStringExtra("product_id"))){
                                         isAddedToWishList = true;
                                         addToWishListBtn.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.red)));
@@ -190,6 +205,52 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         productImagesViewPager.setAdapter(productImagesAdapter);
         viewPagerIndicator.setupWithViewPager(productImagesViewPager, true);
+
+        addToCartBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!is_cart_query){
+                    is_cart_query = true;
+                    if(isAddedToCart){
+                        is_cart_query = false;
+                    }
+                    else{
+                        Map<String, Object> addProduct = new HashMap<>();
+                        addProduct.put("product_id_" + String.valueOf(Cart.cartList.size()), productId);
+                        addProduct.put("size_list", Long.parseLong(String.valueOf(Cart.cartList.size()))+1);
+
+                        firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid())
+                                .collection("USER_DATA").document("CART")
+                                .update(addProduct).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
+                                    if(Cart.cartItemModelList.size() != 0){
+                                        Cart.cartItemModelList.add(new CartItemModel(CartItemModel.CART_ITEM,
+                                                productId,
+                                                tempDocumentSnapshot.get("product_image_1").toString(),
+                                                tempDocumentSnapshot.get("product_title").toString(),
+                                                (long)1,
+                                                tempDocumentSnapshot.get("product_price").toString(),
+                                                tempDocumentSnapshot.get("product_discount_price").toString(),
+                                                (long)1,
+                                                (long)1,
+                                                (long)1));
+                                    }
+                                    isAddedToCart = true;
+                                    Cart.cartList.add(productId);
+                                    is_cart_query = false;
+
+                                }
+                                else{
+                                    is_cart_query = false;
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
 
         addToWishListBtn.setOnClickListener(new View.OnClickListener() {
             @Override

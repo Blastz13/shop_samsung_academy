@@ -39,6 +39,9 @@ public class Cart {
                         cartItemModelList.remove(index);
                         CartFragment.cartAdapter.notifyDataSetChanged();
                     }
+                    if (cartList.size() == 0){
+                        cartItemModelList.clear();
+                    }
                 }
                 else {
                     cartList.add(index, removeProductId);
@@ -74,7 +77,11 @@ public class Cart {
                                         @Override
                                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                             if(task.isSuccessful()){
-                                                cartItemModelList.add(new CartItemModel(CartItemModel.CART_ITEM,
+                                                int index = 0;
+                                                if(cartList.size() >= 2){
+                                                    index = cartList.size()-2;
+                                                }
+                                                cartItemModelList.add(index, new CartItemModel(CartItemModel.CART_ITEM,
                                                         productId,
                                                         task.getResult().get("product_image_1").toString(),
                                                         task.getResult().get("product_title").toString(),
@@ -84,6 +91,10 @@ public class Cart {
                                                         (long)1,
                                                         (long)1,
                                                         (long)1));
+
+                                                if(cartList.size() == 0){
+                                                    cartItemModelList.clear();
+                                                }
                                                 CartFragment.cartAdapter.notifyDataSetChanged();
                                             }
                                             else{
@@ -95,8 +106,9 @@ public class Cart {
                                 else{
                                     ;
                                 }
-
-
+                            }
+                            if (cartList.size() >= 1){
+                                cartItemModelList.add(new CartItemModel(CartItemModel.TOTAL_AMOUNT));
                             }
                         }
                         else{

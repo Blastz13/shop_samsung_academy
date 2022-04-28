@@ -76,6 +76,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private ProgressBar progressBarMark4;
     private ProgressBar progressBarMark5;
     private FirebaseUser currentUser;
+    private LinearLayout ratingNumbersContainer;
     public static String productId;
     public static DocumentSnapshot tempDocumentSnapshot;
 
@@ -101,6 +102,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         productPrice = findViewById(R.id.product_price);
         productDiscountPrice = findViewById(R.id.product_discount_price);
         productAvailable = findViewById(R.id.product_available);
+        ratingNumbersContainer = findViewById(R.id.rating_numbers_container);
         productRatingMark1 = findViewById(R.id.product_rating_mark_1);
         productRatingMark2 = findViewById(R.id.product_rating_mark_2);
         productRatingMark3 = findViewById(R.id.product_rating_mark_3);
@@ -274,45 +276,73 @@ public class ProductDetailActivity extends AppCompatActivity {
                     if (!is_rating_query) {
                         is_rating_query = true;
                         setRating(starPosition);
+                        Map<String, Object> updateRatingProducts = new HashMap<>();
                         if (Rating.RatedId.contains(productId)) {
-
+                            Log.d("dbg", "Contains");
+                            Log.d("dbg", String.valueOf(InitRating));
+                            TextView[] mas = {productRatingMark1, productRatingMark2, productRatingMark3, productRatingMark4 ,productRatingMark5};
+                            updateRatingProducts.put("mark_" + (InitRating + 1), Long.parseLong(mas[InitRating].getText().toString())-1);
+                            updateRatingProducts.put("mark_" + (starPosition + 1),  Long.parseLong(mas[starPosition].getText().toString())+1);
+                            updateRatingProducts.put("avg_rating", String.valueOf(calculateAvgRating()));
                         } else {
+                            Log.d("dbg", "No_Contains");
+                            updateRatingProducts.put("mark_" + (starPosition + 1), Long.parseLong(String.valueOf(Integer.parseInt(tempDocumentSnapshot.get("mark_" + (starPosition + 1)).toString()) + 1)));
+                            updateRatingProducts.put("avg_rating", String.valueOf(calculateAvgRating()));
+                            updateRatingProducts.put("total_rating", Long.parseLong(tempDocumentSnapshot.get("total_rating").toString()) + 1);
+                            InitRating = starPosition;
+                        }
 
-                            Map<String, Object> ratingProducts = new HashMap<>();
-                            ratingProducts.put("mark_" + (starPosition + 1), Long.parseLong(String.valueOf(Integer.parseInt(tempDocumentSnapshot.get("mark_" + (starPosition+1)).toString()) + 1)));
-                            ratingProducts.put("avg_rating", calculateAvgRating(starPosition + 1));
-                            ratingProducts.put("total_rating", Long.parseLong(tempDocumentSnapshot.get("total_rating").toString()) + 1);
 
-                            firebaseFirestore.collection("PRODUCTS").document(productId).update(ratingProducts).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            firebaseFirestore.collection("PRODUCTS").document(productId).update(updateRatingProducts).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        Map<String, Object> rating = new HashMap<>();
-                                        rating.put("size_list", (long)Rating.RatedId.size()+1);
-                                        rating.put("product_id_" + Rating.RatedId.size(), productId);
-                                        rating.put("rating_" + Rating.RatedId.size(), (long) starPosition + 1);
-                                        Log.d("dbg", "?????");
+                                        Map<String, Object> tempRating = new HashMap<>();
+
+                                        if (Rating.RatedId.contains(productId)) {
+                                            tempRating.put("rating_"+Rating.RatedId.indexOf(productId), (long)starPosition+1);
+                                        }
+                                        else{
+                                            tempRating.put("size_list", (long)Rating.RatedId.size()+1);
+                                            tempRating.put("product_id_" + Rating.RatedId.size(), productId);
+                                            tempRating.put("rating_" + Rating.RatedId.size(), (long) starPosition + 1);
+                                            Log.d("dbg", "?????");
+                                        }
+
                                         firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid())
                                                 .collection("USER_DATA").document("RATINGS")
-                                                .update(rating).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                .update(tempRating).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
-                                                    Rating.RatedId.add(productId);
-                                                    Rating.Rating.add((long)starPosition+1);
+                                                    TextView[] mas = {productRatingMark1, productRatingMark2, productRatingMark3, productRatingMark4 ,productRatingMark5};
 
+                                                    if (Rating.RatedId.contains(productId)) {
+                                                        Rating.Rating.set(Rating.RatedId.indexOf(productId), (long)starPosition+1);
+                                                        mas[starPosition].setText(String.valueOf(Integer.parseInt(mas[starPosition].getText().toString())+1));
+                                                        mas[InitRating].setText(String.valueOf(Integer.parseInt(mas[InitRating].getText().toString())-1));
+
+                                                        TextView oldRating = (TextView) ratingNumbersContainer.getChildAt(5-InitRating - 1);
+                                                        TextView newRating = (TextView) ratingNumbersContainer.getChildAt(5-InitRating - 1);
+                                                        oldRating.setText(String.valueOf(Integer.parseInt(oldRating.getText().toString())-1));
+                                                        newRating.setText(String.valueOf(Integer.parseInt(newRating.getText().toString())+1));
+                                                    }
+                                                    else {
+
+
+                                                        Rating.RatedId.add(productId);
+                                                        Rating.Rating.add((long) starPosition + 1);
+                                                        mas[starPosition].setText(String.valueOf(Integer.parseInt(mas[starPosition].getText().toString())+1));
 //                                                    productRatingMark1.setText(documentSnapshot.get("mark_1").toString());
 //                                                    productRatingMark2.setText(documentSnapshot.get("mark_2").toString());
 //                                                    productRatingMark3.setText(documentSnapshot.get("mark_3").toString());
 //                                                    productRatingMark4.setText(documentSnapshot.get("mark_4").toString());
 //                                                    productRatingMark5.setText(documentSnapshot.get("mark_5").toString());
 
-                                                    productTotalRating.setText(String.valueOf(Long.parseLong(tempDocumentSnapshot.get("total_rating").toString())+1));
-                                                    totalRatingFigure.setText(String.valueOf(Long.parseLong(tempDocumentSnapshot.get("total_rating").toString())+1));
-                                                    totalRatingFigure.setText(String.valueOf(Long.parseLong(tempDocumentSnapshot.get("total_rating").toString())+1));
+                                                        productTotalRating.setText(String.valueOf(Long.parseLong(tempDocumentSnapshot.get("total_rating").toString()) + 1));
+                                                        totalRatingFigure.setText(String.valueOf(Long.parseLong(tempDocumentSnapshot.get("total_rating").toString()) + 1));
+                                                        totalRatingFigure.setText(String.valueOf(Long.parseLong(tempDocumentSnapshot.get("total_rating").toString()) + 1));
 
-                                                    averageRating.setText(String.valueOf(calculateAvgRating(starPosition+1)));
-                                                    productRatingPreview.setText(String.valueOf(calculateAvgRating(starPosition+1)));
 
 //                                                    progressBarMark1.setMax(Integer.parseInt(documentSnapshot.get("total_rating").toString()));
 //                                                    progressBarMark1.setProgress(Integer.parseInt(documentSnapshot.get("mark_1").toString()));
@@ -324,7 +354,10 @@ public class ProductDetailActivity extends AppCompatActivity {
 //                                                    progressBarMark4.setProgress(Integer.parseInt(documentSnapshot.get("mark_4").toString()));
 //                                                    progressBarMark5.setMax(Integer.parseInt(documentSnapshot.get("total_rating").toString()));
 //                                                    progressBarMark5.setProgress(Integer.parseInt(documentSnapshot.get("mark_5").toString()));
-
+                                                    }
+                                                    InitRating = starPosition;
+                                                    averageRating.setText(String.valueOf(calculateAvgRating()));
+                                                    productRatingPreview.setText(String.valueOf(calculateAvgRating()));
                                                 } else {
                                                     setRating(InitRating);
                                                 }
@@ -337,7 +370,6 @@ public class ProductDetailActivity extends AppCompatActivity {
                                     }
                                 }
                             });
-                        }
                     }
                 }
             });
@@ -356,13 +388,28 @@ public class ProductDetailActivity extends AppCompatActivity {
         }
     }
 
-    private long calculateAvgRating(long currentRatingUser){
+    private float calculateAvgRating(){
         long totalStars = 0;
+        TextView[] mas = {productRatingMark1, productRatingMark2, productRatingMark3, productRatingMark4 ,productRatingMark5};
         for(int i=1; i < 6; i++){
-            totalStars += Long.parseLong(tempDocumentSnapshot.get("mark_"+i).toString())*i;
+            totalStars += (Long.parseLong(mas[i-1].getText().toString()))*i;
         }
-        totalStars += currentRatingUser;
-        return totalStars/(Long.parseLong(tempDocumentSnapshot.get("total_rating").toString())+1);
+        Long total_count = Long.parseLong(productTotalRating.getText().toString());
+        if (total_count == 0){
+            total_count+=1;
+        }
+        Map<String, Object> tempRating = new HashMap<>();
+        tempRating.put("avg_rating", totalStars/total_count);
+        firebaseFirestore.collection("PRODUCTS").document(productId).update(tempRating).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    ;
+                }
+            }
+        });
+
+        return totalStars/total_count;
     }
 
     @Override

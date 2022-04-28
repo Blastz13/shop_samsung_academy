@@ -19,29 +19,34 @@ public class Rating {
     public static List<Long> Rating = new ArrayList<>();
 
     public static void loadRating(){
-        RatedId.clear();
-        Rating.clear();
-        firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid())
-                .collection("USER_DATA").document("RATINGS")
-                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()){
-                    Log.d("dbg", "rating");
-                    for(long i=0; i < (long)task.getResult().get("size_list"); i++){
-                        RatedId.add(task.getResult().get("product_id_"+ i).toString());
-                        Rating.add(Long.parseLong(task.getResult().get("rating_"+ i).toString()));
+        if(!ProductDetailActivity.is_rating_query) {
+            ProductDetailActivity.is_rating_query = true;
+            RatedId.clear();
+            Rating.clear();
+            firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid())
+                    .collection("USER_DATA").document("RATINGS")
+                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        Log.d("dbg", "rating");
+                        for (long i = 0; i < (long) task.getResult().get("size_list"); i++) {
+                            RatedId.add(task.getResult().get("product_id_" + i).toString());
+                            Rating.add(Long.parseLong(task.getResult().get("rating_" + i).toString()));
 
-                        if(task.getResult().get("product_id_"+ i).toString().equals(ProductDetailActivity.productId) && ProductDetailActivity.rateNowLayoutContainer != null){
-                            ProductDetailActivity.InitRating = Integer.parseInt(task.getResult().get("rating_"+ i).toString())-1;
-                            ProductDetailActivity.setRating(ProductDetailActivity.InitRating);
+                            if (task.getResult().get("product_id_" + i).toString().equals(ProductDetailActivity.productId)) {
+                                ProductDetailActivity.InitRating = Integer.parseInt(task.getResult().get("rating_" + i).toString()) - 1;
+                                if (ProductDetailActivity.rateNowLayoutContainer != null) {
+                                    ProductDetailActivity.setRating(ProductDetailActivity.InitRating);
+                                }
+                            }
                         }
+                    } else {
+                        ;
                     }
+                    ProductDetailActivity.is_rating_query = false;
                 }
-                else{
-;
-                }
-            }
-        });
+            });
+        }
     }
 }

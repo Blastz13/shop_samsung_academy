@@ -3,7 +3,10 @@ package com.example.shop;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +20,7 @@ import java.util.List;
 public class CartAdapter extends RecyclerView.Adapter {
 
     private List<CartItemModel> cartItemModelList;
+    private int lastPosition = -1;
 
     public CartAdapter(List<CartItemModel> cartItemModelList) {
         this.cartItemModelList = cartItemModelList;
@@ -61,7 +65,7 @@ public class CartAdapter extends RecyclerView.Adapter {
                 String discountPrice = cartItemModelList.get(position).getDiscountPrice();
                 Long offersApplied = cartItemModelList.get(position).getOffersApplied();
 
-                ((CartItemViewholder)holder).setItemDetails(productId, resource, title, freeCoupons, productPrice, discountPrice, offersApplied);
+                ((CartItemViewholder)holder).setItemDetails(productId, resource, title, freeCoupons, productPrice, discountPrice, offersApplied, position);
                 break;
             case CartItemModel.TOTAL_AMOUNT:
                 String totalItems = cartItemModelList.get(position).getTotalItems();
@@ -75,6 +79,11 @@ public class CartAdapter extends RecyclerView.Adapter {
             default:
                 return;
 
+        }
+        if(lastPosition < position){
+            Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.nav_default_exit_anim);
+            holder.itemView.setAnimation(animation);
+            lastPosition = position;
         }
     }
 
@@ -93,6 +102,7 @@ public class CartAdapter extends RecyclerView.Adapter {
         private TextView offersApplied;
         private TextView couponsApplied;
         private TextView productQuantity;
+        private LinearLayout removeBtn;
 
         public CartItemViewholder(@NonNull View itemView) {
             super(itemView);
@@ -105,9 +115,10 @@ public class CartAdapter extends RecyclerView.Adapter {
             offersApplied = itemView.findViewById(R.id.offers_applied);
             couponsApplied = itemView.findViewById(R.id.coupon_applied_cart);
             productQuantity = itemView.findViewById(R.id.product_quantity_cart);
+            removeBtn = itemView.findViewById(R.id.remove_item_cart_btn);
         }
 
-        private void setItemDetails(String productId, String resource, String title, Long countFreeCoupons, String productPriceText, String discountProductPriceText, Long countOffersApplied){
+        private void setItemDetails(String productId, String resource, String title, Long countFreeCoupons, String productPriceText, String discountProductPriceText, Long countOffersApplied, int position){
             Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.ic_home)).into(productImage);
             productTitle.setText(title);
             if(countFreeCoupons > 0){
@@ -134,7 +145,15 @@ public class CartAdapter extends RecyclerView.Adapter {
             else{
                 offersApplied.setVisibility(View.INVISIBLE);
             }
-
+            removeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(!ProductDetailActivity.is_cart_query){
+                        ProductDetailActivity.is_cart_query = true;
+                        Cart.removeItemCart(position);
+                    }
+                }
+            });
 
         }
     }

@@ -316,6 +316,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
                                                     TextView[] mas = {productRatingMark1, productRatingMark2, productRatingMark3, productRatingMark4 ,productRatingMark5};
+                                                    ProgressBar[] prg = {progressBarMark1, progressBarMark2, progressBarMark3, progressBarMark4 ,progressBarMark5};
 
                                                     if (Rating.RatedId.contains(productId)) {
                                                         Rating.Rating.set(Rating.RatedId.indexOf(productId), (long)starPosition+1);
@@ -333,11 +334,6 @@ public class ProductDetailActivity extends AppCompatActivity {
                                                         Rating.RatedId.add(productId);
                                                         Rating.Rating.add((long) starPosition + 1);
                                                         mas[starPosition].setText(String.valueOf(Integer.parseInt(mas[starPosition].getText().toString())+1));
-//                                                    productRatingMark1.setText(documentSnapshot.get("mark_1").toString());
-//                                                    productRatingMark2.setText(documentSnapshot.get("mark_2").toString());
-//                                                    productRatingMark3.setText(documentSnapshot.get("mark_3").toString());
-//                                                    productRatingMark4.setText(documentSnapshot.get("mark_4").toString());
-//                                                    productRatingMark5.setText(documentSnapshot.get("mark_5").toString());
 
                                                         productTotalRating.setText(String.valueOf(Long.parseLong(tempDocumentSnapshot.get("total_rating").toString()) + 1));
                                                         totalRatingFigure.setText(String.valueOf(Long.parseLong(tempDocumentSnapshot.get("total_rating").toString()) + 1));
@@ -355,6 +351,11 @@ public class ProductDetailActivity extends AppCompatActivity {
 //                                                    progressBarMark5.setMax(Integer.parseInt(documentSnapshot.get("total_rating").toString()));
 //                                                    progressBarMark5.setProgress(Integer.parseInt(documentSnapshot.get("mark_5").toString()));
                                                     }
+                                                    for(int i=0; i <=4; i++){
+                                                        prg[i].setMax(Integer.parseInt(totalRatingFigure.getText().toString()));
+                                                        prg[i].setProgress(Integer.parseInt(mas[i].getText().toString()));
+                                                    }
+
                                                     InitRating = starPosition;
                                                     averageRating.setText(String.valueOf(calculateAvgRating()));
                                                     productRatingPreview.setText(String.valueOf(calculateAvgRating()));
@@ -389,17 +390,19 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
 
     private float calculateAvgRating(){
-        long totalStars = 0;
+        float totalStars = 0;
         TextView[] mas = {productRatingMark1, productRatingMark2, productRatingMark3, productRatingMark4 ,productRatingMark5};
         for(int i=1; i < 6; i++){
             totalStars += (Long.parseLong(mas[i-1].getText().toString()))*i;
         }
-        Long total_count = Long.parseLong(productTotalRating.getText().toString());
+        float total_count = Long.parseLong(productTotalRating.getText().toString());
         if (total_count == 0){
             total_count+=1;
         }
+        float avg_rating = totalStars/total_count;
+        avg_rating = (float) (Math.floor(avg_rating*10)/10.0);
         Map<String, Object> tempRating = new HashMap<>();
-        tempRating.put("avg_rating", totalStars/total_count);
+        tempRating.put("avg_rating", String.valueOf(avg_rating));
         firebaseFirestore.collection("PRODUCTS").document(productId).update(tempRating).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -409,7 +412,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
 
-        return totalStars/total_count;
+        return avg_rating;
     }
 
     @Override

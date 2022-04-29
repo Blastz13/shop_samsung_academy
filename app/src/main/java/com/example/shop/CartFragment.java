@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +66,7 @@ public class CartFragment extends Fragment {
 
     private RecyclerView cartItemsRecyclerView;
     private Button continueButton;
+    private TextView totalAmount;
     public static CartAdapter cartAdapter;
 
     @Override
@@ -75,6 +77,7 @@ public class CartFragment extends Fragment {
 
         cartItemsRecyclerView = view.findViewById(R.id.cart_items_recyclerview);
         continueButton = view.findViewById(R.id.cart_continue_btn);
+        totalAmount = view.findViewById(R.id.total_cart_amount);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -88,7 +91,7 @@ public class CartFragment extends Fragment {
 //        List<CartItemModel> cartItemModelList = new ArrayList<>();
 //        cartItemModelList.add(new CartItemModel(1, "Price", "10000$", "Free", "10000$", "You saved 10$"));
 
-        cartAdapter = new CartAdapter(Cart.cartItemModelList);
+        cartAdapter = new CartAdapter(Cart.cartItemModelList, totalAmount);
         cartItemsRecyclerView.setAdapter(cartAdapter);
         cartAdapter.notifyDataSetChanged();
 

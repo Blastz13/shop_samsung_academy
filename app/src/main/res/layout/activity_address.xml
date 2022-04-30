@@ -102,29 +102,29 @@
                     android:inputType="number" />
 
                 <EditText
-                    android:id="@+id/state_address"
+                    android:id="@+id/flat_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="4dp"
                     android:layout_weight="1"
-                    android:hint="State"
-                    android:textColor="@color/black"
-                    android:inputType="textPersonName" />
+                    android:hint="Flat"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <EditText
-                android:id="@+id/mark_address"
+                android:id="@+id/note_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="4dp"
                 android:layout_weight="1"
-                android:hint="Mark"
-                android:textColor="@color/black"
-                android:inputType="textPersonName" />
+                android:hint="Note"
+                android:inputType="textPersonName"
+                android:textColor="@color/black" />
 
             <EditText
                 android:id="@+id/name_address"

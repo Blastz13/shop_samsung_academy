@@ -21,6 +21,9 @@ public class DeliveryActivity extends AppCompatActivity {
     private RecyclerView deliveryItemsRecyclerView;
     private Button changeOrAddAddressButton;
     private TextView totalAmount;
+    private TextView name;
+    private TextView address;
+    private TextView index;
     public static final int SELECT_ADDRESS = 0;
 
     @Override
@@ -37,18 +40,21 @@ public class DeliveryActivity extends AppCompatActivity {
         deliveryItemsRecyclerView = findViewById(R.id.delivery_recyclerview);
         totalAmount = findViewById(R.id.total_cart_amount);
         changeOrAddAddressButton = findViewById(R.id.change_or_add_address_btn);
+        name = findViewById(R.id.fullname_order);
+        address = findViewById(R.id.address_detail);
+        index = findViewById(R.id.index_address_order);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         deliveryItemsRecyclerView.setLayoutManager(layoutManager);
-        List<CartItemModel> cartItemModelList = new ArrayList<>();
+//        List<CartItemModel> cartItemModelList = new ArrayList<>();
 //        cartItemModelList.add(new CartItemModel(0, R.drawable.product_item, "NoteBook", 2, "500$", "200$", 1,0,0));
 //        cartItemModelList.add(new CartItemModel(0, R.drawable.product_item_1, "NoteBook", 2, "500$", "200$", 1,1,0));
 //        cartItemModelList.add(new CartItemModel(0, R.drawable.product_item, "NoteBook", 2, "500$", "200$", 1,1,0));
 //        cartItemModelList.add(new CartItemModel(0, R.drawable.product_item_1, "NoteBook", 2, "500$", "200$", 1,1,0));
 //        cartItemModelList.add(new CartItemModel(1, "Price", "10000$", "Free", "10000$", "You saved 10$"));
 
-        CartAdapter cartAdapter = new CartAdapter(cartItemModelList, totalAmount);
+        CartAdapter cartAdapter = new CartAdapter(Cart.cartItemModelList, totalAmount, false);
         deliveryItemsRecyclerView.setAdapter(cartAdapter);
         cartAdapter.notifyDataSetChanged();
 
@@ -61,6 +67,18 @@ public class DeliveryActivity extends AppCompatActivity {
                 DeliveryActivity.this.startActivity(addressesIntent);
             }
         });
+
+        name.setText(Address.addressesModelList.get(Address.selectedAddress).getName());
+        address.setText(Address.addressesModelList.get(Address.selectedAddress).getAddress());
+        index.setText(Address.addressesModelList.get(Address.selectedAddress).getIndex());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        name.setText(Address.addressesModelList.get(Address.selectedAddress).getName());
+        address.setText(Address.addressesModelList.get(Address.selectedAddress).getAddress());
+        index.setText(Address.addressesModelList.get(Address.selectedAddress).getIndex());
     }
 
     @Override

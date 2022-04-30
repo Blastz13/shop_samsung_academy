@@ -9,19 +9,32 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MyAddressesActivity extends AppCompatActivity {
 
     private RecyclerView addressesRecyclerView;
     private Button deliveryButton;
     private static AddressesAdapter addressesAdapter;
+    private LinearLayout addAddressButton;
+    private int previousAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,17 +47,57 @@ public class MyAddressesActivity extends AppCompatActivity {
         toolbar.setTitle("My addresses");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        previousAddress = Address.selectedAddress;
         addressesRecyclerView = findViewById(R.id.addresses_recyclerview);
         deliveryButton = findViewById(R.id.dev_btn);
+        addAddressButton = findViewById(R.id.add_new_address_layout);
+
+        addAddressButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addAddressIntent = new Intent(MyAddressesActivity.this, AddressActivity.class);
+                addAddressIntent.putExtra("INTENT", "none");
+                startActivity(addAddressIntent);
+            }
+        });
+
+        deliveryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("dbg", String.valueOf(previousAddress+1));
+                Log.d("dbg", String.valueOf(Address.selectedAddress+1));
+                if(Address.selectedAddress != previousAddress){
+                    final int index = previousAddress;
+                    Map<String, Object> updateSelect = new HashMap<>();
+                    updateSelect.put("selected_"+ (previousAddress+1), false);
+                    updateSelect.put("selected_"+ (Address.selectedAddress+1), true);
+                    Log.d("dbg", String.valueOf(previousAddress+1));
+                    Log.d("dbg", String.valueOf(Address.selectedAddress+1));
+                    previousAddress = Address.selectedAddress;
+                    FirebaseFirestore.getInstance().collection("USERS")
+                            .document(FirebaseAuth.getInstance().getUid())
+                            .collection("USER_DATA").document("ADDRESSES")
+                            .update(updateSelect).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                finish();
+                            }
+                            else{
+                                previousAddress = index;
+                            }
+                        }
+                    });
+                }else {
+                    finish();
+                }
+            }
+        });
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         addressesRecyclerView.setLayoutManager(layoutManager);
 
-        List<AddressesModel> addressesModelList = new ArrayList<>();
-        addressesModelList.add(new AddressesModel("Petr", "New York h. 12", "324122", true));
-        addressesModelList.add(new AddressesModel("Petr", "New York h. 12", "324122", false));
-        addressesModelList.add(new AddressesModel("Petr", "New York h. 12", "324122", false));
 
         if( getIntent().getIntExtra("MODE", -1) == SELECT_ADDRESS){
             deliveryButton.setVisibility(View.VISIBLE);
@@ -53,7 +106,7 @@ public class MyAddressesActivity extends AppCompatActivity {
             deliveryButton.setVisibility(View.GONE);
         }
 
-        addressesAdapter = new AddressesAdapter(addressesModelList, getIntent().getIntExtra("MODE", -1));
+        addressesAdapter = new AddressesAdapter(Address.addressesModelList, getIntent().getIntExtra("MODE", -1));
         addressesRecyclerView.setAdapter(addressesAdapter);
         ((SimpleItemAnimator)addressesRecyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         addressesAdapter.notifyDataSetChanged();
@@ -67,9 +120,29 @@ public class MyAddressesActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == android.R.id.home){
+            if (Address.selectedAddress != previousAddress){
+                Address.addressesModelList.get(Address.selectedAddress).setIs_selected_address(false);
+                Address.addressesModelList.get(previousAddress).setIs_selected_address(true);
+                Address.selectedAddress = previousAddress;
+            }
             finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (Address.selectedAddress != previousAddress){
+            Address.addressesModelList.get(Address.selectedAddress).setIs_selected_address(false);
+            Address.addressesModelList.get(previousAddress).setIs_selected_address(true);
+            Address.selectedAddress = previousAddress;
+        }
+        super.onBackPressed();
     }
 }

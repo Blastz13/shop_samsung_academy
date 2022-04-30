@@ -91,15 +91,14 @@ public class CartFragment extends Fragment {
 //        List<CartItemModel> cartItemModelList = new ArrayList<>();
 //        cartItemModelList.add(new CartItemModel(1, "Price", "10000$", "Free", "10000$", "You saved 10$"));
 
-        cartAdapter = new CartAdapter(Cart.cartItemModelList, totalAmount);
+        cartAdapter = new CartAdapter(Cart.cartItemModelList, totalAmount, true);
         cartItemsRecyclerView.setAdapter(cartAdapter);
         cartAdapter.notifyDataSetChanged();
 
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent deliveryIntent = new Intent(getContext(), DeliveryActivity.class);
-                getContext().startActivity(deliveryIntent);
+                Address.loadAddress(getContext());
             }
         });
         return view;

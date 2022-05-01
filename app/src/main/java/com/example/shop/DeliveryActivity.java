@@ -3,13 +3,16 @@ package com.example.shop;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -26,6 +29,12 @@ public class DeliveryActivity extends AppCompatActivity {
     private TextView name;
     private TextView address;
     private TextView index;
+    private TextView continueShopping;
+    private TextView orderId;
+    private ConstraintLayout orderConfirmLayout;
+    private Dialog payment;
+    Button payment_visa;
+    Button payment_pp;
     public static final int SELECT_ADDRESS = 0;
 
     @Override
@@ -45,7 +54,55 @@ public class DeliveryActivity extends AppCompatActivity {
         name = findViewById(R.id.fullname_order);
         address = findViewById(R.id.address_detail);
         index = findViewById(R.id.index_address_order);
+        orderConfirmLayout = findViewById(R.id.order_confirm_layout);
+        continueShopping = findViewById(R.id.continue_shopping_btn);
+        orderId = findViewById(R.id.order_id);
 
+        payment = new Dialog(DeliveryActivity.this);
+        payment.setContentView(R.layout.payment);
+        payment.setCancelable(false);
+        payment.getWindow().setBackgroundDrawable(getDrawable(R.drawable.slider_background));
+        payment.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        continueButton = findViewById(R.id.cart_continue_btn);
+        continueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                payment.show();
+                payment_visa = payment.findViewById(R.id.payment_visa);
+                payment_pp = payment.findViewById(R.id.payment_pp);
+
+                payment_pp.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        payment.dismiss();
+                        orderConfirmLayout.setVisibility(View.VISIBLE);
+                        continueShopping.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                finish();
+                            }
+                        });
+                    }
+                });
+
+                payment_visa.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        payment.dismiss();
+                        orderConfirmLayout.setVisibility(View.VISIBLE);
+                        continueShopping.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                finish();
+                            }
+                        });
+
+                    }
+                });
+
+            }
+        });
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);

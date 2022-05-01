@@ -90,7 +90,8 @@ public class Cart {
                                                         task.getResult().get("product_discount_price").toString(),
                                                         (long)1,
                                                         (long)1,
-                                                        (long)1));
+                                                        (long)1,
+                                                        (boolean) task.getResult().get("in_stock")));
 
                                                 if(cartList.size() == 0){
                                                     cartItemModelList.clear();

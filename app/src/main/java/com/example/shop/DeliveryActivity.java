@@ -18,8 +18,10 @@ import java.util.List;
 
 public class DeliveryActivity extends AppCompatActivity {
 
+    public static List<CartItemModel> cartItemModelList;
     private RecyclerView deliveryItemsRecyclerView;
     private Button changeOrAddAddressButton;
+    private Button continueButton;
     private TextView totalAmount;
     private TextView name;
     private TextView address;
@@ -44,6 +46,7 @@ public class DeliveryActivity extends AppCompatActivity {
         address = findViewById(R.id.address_detail);
         index = findViewById(R.id.index_address_order);
 
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         deliveryItemsRecyclerView.setLayoutManager(layoutManager);
@@ -54,7 +57,7 @@ public class DeliveryActivity extends AppCompatActivity {
 //        cartItemModelList.add(new CartItemModel(0, R.drawable.product_item_1, "NoteBook", 2, "500$", "200$", 1,1,0));
 //        cartItemModelList.add(new CartItemModel(1, "Price", "10000$", "Free", "10000$", "You saved 10$"));
 
-        CartAdapter cartAdapter = new CartAdapter(Cart.cartItemModelList, totalAmount, false);
+        CartAdapter cartAdapter = new CartAdapter(cartItemModelList, totalAmount, false);
         deliveryItemsRecyclerView.setAdapter(cartAdapter);
         cartAdapter.notifyDataSetChanged();
 

@@ -86,6 +86,11 @@ public class CartFragment extends Fragment {
         if(Cart.cartItemModelList.size() == 0){
             Cart.cartList.clear();
             Cart.loadCart(true);
+        }else {
+            if(Cart.cartItemModelList.get(Cart.cartItemModelList.size()-1).getType() == CartItemModel.TOTAL_AMOUNT){
+                LinearLayout parent = (LinearLayout) totalAmount.getParent().getParent();
+                parent.setVisibility(View.VISIBLE);
+            }
         }
 
 //        List<CartItemModel> cartItemModelList = new ArrayList<>();
@@ -98,7 +103,21 @@ public class CartFragment extends Fragment {
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Address.loadAddress(getContext());
+                DeliveryActivity.cartItemModelList = new ArrayList<>();
+                for(int i=0; i<Cart.cartItemModelList.size(); i++){
+                    CartItemModel cartItemModel = Cart.cartItemModelList.get(i);
+                    if(cartItemModel.isInStock()){
+                        DeliveryActivity.cartItemModelList.add(cartItemModel);
+                    }
+                }
+                DeliveryActivity.cartItemModelList.add(new CartItemModel(CartItemModel.TOTAL_AMOUNT));
+                if(Address.addressesModelList.size()==0){
+                    Address.loadAddress(getContext());
+                }
+                else{
+                    Intent deliveryIntent = new Intent(getContext(), DeliveryActivity.class);
+                    startActivity(deliveryIntent);
+                }
             }
         });
         return view;

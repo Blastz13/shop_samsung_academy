@@ -11,7 +11,7 @@
         android:id="@+id/cart_items_recyclerview"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+        app:layout_constraintBottom_toTopOf="@+id/end_cart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,7 +20,7 @@
         android:background="@color/grey"/>
 
     <LinearLayout
-        android:id="@+id/linearLayout5"
+        android:id="@+id/end_cart"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:background="@color/white"
@@ -42,7 +42,7 @@
                 android:id="@+id/total_cart_amount"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="1200 $"
+                android:text="0 $"
                 android:gravity="center"
                 android:textColor="@color/black"
                 android:textSize="20sp"

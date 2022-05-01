@@ -1,5 +1,6 @@
 package com.example.shop;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,8 +69,9 @@ public class CartAdapter extends RecyclerView.Adapter {
                 String productPrice = cartItemModelList.get(position).getProductPrice();
                 String discountPrice = cartItemModelList.get(position).getDiscountPrice();
                 Long offersApplied = cartItemModelList.get(position).getOffersApplied();
+                boolean inStock = cartItemModelList.get(position).isInStock();
 
-                ((CartItemViewholder)holder).setItemDetails(productId, resource, title, freeCoupons, productPrice, discountPrice, offersApplied, position);
+                ((CartItemViewholder)holder).setItemDetails(productId, resource, title, freeCoupons, productPrice, discountPrice, offersApplied, position, inStock);
                 break;
             case CartItemModel.TOTAL_AMOUNT:
                 int totalItem = 0;
@@ -79,7 +81,7 @@ public class CartAdapter extends RecyclerView.Adapter {
                 int savedAmount = 0;
 
                 for(int i=0; i<cartItemModelList.size(); i++){
-                    if(cartItemModelList.get(i).getType() == CartItemModel.CART_ITEM){
+                    if(cartItemModelList.get(i).getType() == CartItemModel.CART_ITEM && cartItemModelList.get(i).isInStock()){
                         totalItem++;
                         totalItemPrice += Integer.parseInt(cartItemModelList.get(i).getProductPrice());
                     }
@@ -138,7 +140,7 @@ public class CartAdapter extends RecyclerView.Adapter {
             removeBtn = itemView.findViewById(R.id.remove_item_cart_btn);
         }
 
-        private void setItemDetails(String productId, String resource, String title, Long countFreeCoupons, String productPriceText, String discountProductPriceText, Long countOffersApplied, int position){
+        private void setItemDetails(String productId, String resource, String title, Long countFreeCoupons, String productPriceText, String discountProductPriceText, Long countOffersApplied, int position, boolean inStock){
             Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.ic_home)).into(productImage);
             productTitle.setText(title);
             if(countFreeCoupons > 0){
@@ -155,8 +157,16 @@ public class CartAdapter extends RecyclerView.Adapter {
                 freeCoupons.setVisibility(View.INVISIBLE);
                 freeCouponIcon.setVisibility(View.INVISIBLE);
             }
-            productPrice.setText(productPriceText);
-            discountPrice.setText(discountProductPriceText);
+
+            if (inStock) {
+                productPrice.setText(productPriceText + " $");
+                productPrice.setTextColor(itemView.getContext().getResources().getColor(R.color.black));
+                discountPrice.setText(discountProductPriceText + " $");
+            } else {
+                productPrice.setText("Out of Stock");
+                productPrice.setTextColor(itemView.getContext().getResources().getColor(R.color.grey));
+                discountPrice.setText("");
+            }
 
             if(countOffersApplied > 0){
                 offersApplied.setVisibility(View.VISIBLE);
@@ -214,6 +224,13 @@ public class CartAdapter extends RecyclerView.Adapter {
             totalAmount.setText(totalAmountText + " $");
             cartTotalAmount.setText(totalAmountText + " $");
             savedAmount.setText("You saved " + savedAmountText);
+            LinearLayout endCart = (LinearLayout) cartTotalAmount.getParent().getParent();
+            if (totalItemPriceText == 0){
+                Cart.cartItemModelList.remove(Cart.cartItemModelList.size()-1);
+                endCart.setVisibility(View.GONE);
+            }else{
+                endCart.setVisibility(View.VISIBLE);
+            }
         }
     }
 }

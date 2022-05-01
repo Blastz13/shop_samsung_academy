@@ -91,11 +91,15 @@ public class CartAdapter extends RecyclerView.Adapter {
                     finalTotalAmount = totalItemPrice;
                 }
                 else{
-                    deliveryPrice = "5$";
+                    deliveryPrice = "5";
                     finalTotalAmount = totalItemPrice + 5;
                 }
 //                int totalItems = Integer.parseInt(cartItemModelList.get(position).getTotalItems());
-
+                cartItemModelList.get(position).setTotalItems(String.valueOf(totalItem));
+                cartItemModelList.get(position).setTotalAmount(String.valueOf(totalItemPrice));
+                cartItemModelList.get(position).setDeliveryPrice(deliveryPrice);
+                cartItemModelList.get(position).setFinalTotalAmount(String.valueOf(finalTotalAmount));
+                cartItemModelList.get(position).setSavedAmount(String.valueOf(savedAmount));
                 ((CartTotalAmountViewholder)holder).setTotalAmount(totalItem, totalItemPrice, deliveryPrice, finalTotalAmount, savedAmount);
                 break;
             default:
@@ -143,6 +147,10 @@ public class CartAdapter extends RecyclerView.Adapter {
         private void setItemDetails(String productId, String resource, String title, Long countFreeCoupons, String productPriceText, String discountProductPriceText, Long countOffersApplied, int position, boolean inStock){
             Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.ic_home)).into(productImage);
             productTitle.setText(title);
+            Log.d("dbg", discountProductPriceText);
+            if (discountProductPriceText.equals("0")){
+                discountPrice.setVisibility(View.GONE);
+            }
             if(countFreeCoupons > 0){
                 freeCoupons.setVisibility(View.VISIBLE);
                 freeCouponIcon.setVisibility(View.VISIBLE);
@@ -219,7 +227,7 @@ public class CartAdapter extends RecyclerView.Adapter {
                 deliveryPrice.setText(deliveryPriceText);
             }
             else {
-                deliveryPrice.setText(deliveryPriceText + " $");
+                deliveryPrice.setText(deliveryPriceText);
             }
             totalAmount.setText(totalAmountText + " $");
             cartTotalAmount.setText(totalAmountText + " $");

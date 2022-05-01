@@ -10,14 +10,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class DeliveryActivity extends AppCompatActivity {
 
@@ -33,8 +43,10 @@ public class DeliveryActivity extends AppCompatActivity {
     private TextView orderId;
     private ConstraintLayout orderConfirmLayout;
     private Dialog payment;
+    private String orderID;
     Button payment_visa;
     Button payment_pp;
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     public static final int SELECT_ADDRESS = 0;
 
     @Override
@@ -64,6 +76,9 @@ public class DeliveryActivity extends AppCompatActivity {
         payment.getWindow().setBackgroundDrawable(getDrawable(R.drawable.slider_background));
         payment.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
+        orderID = UUID.randomUUID().toString();
+        orderId.setText("Order id: " + orderID);
+
         continueButton = findViewById(R.id.cart_continue_btn);
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,10 +92,14 @@ public class DeliveryActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         payment.dismiss();
                         orderConfirmLayout.setVisibility(View.VISIBLE);
+                        Log.d("dbg", "Create order");
+                        createOrder();
+                        Cart.confirmOrder();
                         continueShopping.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                finish();
+                                Intent registerIntent = new Intent(DeliveryActivity.this, MainActivity.class);
+                                startActivity(registerIntent);
                             }
                         });
                     }
@@ -91,10 +110,13 @@ public class DeliveryActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         payment.dismiss();
                         orderConfirmLayout.setVisibility(View.VISIBLE);
+                        createOrder();
+                        Cart.confirmOrder();
                         continueShopping.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                finish();
+                                Intent registerIntent = new Intent(DeliveryActivity.this, MainActivity.class);
+                                startActivity(registerIntent);
                             }
                         });
 
@@ -131,6 +153,76 @@ public class DeliveryActivity extends AppCompatActivity {
         name.setText(Address.addressesModelList.get(Address.selectedAddress).getName());
         address.setText(Address.addressesModelList.get(Address.selectedAddress).getAddress());
         index.setText(Address.addressesModelList.get(Address.selectedAddress).getIndex());
+    }
+
+    private void createOrder(){
+        Log.d("dbg", "!!Create order!!");
+        for(CartItemModel cartItemModel : cartItemModelList){
+            if(cartItemModel.getType() == CartItemModel.CART_ITEM){
+                Log.d("dbg", cartItemModel.getProductId());
+                Map<Object, Object> orderDetail = new HashMap<>();
+                orderDetail.put("order_id", orderID);
+                orderDetail.put("product_id", cartItemModel.getProductId());
+                orderDetail.put("user_id", FirebaseAuth.getInstance().getUid());
+                orderDetail.put("product_quantity", cartItemModel.getProductQuantity());
+                orderDetail.put("discount_price", cartItemModel.getDiscountPrice());
+                orderDetail.put("product_price", cartItemModel.getProductPrice());
+                orderDetail.put("ordered_date", FieldValue.serverTimestamp());
+                orderDetail.put("packed_date", FieldValue.serverTimestamp());
+                orderDetail.put("shipping_date", FieldValue.serverTimestamp());
+                orderDetail.put("delivered_date", FieldValue.serverTimestamp());
+                orderDetail.put("cancelled_date", FieldValue.serverTimestamp());
+                orderDetail.put("order_status", "Ordered");
+                orderDetail.put("address", address.getText().toString());
+                orderDetail.put("name", name.getText().toString());
+                orderDetail.put("index", index.getText().toString());
+
+                orderDetail.put("payment_status", "Paid");
+                orderDetail.put("ordered_status", "Ordered");
+
+                firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid())
+                        .collection("USER_ORDERS").document(orderID).collection("ORDER_ITEMS")
+                        .document(cartItemModel.getProductId())
+                        .set(orderDetail).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Log.d("dbg", "success");
+                        }
+                        else {
+                            Log.d("dbg", "error");
+
+                        }
+                    }
+                });
+
+            }else {
+                Map<Object, Object> orderDetail = new HashMap<>();
+                orderDetail.put("order_id", orderID);
+                orderDetail.put("user_id", FirebaseAuth.getInstance().getUid());
+                orderDetail.put("total_items", cartItemModel.getTotalItems());
+                orderDetail.put("total_items_price", cartItemModel.getTotalAmount());
+                orderDetail.put("delivery_price", cartItemModel.getDeliveryPrice());
+                orderDetail.put("final_total_amount", cartItemModel.getFinalTotalAmount());
+                orderDetail.put("saved_amount", cartItemModel.getSavedAmount());
+                orderDetail.put("payment_method", "Paid");
+                orderDetail.put("order_status", "Ordered");
+                firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid())
+                        .collection("USER_ORDERS").document(orderID)
+                        .set(orderDetail)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
+
+                                }
+                                else{
+
+                                }
+                            }
+                        });
+            }
+        }
     }
 
     @Override

@@ -125,4 +125,44 @@ public class CartItemModel {
     public void setCouponApplied(Long couponApplied) {
         this.couponApplied = couponApplied;
     }
+
+    public String getTotalItems() {
+        return totalItems;
+    }
+
+    public void setTotalItems(String totalItems) {
+        this.totalItems = totalItems;
+    }
+
+    public String getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(String totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public String getDeliveryPrice() {
+        return deliveryPrice;
+    }
+
+    public void setDeliveryPrice(String deliveryPrice) {
+        this.deliveryPrice = deliveryPrice;
+    }
+
+    public String getSavedAmount() {
+        return savedAmount;
+    }
+
+    public void setSavedAmount(String savedAmount) {
+        this.savedAmount = savedAmount;
+    }
+
+    public String getFinalTotalAmount() {
+        return finalTotalAmount;
+    }
+
+    public void setFinalTotalAmount(String finalTotalAmount) {
+        this.finalTotalAmount = finalTotalAmount;
+    }
 }

@@ -20,6 +20,25 @@ public class Cart {
     public static List<String> cartList = new ArrayList<>();
     public static List<CartItemModel> cartItemModelList = new ArrayList<>();
 
+    public static void confirmOrder(){
+        Map<String, Object> updateCart = new HashMap<>();
+        updateCart.put("size_list", 0);
+
+        firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid())
+                .collection("USER_DATA").document("CART").set(updateCart)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Cart.cartItemModelList.clear();
+                            Cart.cartList.clear();
+                        }
+                        else{
+                            ;
+                        }
+                    }
+                });
+    }
     public static void removeItemCart(final int index){
         final String removeProductId = cartList.get(index);
         cartList.remove(index);

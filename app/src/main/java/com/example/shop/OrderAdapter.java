@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.media.Image;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Date;
 import java.util.List;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Viewholder> {
 
@@ -33,11 +37,35 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Viewholder> 
 
     @Override
     public void onBindViewHolder(@NonNull OrderAdapter.Viewholder holder, int position) {
-        int resource = orderItemModelList.get(position).getProductImage();
-        int rating = orderItemModelList.get(position).getRating();
+        Log.d("dbg", "ADAPTER");
+        String resource = orderItemModelList.get(position).getProductImage();
+//        int rating = orderItemModelList.get(position).getRating();
         String title = orderItemModelList.get(position).getProductTitle();
+        String orderStatus = orderItemModelList.get(position).getDeliveryStatus();
+        Date date;
+        switch (orderStatus){
+            case "Ordered":
+                date = orderItemModelList.get(position).getOrderedDate();
+                break;
+            case "Packed":
+                date = orderItemModelList.get(position).getPackedDate();
+                break;
+            case "Shipped":
+                date = orderItemModelList.get(position).getShippedDate();
+                break;
+            case "Delivered":
+                date = orderItemModelList.get(position).getDeliveredDate();
+                break;
+            case "Cancelled":
+                date = orderItemModelList.get(position).getCancelledDate();
+                break;
+            default:
+                date = orderItemModelList.get(position).getCancelledDate();
+                break;
+
+        }
         String deliveredDate = orderItemModelList.get(position).getDeliveryStatus();
-        holder.setData(resource, title, deliveredDate, rating);
+        holder.setData(resource, title, orderStatus, date);
 
     }
 
@@ -70,16 +98,16 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Viewholder> 
                 }
             });
         }
-        private void setData(int resource, String title, String deliveryDate, int rating){
-            productImage.setImageResource(resource);
+        private void setData(String resource, String title, String orderStatus, Date date){
+            Glide.with(itemView.getContext()).load(resource).into(productImage);
             productTitle.setText(title);
-            if(deliveryDate.equals("Cancelled")) {
+            if(orderStatus.equals("Cancelled")) {
                 deliveryIndicator.setImageTintList(ColorStateList.valueOf(itemView.getContext().getResources().getColor(R.color.red)));
             }
             else{
                 deliveryIndicator.setImageTintList(ColorStateList.valueOf(itemView.getContext().getResources().getColor(R.color.green)));
             }
-            setRating(rating);
+//            setRating(rating);
             for(int i = 0; i < rateNowLayoutContainer.getChildCount(); i++){
                 final int starPosition = i;
                 rateNowLayoutContainer.getChildAt(i).setOnClickListener(new View.OnClickListener() {
@@ -90,7 +118,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Viewholder> 
                 });
             }
 
-            deliveryStatus.setText(deliveryDate);
+            deliveryStatus.setText(orderStatus + " " +String.valueOf(date));
         }
         private void setRating(int starPosition){
             for(int i = 0; i < rateNowLayoutContainer.getChildCount(); i++){

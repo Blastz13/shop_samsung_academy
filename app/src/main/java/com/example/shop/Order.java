@@ -41,6 +41,12 @@ public class Order {
                                                 @Override
                                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                     if(task.isSuccessful()){
+                                                        String dp;
+                                                        if (documentSnapshot.get("delivery_price") != null){
+                                                            dp = documentSnapshot.get("delivery_price").toString();
+                                                        }else {
+                                                            dp = "FREE";
+                                                        }
                                                         orderItemModelList.add(new OrderItemModel(task.getResult().get("product_id").toString(),
                                                                 task.getResult().get("product_image_1").toString(),
                                                                 task.getResult().get("product_title").toString(), documentSnapshot.get("order_status").toString(), documentSnapshot1.get("address").toString(),
@@ -48,7 +54,7 @@ public class Order {
                                                                 documentSnapshot1.getDate("packed_date"), documentSnapshot1.getDate("shipped_date"),
                                                                 documentSnapshot1.getDate("delivered_date"), documentSnapshot1.getDate("cancelled_date"),
                                                                 documentSnapshot.get("order_id").toString(), documentSnapshot1.get("name").toString(), documentSnapshot1.get("index").toString(),
-                                                                documentSnapshot.get("user_id").toString(), Long.parseLong(documentSnapshot1.get("product_quantity").toString())));
+                                                                documentSnapshot.get("user_id").toString(), Long.parseLong(documentSnapshot1.get("product_quantity").toString()), dp));
                                                         orderAdapter.notifyDataSetChanged();
                                                     }
                                                     else{

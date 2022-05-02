@@ -29,7 +29,10 @@ public class Rating {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
-                        Log.d("dbg", "rating");
+                        List<String> orderProductsId = new ArrayList<>();
+                        for(int i=0; i < Order.orderItemModelList.size(); i++){
+                            orderProductsId.add(Order.orderItemModelList.get(i).getProductId());
+                        }
                         for (long i = 0; i < (long) task.getResult().get("size_list"); i++) {
                             RatedId.add(task.getResult().get("product_id_" + i).toString());
                             Rating.add(Long.parseLong(task.getResult().get("rating_" + i).toString()));
@@ -40,6 +43,12 @@ public class Rating {
                                     ProductDetailActivity.setRating(ProductDetailActivity.InitRating);
                                 }
                             }
+                            if(orderProductsId.contains(task.getResult().get("product_id_" + i).toString())){
+                                Order.orderItemModelList.get(orderProductsId.indexOf(task.getResult().get("product_id_" + i).toString())).setRating(Integer.parseInt(task.getResult().get("rating_" + i).toString()) - 1);
+                            }
+                        }
+                        if(MyOrdersFragment.orderAdapter != null){
+                            MyOrdersFragment.orderAdapter.notifyDataSetChanged();
                         }
                     } else {
                         ;

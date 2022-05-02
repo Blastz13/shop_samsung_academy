@@ -180,6 +180,8 @@ public class DeliveryActivity extends AppCompatActivity {
                 orderDetail.put("payment_status", "Paid");
                 orderDetail.put("ordered_status", "Ordered");
 
+                orderDetail.put("delivery_price", cartItemModel.getDeliveryPrice());
+
                 firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid())
                         .collection("USER_ORDERS").document(orderID).collection("ORDER_ITEMS")
                         .document(cartItemModel.getProductId())
@@ -207,6 +209,8 @@ public class DeliveryActivity extends AppCompatActivity {
                 orderDetail.put("saved_amount", cartItemModel.getSavedAmount());
                 orderDetail.put("payment_method", "Paid");
                 orderDetail.put("order_status", "Ordered");
+                orderDetail.put("delivery_price", cartItemModel.getDeliveryPrice());
+
                 firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid())
                         .collection("USER_ORDERS").document(orderID)
                         .set(orderDetail)

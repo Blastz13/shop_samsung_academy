@@ -2,6 +2,7 @@ package com.example.shop;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -44,6 +45,8 @@ public class Address {
                                     (boolean)task.getResult().get("selected_"+i)));
                             if((boolean)task.getResult().get("selected_"+i)){
                                 selectedAddress = (int) (i - 1);
+                                Log.d("dbg", addressesModelList.toString());
+                                Log.d("dbg", String.valueOf(selectedAddress));
                             }
                         }
 

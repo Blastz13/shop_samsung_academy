@@ -23,6 +23,7 @@
         android:elevation="6dp"/>
 
     <LinearLayout
+        android:id="@+id/your_recent_orders"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -37,28 +38,28 @@
 
         <ImageView
             android:id="@+id/imageView25"
-            android:layout_marginRight="8dp"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            app:srcCompat="@drawable/product_item_1" />
+            android:layout_marginRight="8dp" />
+
         <ImageView
             android:id="@+id/imageView26"
-            android:layout_marginRight="8dp"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            app:srcCompat="@drawable/product_item_1" />
+            android:layout_marginRight="8dp" />
+
         <ImageView
             android:id="@+id/imageView27"
-            android:layout_marginRight="8dp"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            app:srcCompat="@drawable/product_item_1" />
+            android:layout_marginRight="8dp" />
+
         <ImageView
             android:id="@+id/imageView28"
-            android:layout_marginRight="8dp"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            app:srcCompat="@drawable/product_item_1" />
+            android:layout_marginRight="8dp"
+            />
 
 
     </LinearLayout>

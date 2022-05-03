@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/slider_background"
     android:layout_margin="4dp"
-    android:elevation="3dp">
+    android:elevation="4dp">
 
     <ImageView
         android:id="@+id/horizontal_scroll_product_image"

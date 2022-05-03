@@ -67,7 +67,9 @@ public class CartFragment extends Fragment {
     private RecyclerView cartItemsRecyclerView;
     private Button continueButton;
     private TextView totalAmount;
+    private LinearLayout removeButton;
     public static CartAdapter cartAdapter;
+    private LinearLayout continueCart;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,6 +80,8 @@ public class CartFragment extends Fragment {
         cartItemsRecyclerView = view.findViewById(R.id.cart_items_recyclerview);
         continueButton = view.findViewById(R.id.cart_continue_btn);
         totalAmount = view.findViewById(R.id.total_cart_amount);
+        continueCart = view.findViewById(R.id.end_cart);
+        removeButton = view.findViewById(R.id.remove_item_cart_btn);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -103,20 +107,21 @@ public class CartFragment extends Fragment {
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DeliveryActivity.cartItemModelList = new ArrayList<>();
-                for(int i=0; i<Cart.cartItemModelList.size(); i++){
-                    CartItemModel cartItemModel = Cart.cartItemModelList.get(i);
-                    if(cartItemModel.isInStock()){
-                        DeliveryActivity.cartItemModelList.add(cartItemModel);
+                if (Cart.cartItemModelList.size() > 0) {
+                    DeliveryActivity.cartItemModelList = new ArrayList<>();
+                    for (int i = 0; i < Cart.cartItemModelList.size(); i++) {
+                        CartItemModel cartItemModel = Cart.cartItemModelList.get(i);
+                        if (cartItemModel.isInStock()) {
+                            DeliveryActivity.cartItemModelList.add(cartItemModel);
+                        }
                     }
-                }
-                DeliveryActivity.cartItemModelList.add(new CartItemModel(CartItemModel.TOTAL_AMOUNT));
-                if(Address.addressesModelList.size()==0){
-                    Address.loadAddress(getContext());
-                }
-                else{
-                    Intent deliveryIntent = new Intent(getContext(), DeliveryActivity.class);
-                    startActivity(deliveryIntent);
+                    DeliveryActivity.cartItemModelList.add(new CartItemModel(CartItemModel.TOTAL_AMOUNT));
+                    if (Address.addressesModelList.size() == 0) {
+                        Address.loadAddress(getContext());
+                    } else {
+                        Intent deliveryIntent = new Intent(getContext(), DeliveryActivity.class);
+                        startActivity(deliveryIntent);
+                    }
                 }
             }
         });

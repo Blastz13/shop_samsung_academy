@@ -147,7 +147,6 @@ public class CartAdapter extends RecyclerView.Adapter {
         private void setItemDetails(String productId, String resource, String title, Long countFreeCoupons, String productPriceText, String discountProductPriceText, Long countOffersApplied, int position, boolean inStock){
             Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.ic_home)).into(productImage);
             productTitle.setText(title);
-            Log.d("dbg", discountProductPriceText);
             if (discountProductPriceText.equals("0")){
                 discountPrice.setVisibility(View.GONE);
             }
@@ -196,6 +195,9 @@ public class CartAdapter extends RecyclerView.Adapter {
                     if(!ProductDetailActivity.is_cart_query){
                         ProductDetailActivity.is_cart_query = true;
                         Cart.removeItemCart(position);
+//                        if(Cart.cartItemModelList.size() == 0) {
+                            cartTotalAmount.setText(0 + " $");
+//                        }
                     }
                 }
             });
@@ -232,12 +234,10 @@ public class CartAdapter extends RecyclerView.Adapter {
             totalAmount.setText(totalAmountText + " $");
             cartTotalAmount.setText(totalAmountText + " $");
             savedAmount.setText("You saved " + savedAmountText);
-            LinearLayout endCart = (LinearLayout) cartTotalAmount.getParent().getParent();
             if (totalItemPriceText == 0){
                 Cart.cartItemModelList.remove(Cart.cartItemModelList.size()-1);
-                endCart.setVisibility(View.GONE);
             }else{
-                endCart.setVisibility(View.VISIBLE);
+                ;
             }
         }
     }

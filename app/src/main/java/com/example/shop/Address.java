@@ -39,10 +39,15 @@ public class Address {
                     }
                     else {
                         for(long i=1; i < (long) task.getResult().get("size_list") + 1; i++){
-                            addressesModelList.add(new AddressesModel(task.getResult().get("name_"+i).toString(),
-                                    task.getResult().get("address_"+i).toString(),
-                                    task.getResult().get("index_"+i).toString(),
-                                    (boolean)task.getResult().get("selected_"+i)));
+                            addressesModelList.add(new AddressesModel(task.getResult().getBoolean("selected_"+i),
+                                    task.getResult().getString("city_"+i),
+                                    task.getResult().getString("street_"+i),
+                                    task.getResult().getString("house_"+i),
+                                    task.getResult().getString("index_"+i),
+                                    task.getResult().getString("flat_"+i),
+                                    task.getResult().getString("note_"+i),
+                                    task.getResult().getString("name_"+i),
+                                    task.getResult().getString("phone_"+i)));
                             if((boolean)task.getResult().get("selected_"+i)){
                                 selectedAddress = (int) (i - 1);
                                 Log.d("dbg", addressesModelList.toString());

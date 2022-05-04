@@ -4,6 +4,8 @@ import static com.example.shop.DeliveryActivity.SELECT_ADDRESS;
 import static com.example.shop.AccountFragment.MANAGE_ADDRESS;
 import static com.example.shop.MyAddressesActivity.refreshItem;
 
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.View
     private List<AddressesModel> addressesModelList;
     private int MODE;
     private int preSelectedPosition;
+    private boolean isRefreshItem = false;
 
     public AddressesAdapter(List<AddressesModel> addressesModelList, int mode) {
         this.addressesModelList = addressesModelList;
@@ -37,10 +40,22 @@ public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull AddressesAdapter.Viewholder holder, int position) {
-        String name = addressesModelList.get(position).getName();
-        String address = addressesModelList.get(position).getAddress();
-        String index = addressesModelList.get(position).getIndex();
         Boolean is_selected_address = addressesModelList.get(position).getIs_selected_address();
+        String city = addressesModelList.get(position).getCity();
+        String street = addressesModelList.get(position).getStreet();
+        String house = addressesModelList.get(position).getHouse();
+        String index = addressesModelList.get(position).getIndex();
+        String flat = addressesModelList.get(position).getFlat();
+        String note = addressesModelList.get(position).getNote();
+        String name = addressesModelList.get(position).getName();
+        String phone = addressesModelList.get(position).getPhone();
+        String address = addressesModelList.get(position).getAddress();
+//        Log.d("dbg", address.toString());
+//
+//        String name = addressesModelList.get(position).getName();
+//        String address = addressesModelList.get(position).getAddress();
+//        String index = addressesModelList.get(position).getIndex();
+//        Boolean is_selected_address = addressesModelList.get(position).getIs_selected_address();
         holder.setData(name, address, index, is_selected_address, position);
     }
 
@@ -96,12 +111,31 @@ public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.View
             }
             else if(MODE == MANAGE_ADDRESS){
                 optionLinearLayout.setVisibility(View.GONE);
+                optionLinearLayout.getChildAt(0).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent addressIntent = new Intent(itemView.getContext(), AddressActivity.class);
+                        addressIntent.putExtra("INTENT", "update");
+                        addressIntent.putExtra("index", position);
+                        itemView.getContext().startActivity(addressIntent);
+                    }
+                });
+                optionLinearLayout.getChildAt(1).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
                 icon.setImageResource(R.drawable.ic_more);
                 icon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         optionLinearLayout.setVisibility(View.VISIBLE);
-                        refreshItem(preSelectedPosition, preSelectedPosition);
+                        if (isRefreshItem) {
+                            refreshItem(preSelectedPosition, preSelectedPosition);
+                        }else{
+                            isRefreshItem = true;
+                        }
                         preSelectedPosition = position;
                     }
                 });

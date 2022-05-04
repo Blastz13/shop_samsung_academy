@@ -2,6 +2,7 @@ package com.example.shop;
 
 import android.content.Intent;
 import android.media.Image;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,8 +101,15 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
             }
             rating.setText(averageRate);
             totalRating.setText(totalRatingsNumber + " ratings");
-            productPrice.setText(price);
-            productDiscountPrice.setText(discountPrice);
+            if(discountPrice.equals("0")){
+                productPrice.setText(price);
+                productDiscountPrice.setVisibility(View.GONE);
+
+            }
+            else {
+                productPrice.setText(price);
+                productDiscountPrice.setText(discountPrice);
+            }
 
             if(isWishList){
                 removeButton.setVisibility(View.VISIBLE);

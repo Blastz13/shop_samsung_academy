@@ -35,6 +35,7 @@ public class MyAddressesActivity extends AppCompatActivity {
     private static AddressesAdapter addressesAdapter;
     private LinearLayout addAddressButton;
     private int previousAddress;
+    private int mode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,8 +99,8 @@ public class MyAddressesActivity extends AppCompatActivity {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         addressesRecyclerView.setLayoutManager(layoutManager);
 
-
-        if( getIntent().getIntExtra("MODE", -1) == SELECT_ADDRESS){
+        mode = getIntent().getIntExtra("MODE", -1);
+        if(mode == SELECT_ADDRESS){
             deliveryButton.setVisibility(View.VISIBLE);
         }
         else{
@@ -120,10 +121,12 @@ public class MyAddressesActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == android.R.id.home){
-            if (Address.selectedAddress != previousAddress){
-                Address.addressesModelList.get(Address.selectedAddress).setIs_selected_address(false);
-                Address.addressesModelList.get(previousAddress).setIs_selected_address(true);
-                Address.selectedAddress = previousAddress;
+            if(mode == SELECT_ADDRESS) {
+                if (Address.selectedAddress != previousAddress) {
+                    Address.addressesModelList.get(Address.selectedAddress).setIs_selected_address(false);
+                    Address.addressesModelList.get(previousAddress).setIs_selected_address(true);
+                    Address.selectedAddress = previousAddress;
+                }
             }
             finish();
             return true;
@@ -138,10 +141,12 @@ public class MyAddressesActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (Address.selectedAddress != previousAddress){
-            Address.addressesModelList.get(Address.selectedAddress).setIs_selected_address(false);
-            Address.addressesModelList.get(previousAddress).setIs_selected_address(true);
-            Address.selectedAddress = previousAddress;
+        if(mode == SELECT_ADDRESS) {
+            if (Address.selectedAddress != previousAddress) {
+                Address.addressesModelList.get(Address.selectedAddress).setIs_selected_address(false);
+                Address.addressesModelList.get(previousAddress).setIs_selected_address(true);
+                Address.selectedAddress = previousAddress;
+            }
         }
         super.onBackPressed();
     }

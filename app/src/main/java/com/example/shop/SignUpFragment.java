@@ -296,7 +296,8 @@ public class SignUpFragment extends Fragment {
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()){
                                                         if(finalI == documentNames.size() - 1) {
-                                                            startActivity(new Intent(getActivity(), MainActivity.class));
+                                                            Intent mainIntent = new Intent(getContext(), MainActivity.class);
+                                                            startActivity(mainIntent);
                                                             getActivity().finish();
                                                         }
                                                     }
@@ -312,29 +313,6 @@ public class SignUpFragment extends Fragment {
                                                 }
                                             });
                                         }
-
-                                        Map<String, Object> sizeList = new HashMap<>();
-                                        sizeList.put("size_list", (long)0);
-
-                                        firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("WISHLIST")
-                                                .set(sizeList).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()){
-                                                    startActivity(new Intent(getActivity(), MainActivity.class));
-                                                    getActivity().finish();
-                                                }
-                                                else{
-;                                                   progressBar.setVisibility(View.INVISIBLE);
-
-                                                    signUpBtn.setEnabled(true);
-                                                    signUpBtn.setTextColor(Color.rgb(255,255,255));
-
-                                                    Toast.makeText(getActivity(), task.getException().getMessage(),
-                                                            Toast.LENGTH_LONG).show();
-                                                }
-                                            }
-                                        });
                                     }
                                     else {
                                         progressBar.setVisibility(View.INVISIBLE);
@@ -347,8 +325,6 @@ public class SignUpFragment extends Fragment {
                                     }
                                 }
                             });
-                            startActivity(new Intent(getActivity(), MainActivity.class));
-                            getActivity().finish();
                         }
                         else {
                             progressBar.setVisibility(View.INVISIBLE);

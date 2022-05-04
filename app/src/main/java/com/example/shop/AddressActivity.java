@@ -32,6 +32,9 @@ public class AddressActivity extends AppCompatActivity {
     private EditText note;
     private EditText name;
     private EditText phone;
+    private boolean updateAddress = false;
+    private AddressesModel addressesModel;
+    private int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,25 @@ public class AddressActivity extends AppCompatActivity {
         name = findViewById(R.id.name_address);
         phone = findViewById(R.id.phone_address);
 
+        String type = getIntent().getStringExtra("INTENT");
+        if(type != null && type.equals("update")){
+            updateAddress = true;
+            position = getIntent().getIntExtra("index", -1);
+            addressesModel = Address.addressesModelList.get(position);
+
+            city.setText(addressesModel.getCity());
+            street.setText(addressesModel.getStreet());
+            house.setText(addressesModel.getHouse());
+            flat.setText(addressesModel.getFlat());
+            index.setText(addressesModel.getIndex());
+            note.setText(addressesModel.getNote());
+            name.setText(addressesModel.getName());
+            phone.setText(addressesModel.getPhone());
+            saveAddressButton.setText("Update Address");
+        }else {
+            position = (Address.addressesModelList.size()+1);
+        }
+
         saveAddressButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,13 +82,24 @@ public class AddressActivity extends AppCompatActivity {
                                     if(!TextUtils.isEmpty(phone.getText()) && phone.getText().length() == 12){
                                         String address = city.getText().toString() + " " + street.getText().toString()+ " " + house.getText().toString()+ " " + flat.getText().toString();
                                         Map<String, Object> addAddress = new HashMap<>();
-                                        addAddress.put("size_list", (long)(Address.addressesModelList.size()+1));
+
                                         addAddress.put("name_" + (long)(Address.addressesModelList.size()+1), name.getText().toString());
                                         addAddress.put("address_" + (long)(Address.addressesModelList.size()+1), address);
                                         addAddress.put("index_" + (long)(Address.addressesModelList.size()+1), index.getText().toString());
-                                        addAddress.put("selected_" + (long)(Address.addressesModelList.size()+1), true);
-                                        if(Address.addressesModelList.size() > 0){
-                                            addAddress.put("selected_" + (long)(Address.selectedAddress+1), false);
+                                        addAddress.put("city_" + (long)(Address.addressesModelList.size()+1), city.getText().toString());
+                                        addAddress.put("street_" + (long)(Address.addressesModelList.size()+1), street.getText().toString());
+                                        addAddress.put("house_" + (long)(Address.addressesModelList.size()+1), house.getText().toString());
+                                        addAddress.put("index_" + (long)(Address.addressesModelList.size()+1), index.getText().toString());
+                                        addAddress.put("flat_" + (long)(Address.addressesModelList.size()+1), flat.getText().toString());
+                                        addAddress.put("note_" + (long)(Address.addressesModelList.size()+1), note.getText().toString());
+                                        addAddress.put("phone_" + (long)(Address.addressesModelList.size()+1), phone.getText().toString());
+
+                                        if(!updateAddress) {
+                                            addAddress.put("size_list", (long) (Address.addressesModelList.size() + 1));
+                                            addAddress.put("selected_" + (long)(Address.addressesModelList.size()+1), true);
+                                            if(Address.addressesModelList.size() > 0){
+                                                addAddress.put("selected_" + (long)(Address.selectedAddress+1), false);
+                                            }
                                         }
 
                                         FirebaseFirestore.getInstance().collection("USERS")
@@ -77,12 +110,19 @@ public class AddressActivity extends AppCompatActivity {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if(task.isSuccessful()){
-                                                    if(Address.addressesModelList.size() > 0) {
-                                                        Address.addressesModelList.get(Address.selectedAddress).setIs_selected_address(false);
+                                                    if(!updateAddress) {
+                                                        if (Address.addressesModelList.size() > 0) {
+                                                            Address.addressesModelList.get(Address.selectedAddress).setIs_selected_address(false);
+                                                        }
+                                                        Address.addressesModelList.add(new AddressesModel(true, city.getText().toString(), street.getText().toString(), house.getText().toString(),
+                                                                index.getText().toString(), flat.getText().toString(), note.getText().toString(), name.getText().toString(), phone.getText().toString()));
+                                                        Address.selectedAddress = Cart.cartItemModelList.size() - 1;
+
+                                                    }else{
+                                                        Address.addressesModelList.set(position, new AddressesModel(true, city.getText().toString(), street.getText().toString(), house.getText().toString(),
+                                                                index.getText().toString(), flat.getText().toString(), note.getText().toString(), name.getText().toString(), phone.getText().toString()));
                                                     }
 
-                                                    Address.addressesModelList.add(new AddressesModel(name.getText().toString(),
-                                                            address, index.getText().toString(), true));
                                                     if(getIntent().getStringExtra("INTENT").equals("deliveryIntent")) {
                                                         Intent deliveryIntent = new Intent(AddressActivity.this, DeliveryActivity.class);
                                                         startActivity(deliveryIntent);
@@ -90,7 +130,6 @@ public class AddressActivity extends AppCompatActivity {
                                                     else {
                                                         MyAddressesActivity.refreshItem(Address.selectedAddress, Address.addressesModelList.size() - 1);
                                                     }
-                                                    Address.selectedAddress = Cart.cartItemModelList.size() - 1;
                                                     finish();
                                                 }
                                                 else{
@@ -116,8 +155,15 @@ public class AddressActivity extends AppCompatActivity {
                 } else{
                     city.requestFocus();
                 }
-                Intent deliveryIntent = new Intent(AddressActivity.this, DeliveryActivity.class);
-                AddressActivity.this.startActivity(deliveryIntent);
+                if(getIntent().getStringExtra("INTENT").equals("deliveryIntent")) {
+                    Intent deliveryIntent = new Intent(AddressActivity.this, DeliveryActivity.class);
+                    startActivity(deliveryIntent);
+                }
+                else {
+                    Intent deliveryIntent = new Intent(AddressActivity.this, MyAddressesActivity.class);
+                    deliveryIntent.putExtra("MODE", 1);
+                    AddressActivity.this.startActivity(deliveryIntent);
+                }
             }
         });
 

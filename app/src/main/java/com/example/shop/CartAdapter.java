@@ -229,7 +229,7 @@ public class CartAdapter extends RecyclerView.Adapter {
                 deliveryPrice.setText(deliveryPriceText);
             }
             else {
-                deliveryPrice.setText(deliveryPriceText);
+                deliveryPrice.setText(deliveryPriceText + " $");
             }
             totalAmount.setText(totalAmountText + " $");
             cartTotalAmount.setText(totalAmountText + " $");

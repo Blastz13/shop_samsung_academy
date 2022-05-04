@@ -142,8 +142,16 @@ public class ProductDetailActivity extends AppCompatActivity {
                                     productRatingPreview.setText(documentSnapshot.get("avg_rating").toString());
                                     averageRating.setText(documentSnapshot.get("avg_rating").toString());
                                     productTotalRating.setText(documentSnapshot.get("total_rating").toString());
-                                    productPrice.setText(documentSnapshot.get("product_price").toString());
-                                    productDiscountPrice.setText(documentSnapshot.get("product_discount_price").toString());
+                                    if(documentSnapshot.get("product_discount_price").toString().equals("0")){
+                                        productPrice.setText(documentSnapshot.get("product_price").toString());
+                                        productDiscountPrice.setVisibility(View.GONE);
+
+                                    }
+                                    else{
+                                        productPrice.setText(documentSnapshot.get("product_price").toString());
+                                        productDiscountPrice.setText(documentSnapshot.get("product_discount_price").toString());
+                                    }
+
                                     productAvailable.setText(documentSnapshot.get("product_available").toString());
                                     productTotalRatings.setText(documentSnapshot.get("total_rating").toString());
 

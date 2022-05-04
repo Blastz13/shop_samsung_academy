@@ -169,6 +169,7 @@ public class AccountFragment extends Fragment {
     }
 
     private void loadAddress(){
+        addressesModelList.clear();
         firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid())
                 .collection("USER_DATA").document("ADDRESSES")
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -176,17 +177,29 @@ public class AccountFragment extends Fragment {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
                         for(long i=1; i < (long) task.getResult().get("size_list") + 1; i++){
-                            addressesModelList.add(new AddressesModel(task.getResult().get("name_"+i).toString(),
-                                    task.getResult().get("address_"+i).toString(),
-                                    task.getResult().get("index_"+i).toString(),
-                                    (boolean)task.getResult().get("selected_"+i)));
+                            addressesModelList.add(new AddressesModel(task.getResult().getBoolean("selected_"+i),
+                                    task.getResult().getString("city_"+i),
+                                    task.getResult().getString("street_"+i),
+                                    task.getResult().getString("house_"+i),
+                                    task.getResult().getString("index_"+i),
+                                    task.getResult().getString("flat_"+i),
+                                    task.getResult().getString("note_"+i),
+                                    task.getResult().getString("name_"+i),
+                                    task.getResult().getString("phone_"+i)));//////
                             if((boolean)task.getResult().get("selected_"+i)){
                                 selectedAddress = (int) (i - 1);
                             }
                         }
-                    addressName.setText(addressesModelList.get(selectedAddress).getName());
-                    address.setText(addressesModelList.get(selectedAddress).getAddress());
-                    index.setText(addressesModelList.get(selectedAddress).getIndex());
+                        if(!task.getResult().get("size_list").toString().equals("0")){
+                            addressName.setText(addressesModelList.get(selectedAddress).getName());
+                            address.setText(addressesModelList.get(selectedAddress).getAddress());
+                            index.setText(addressesModelList.get(selectedAddress).getIndex());
+                        }
+                        else {
+                            addressName.setText("-");
+                            address.setText("-");
+                            index.setText("-");
+                        }
                     }
                 }
 
@@ -217,6 +230,8 @@ public class AccountFragment extends Fragment {
                                                 @Override
                                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                     if(task.isSuccessful()){
+                                                        orderTitle.setText("Your recent orders");
+
 //                                                        for(OrderItemModel orderItemModel: Order.orderItemModelList){
                                                             if (i[0] < 4) {
                                                                 Glide.with(getContext()).load(task.getResult().get("product_image_1").toString()).apply(new RequestOptions().placeholder(R.mipmap.app_ico)).into((ImageView) recentOrders.getChildAt(i[0]));

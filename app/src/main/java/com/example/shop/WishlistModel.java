@@ -1,5 +1,7 @@
 package com.example.shop;
 
+import java.util.ArrayList;
+
 public class WishlistModel {
     private String productId;
     private String productImage;
@@ -9,6 +11,7 @@ public class WishlistModel {
     private String rating;
     private String productPrice;
     private String productDiscountPrice;
+    private ArrayList<String> tags;
 
     public WishlistModel(String productId, String productImage, long freeCoupons, long totalRating, String productTitle, String rating, String productPrice, String productDiscountPrice) {
         this.productId = productId;
@@ -19,6 +22,14 @@ public class WishlistModel {
         this.rating = rating;
         this.productPrice = productPrice;
         this.productDiscountPrice = productDiscountPrice;
+    }
+
+    public ArrayList<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(ArrayList<String> tags) {
+        this.tags = tags;
     }
 
     public String getProductId() {

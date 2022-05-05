@@ -21,12 +21,29 @@ import java.util.stream.Stream;
 
 public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHolder> {
 
+    private boolean fromSearch;
     private List<WishlistModel> wishlistModelList;
     private Boolean isWishList;
 
     public WishlistAdapter(List<WishlistModel> wishlistModelList, boolean isWishList) {
         this.wishlistModelList = wishlistModelList;
         this.isWishList = isWishList;
+    }
+
+    public List<WishlistModel> getWishlistModelList() {
+        return wishlistModelList;
+    }
+
+    public void setWishlistModelList(List<WishlistModel> wishlistModelList) {
+        this.wishlistModelList = wishlistModelList;
+    }
+
+    public boolean isFromSearch() {
+        return fromSearch;
+    }
+
+    public void setFromSearch(boolean fromSearch) {
+        this.fromSearch = fromSearch;
     }
 
     @NonNull
@@ -127,6 +144,9 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(fromSearch){
+                        ProductDetailActivity.fromSearch = true;
+                    }
                     Intent productDetailIntent = new Intent(itemView.getContext(), ProductDetailActivity.class);
                     productDetailIntent.putExtra("product_id", productId);
                     itemView.getContext().startActivity(productDetailIntent);

@@ -46,6 +46,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     public static boolean is_rating_query = false;
     public static boolean is_cart_query = false;
+    public static boolean fromSearch = false;
 
     private ViewPager productImagesViewPager;
     private TabLayout viewPagerIndicator;
@@ -507,6 +508,12 @@ public class ProductDetailActivity extends AppCompatActivity {
             return true;
         }
         else if (id == R.id.main_search_icon){
+            if(fromSearch){
+                finish();
+            }else {
+                Intent searchIntent = new Intent(this, SearchActivity.class);
+                startActivity(searchIntent);
+            }
             return true;
         }
         else if (id == R.id.main_cart_icon){
@@ -516,5 +523,11 @@ public class ProductDetailActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        fromSearch = false;
     }
 }

@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -89,6 +90,8 @@ public class CategoryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.nav_search_icon){
+            Intent searchIntent = new Intent(this, SearchActivity.class);
+            startActivity(searchIntent);
             return true;
         }
         return super.onOptionsItemSelected(item);

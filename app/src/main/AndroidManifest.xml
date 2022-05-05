@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Shop"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".SearchActivity"
+            android:exported="false" />
+        <activity
             android:name=".AllProductsActivity"
             android:exported="false" />
         <activity

@@ -5,6 +5,7 @@ import static com.example.shop.DeliveryActivity.SELECT_ADDRESS;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
@@ -108,6 +109,7 @@ public class MyAddressesActivity extends AppCompatActivity {
         }
 
         addressesAdapter = new AddressesAdapter(Address.addressesModelList, getIntent().getIntExtra("MODE", -1));
+        Address.loadAddress(this, addressesAdapter);
         addressesRecyclerView.setAdapter(addressesAdapter);
         ((SimpleItemAnimator)addressesRecyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         addressesAdapter.notifyDataSetChanged();

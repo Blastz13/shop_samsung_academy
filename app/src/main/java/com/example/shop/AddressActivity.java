@@ -137,32 +137,33 @@ public class AddressActivity extends AppCompatActivity {
                                                 }
                                             }
                                         });
+                                        if(getIntent().getStringExtra("INTENT").equals("deliveryIntent")) {
+                                            Intent deliveryIntent = new Intent(AddressActivity.this, DeliveryActivity.class);
+                                            startActivity(deliveryIntent);
+                                        }
+                                        else {
+                                            Log.d("dbg", Address.addressesModelList.toString());
+                                            Intent deliveryIntent = new Intent(AddressActivity.this, MyAddressesActivity.class);
+                                            deliveryIntent.putExtra("MODE", 1);
+                                            AddressActivity.this.startActivity(deliveryIntent);
+                                        }
                                     }else{
-                                        phone.requestFocus();
+                                        phone.setError("Required");
                                     }
                                 }else {
-                                    name.requestFocus();
+                                    name.setError("Required");
                                 }
                             }else {
-                                index.requestFocus();
+                                index.setError("Required");
                             }
                         }else {
-                            house.requestFocus();
+                            house.setError("Required");
                         }
                     }else{
-                        street.requestFocus();
+                        street.setError("Required");
                     }
                 } else{
-                    city.requestFocus();
-                }
-                if(getIntent().getStringExtra("INTENT").equals("deliveryIntent")) {
-                    Intent deliveryIntent = new Intent(AddressActivity.this, DeliveryActivity.class);
-                    startActivity(deliveryIntent);
-                }
-                else {
-                    Intent deliveryIntent = new Intent(AddressActivity.this, MyAddressesActivity.class);
-                    deliveryIntent.putExtra("MODE", 1);
-                    AddressActivity.this.startActivity(deliveryIntent);
+                    city.setError("Required");
                 }
             }
         });

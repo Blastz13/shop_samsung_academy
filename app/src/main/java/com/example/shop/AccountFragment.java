@@ -240,6 +240,7 @@ public class AccountFragment extends Fragment {
 //                                                        }
                                                         if(i[0] == 0){
                                                             orderTitle.setText("No recent orders");
+
                                                         }
 
                                                     }

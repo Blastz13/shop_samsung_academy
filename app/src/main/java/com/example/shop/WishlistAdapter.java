@@ -72,8 +72,8 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
             super(itemView);
             productImage = itemView.findViewById(R.id.product_image_wishlist);
             productTitle = itemView.findViewById(R.id.product_title_wishlist);
-            couponIcon = itemView.findViewById(R.id.coupon_icon_wishlist);
-            freeCoupon = itemView.findViewById(R.id.free_coupon_wishlist);
+//            couponIcon = itemView.findViewById(R.id.coupon_icon_wishlist);
+//            freeCoupon = itemView.findViewById(R.id.free_coupon_wishlist);
             productPrice = itemView.findViewById(R.id.product_price_wishlist);
             productDiscountPrice = itemView.findViewById(R.id.product_discount_price_wishlist);
             paymentMethod = itemView.findViewById(R.id.payment_method_wishlist);
@@ -86,29 +86,29 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
         private void setData(String productId, String resource, String title, long freeCouponsNumber, String averageRate, long totalRatingsNumber, String price, String discountPrice){
             Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.ic_home)).into(productImage);
             productTitle.setText(title);
-            if (freeCouponsNumber != 0){
-                couponIcon.setVisibility(View.VISIBLE);
-                if(freeCouponsNumber == 1){
-                    freeCoupon.setText("free " + freeCouponsNumber + " coupon");
-                }
-                else{
-                    freeCoupon.setText("free " + freeCouponsNumber + " coupons");
-                }
-            }
-            else{
-                couponIcon.setVisibility(View.INVISIBLE);
-                freeCoupon.setVisibility(View.INVISIBLE);
-            }
+//            if (freeCouponsNumber != 0){
+//                couponIcon.setVisibility(View.VISIBLE);
+//                if(freeCouponsNumber == 1){
+//                    freeCoupon.setText("free " + freeCouponsNumber + " coupon");
+//                }
+//                else{
+//                    freeCoupon.setText("free " + freeCouponsNumber + " coupons");
+//                }
+//            }
+//            else{
+//                couponIcon.setVisibility(View.INVISIBLE);
+//                freeCoupon.setVisibility(View.INVISIBLE);
+//            }
             rating.setText(averageRate);
             totalRating.setText(totalRatingsNumber + " ratings");
             if(discountPrice.equals("0")){
-                productPrice.setText(price);
+                productPrice.setText(price + " $");
                 productDiscountPrice.setVisibility(View.GONE);
 
             }
             else {
-                productPrice.setText(price);
-                productDiscountPrice.setText(discountPrice);
+                productPrice.setText(price+ " $");
+                productDiscountPrice.setText(discountPrice + " $");
             }
 
             if(isWishList){

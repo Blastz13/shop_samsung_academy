@@ -24,42 +24,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:text="NoteBook"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/product_image_wishlist"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/coupon_icon_wishlist"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        app:layout_constraintBottom_toBottomOf="@+id/free_coupon_wishlist"
-        app:layout_constraintStart_toStartOf="@+id/product_title_wishlist"
-        app:layout_constraintTop_toTopOf="@+id/free_coupon_wishlist"
-        app:srcCompat="@drawable/ic_coupon" />
-
-    <TextView
-        android:id="@+id/free_coupon_wishlist"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="free coupon"
-        app:layout_constraintStart_toEndOf="@+id/coupon_icon_wishlist"
-        app:layout_constraintTop_toBottomOf="@+id/product_title_wishlist" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
         android:background="@drawable/slider_background"
         android:backgroundTint="@color/green"
         android:orientation="horizontal"
         android:padding="1dp"
         app:layout_constraintStart_toEndOf="@+id/product_image_wishlist"
-        app:layout_constraintTop_toBottomOf="@+id/free_coupon_wishlist">
+        app:layout_constraintTop_toBottomOf="@+id/product_title_wishlist">
 
         <TextView
             android:id="@+id/product_rating_preview"
@@ -72,8 +55,8 @@
             android:textStyle="bold" />
 
         <ImageView
-            android:layout_width="10dp"
-            android:layout_height="10dp"
+            android:layout_width="12dp"
+            android:layout_height="9dp"
             android:layout_gravity="center"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"

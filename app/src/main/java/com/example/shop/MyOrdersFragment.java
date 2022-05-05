@@ -69,6 +69,7 @@ public class MyOrdersFragment extends Fragment {
     }
 
     public static OrderAdapter orderAdapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

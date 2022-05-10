@@ -17,7 +17,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -73,6 +76,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         position = getIntent().getIntExtra("position", -1);
+        rating = getIntent().getIntExtra("rating", -1);
         OrderItemModel orderItemModel = Order.orderItemModelList.get(position);
 
         productTitle = findViewById(R.id.product_title_order);
@@ -140,7 +144,7 @@ public class OrderDetailActivity extends AppCompatActivity {
             productPrice.setText(orderItemModel.getProductPrice() + " $");
         }
         Glide.with(this).load(orderItemModel.getProductImage()).into(productImage);
-
+        Log.d("dbg", orderItemModel.getDeliveryStatus());
         switch (orderItemModel.getDeliveryStatus()){
             case "Ordered":
                 orderedIndicator.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.green)));
@@ -301,13 +305,26 @@ public class OrderDetailActivity extends AppCompatActivity {
         address.setText(orderItemModel.getAddress());
         index.setText(orderItemModel.getIndex());
 
-        rating = orderItemModel.getRating();
-        Rating.loadRating();
-        Log.d("dbg", Rating.RatedId.toString());
-        Log.d("dbg", Rating.Rating.toString());
-        Log.d("dbg", String.valueOf(rating));
-        Log.d("dbg", String.valueOf(rating));
-        setRating(rating);
+//        Rating.loadRating();
+        FirebaseFirestore.getInstance().collection("USERS").document(FirebaseAuth.getInstance().getUid())
+                .collection("USER_DATA").document("RATINGS").get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            for(long i=0; i < Long.parseLong(task.getResult().get("size_list").toString()); i++){
+                                if(task.getResult().get("product_id_"+i).toString().equals(orderItemModel.getProductId())){
+                                    Integer rating = Integer.parseInt(task.getResult().get("rating_"+i).toString());
+                                    setRating(rating-1);
+                                    break;
+                                }
+                            }
+                        }
+                        else {
+                            ;
+                        }
+                    }
+                });
 //        for(int i = 0; i < rateNowContainer.getChildCount(); i++){
 //            final int starPosition = i;
 //            rateNowContainer.getChildAt(i).setOnClickListener(new View.OnClickListener() {

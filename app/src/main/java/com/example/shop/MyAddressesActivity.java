@@ -42,6 +42,8 @@ public class MyAddressesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_addresses);
+        Log.d("dbg","MYADDRESSACTIVITY"+ Address.addressesModelList.toString());
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -66,15 +68,11 @@ public class MyAddressesActivity extends AppCompatActivity {
         deliveryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("dbg", String.valueOf(previousAddress+1));
-                Log.d("dbg", String.valueOf(Address.selectedAddress+1));
                 if(Address.selectedAddress != previousAddress){
                     final int index = previousAddress;
                     Map<String, Object> updateSelect = new HashMap<>();
                     updateSelect.put("selected_"+ (previousAddress+1), false);
                     updateSelect.put("selected_"+ (Address.selectedAddress+1), true);
-                    Log.d("dbg", String.valueOf(previousAddress+1));
-                    Log.d("dbg", String.valueOf(Address.selectedAddress+1));
                     previousAddress = Address.selectedAddress;
                     FirebaseFirestore.getInstance().collection("USERS")
                             .document(FirebaseAuth.getInstance().getUid())

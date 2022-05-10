@@ -51,7 +51,7 @@ public class Order {
                                                                 task.getResult().get("product_image_1").toString(),
                                                                 task.getResult().get("product_title").toString(), documentSnapshot.get("order_status").toString(), documentSnapshot1.get("address").toString(),
                                                                 task.getResult().get("product_price").toString(), task.getResult().get("product_discount_price").toString(), documentSnapshot1.getDate("ordered_date"),
-                                                                documentSnapshot1.getDate("packed_date"), documentSnapshot1.getDate("shipped_date"),
+                                                                documentSnapshot1.getDate("packed_date"), documentSnapshot1.getDate("shipping_date"),
                                                                 documentSnapshot1.getDate("delivered_date"), documentSnapshot1.getDate("cancelled_date"),
                                                                 documentSnapshot.get("order_id").toString(), documentSnapshot1.get("name").toString(), documentSnapshot1.get("index").toString(),
                                                                 documentSnapshot.get("user_id").toString(), Long.parseLong(documentSnapshot1.get("product_quantity").toString()), dp));

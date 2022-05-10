@@ -137,12 +137,12 @@ public class AddressActivity extends AppCompatActivity {
                                                 }
                                             }
                                         });
+
                                         if(getIntent().getStringExtra("INTENT").equals("deliveryIntent")) {
                                             Intent deliveryIntent = new Intent(AddressActivity.this, DeliveryActivity.class);
                                             startActivity(deliveryIntent);
                                         }
                                         else {
-                                            Log.d("dbg", Address.addressesModelList.toString());
                                             Intent deliveryIntent = new Intent(AddressActivity.this, MyAddressesActivity.class);
                                             deliveryIntent.putExtra("MODE", 1);
                                             AddressActivity.this.startActivity(deliveryIntent);

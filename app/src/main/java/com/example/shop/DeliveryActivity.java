@@ -150,9 +150,13 @@ public class DeliveryActivity extends AppCompatActivity {
             }
         });
 
-        name.setText(Address.addressesModelList.get(Address.selectedAddress).getName());
-        address.setText(Address.addressesModelList.get(Address.selectedAddress).getAddress());
-        index.setText(Address.addressesModelList.get(Address.selectedAddress).getIndex());
+        try{
+            name.setText(Address.addressesModelList.get(Address.selectedAddress).getName());
+            address.setText(Address.addressesModelList.get(Address.selectedAddress).getAddress());
+            index.setText(Address.addressesModelList.get(Address.selectedAddress).getIndex());
+        }catch (Exception e){
+
+        }
     }
 
     private void createOrder(){
@@ -232,9 +236,9 @@ public class DeliveryActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        name.setText(Address.addressesModelList.get(Address.selectedAddress).getName());
-        address.setText(Address.addressesModelList.get(Address.selectedAddress).getAddress());
-        index.setText(Address.addressesModelList.get(Address.selectedAddress).getIndex());
+//        name.setText(Address.addressesModelList.get(Address.selectedAddress).getName());
+//        address.setText(Address.addressesModelList.get(Address.selectedAddress).getAddress());
+//        index.setText(Address.addressesModelList.get(Address.selectedAddress).getIndex());
     }
 
     @Override

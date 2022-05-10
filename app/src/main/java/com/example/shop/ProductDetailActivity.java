@@ -73,6 +73,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private TextView productRatingMark5;
     private TextView totalRatingFigure;
     private TextView averageRating;
+    private TextView productDescription;
     private ProgressBar progressBarMark1;
     private ProgressBar progressBarMark2;
     private ProgressBar progressBarMark3;
@@ -120,6 +121,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         progressBarMark5 = findViewById(R.id.progressBar_mark_5);
         averageRating = findViewById(R.id.average_rating);
         addToCartBtn = findViewById(R.id.add_to_cart_btn);
+        productDescription = findViewById(R.id.product_description);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         InitRating = -1;
@@ -144,15 +146,16 @@ public class ProductDetailActivity extends AppCompatActivity {
                                     averageRating.setText(documentSnapshot.get("avg_rating").toString());
                                     productTotalRating.setText(documentSnapshot.get("total_rating").toString());
                                     if(documentSnapshot.get("product_discount_price").toString().equals("0")){
-                                        productPrice.setText(documentSnapshot.get("product_price").toString());
+                                        productPrice.setText(documentSnapshot.get("product_price").toString() + " $");
                                         productDiscountPrice.setVisibility(View.GONE);
 
                                     }
                                     else{
-                                        productPrice.setText(documentSnapshot.get("product_price").toString());
-                                        productDiscountPrice.setText(documentSnapshot.get("product_discount_price").toString());
+                                        productPrice.setText(documentSnapshot.get("product_price").toString() + " $");
+                                        productDiscountPrice.setText(documentSnapshot.get("product_discount_price").toString() + " $");
                                     }
 
+                                    productDescription.setText(documentSnapshot.get("product_description").toString());
                                     productAvailable.setText(documentSnapshot.get("product_available").toString());
                                     productTotalRatings.setText(documentSnapshot.get("total_rating").toString());
 
@@ -326,25 +329,25 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
 
-        ProductDetailAdapter productDetailAdapter = new ProductDetailAdapter(getSupportFragmentManager(), productDetailTabLayout.getTabCount());
-        productDetailViewPager.setAdapter(productDetailAdapter);
-        productDetailViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(productDetailTabLayout));
-        productDetailTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                productDetailViewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
+        ProductDetailAdapter productDetailAdapter = new ProductDetailAdapter(getSupportFragmentManager(), 1);
+//        productDetailViewPager.setAdapter(productDetailAdapter);
+//        productDetailViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(productDetailTabLayout));
+//        productDetailTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//            @Override
+//            public void onTabSelected(TabLayout.Tab tab) {
+//                productDetailViewPager.setCurrentItem(tab.getPosition());
+//            }
+//
+//            @Override
+//            public void onTabUnselected(TabLayout.Tab tab) {
+//
+//            }
+//
+//            @Override
+//            public void onTabReselected(TabLayout.Tab tab) {
+//
+//            }
+//        });
         rateNowLayoutContainer = findViewById(R.id.rate_now_container);
         for(int i = 0; i < rateNowLayoutContainer.getChildCount(); i++){
             final int starPosition = i;

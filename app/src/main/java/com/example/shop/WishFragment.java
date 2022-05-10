@@ -159,11 +159,7 @@ public class WishFragment extends Fragment {
                             Log.d("dbg", task.getResult().toString());
                             for(int i=0; i < (long)task.getResult().get("size_list"); i++){
                                 wl.add(task.getResult().get("product_id_"+i).toString());
-                                Log.d("dbg", task.getResult().get("product_id_"+i).toString());
-                                Log.d("dbg", task.getResult().get("product_id_"+i).toString());
-                                Log.d("dbg", task.getResult().get("product_id_"+i).toString());
-                                Log.d("dbg", task.getResult().get("product_id_"+i).toString());
-                                Log.d("dbg", task.getResult().get("product_id_"+i).toString());
+
                                 firebaseFirestore.collection("PRODUCTS").document(task.getResult().get("product_id_"+i).toString()).get()
                                         .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                             @Override

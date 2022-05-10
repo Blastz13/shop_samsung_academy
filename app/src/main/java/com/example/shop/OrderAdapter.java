@@ -20,7 +20,10 @@ import java.util.Date;
 import java.util.List;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -109,6 +112,25 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Viewholder> 
         }
         private void setData(String resource, String title, String orderStatus, Date date, int position, int rating, String productId){
             Glide.with(itemView.getContext()).load(resource).into(productImage);
+            FirebaseFirestore.getInstance().collection("USERS").document(FirebaseAuth.getInstance().getUid())
+                    .collection("USER_DATA").document("RATINGS").get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if(task.isSuccessful()){
+                                for(long i=0; i < Long.parseLong(task.getResult().get("size_list").toString()); i++){
+                                    if(task.getResult().get("product_id_"+i).toString().equals(productId)){
+                                        Integer rating = Integer.parseInt(task.getResult().get("rating_"+i).toString());
+                                        setRating(rating-1);
+                                        break;
+                                    }
+                                }
+                            }
+                            else {
+                                ;
+                            }
+                        }
+                    });
             productTitle.setText(title);
             if(orderStatus.equals("Cancelled")) {
                 deliveryIndicator.setImageTintList(ColorStateList.valueOf(itemView.getContext().getResources().getColor(R.color.red)));
@@ -122,50 +144,51 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Viewholder> 
                 public void onClick(View v) {
                     Intent orderDetailIntent = new Intent(itemView.getContext(), OrderDetailActivity.class);
                     orderDetailIntent.putExtra("position", position);
+                    orderDetailIntent.putExtra("rating", rating);
                     itemView.getContext().startActivity(orderDetailIntent);
                 }
             });
 
-            setRating(rating);
-            for(int i = 0; i < rateNowLayoutContainer.getChildCount(); i++){
-                final int starPosition = i;
-                rateNowLayoutContainer.getChildAt(i).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        setRating(starPosition);
-                        DocumentReference documentReference = FirebaseFirestore.getInstance().collection("PRODUCTS").document(productId);
-                        FirebaseFirestore.getInstance().runTransaction(new Transaction.Function<Object>() {
-                            @Nullable
-                            @Override
-                            public Object apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
-                                DocumentSnapshot documentSnapshot = transaction.get(documentReference);
-                                if(rating!=0){
-                                    Long increase = documentSnapshot.getLong("mark_"+(starPosition+1))+1;
-                                    Long decrease = documentSnapshot.getLong("mark_"+(rating+1))-1;
-                                    transaction.update(documentReference, "mark_"+(starPosition+1), increase);
-                                    transaction.update(documentReference, "mark_"+(rating+1), decrease);
-                                }else{
-                                    Long increase = documentSnapshot.getLong("mark_"+(starPosition+1))+1;
-                                    transaction.update(documentReference, "mark_"+(starPosition+1), increase);
-
-                                }
-                                return null;
-                            }
-                        }).addOnSuccessListener(new OnSuccessListener<Object>() {
-                            @Override
-                            public void onSuccess(Object o) {
-                                Order.orderItemModelList.get(position).setRating(starPosition+1);
-                                if(Rating.RatedId.contains(productId)){
-                                    Rating.Rating.set(Rating.RatedId.indexOf(productId), Long.parseLong(String.valueOf(starPosition+1)));
-                                }else{
-                                    Rating.RatedId.add(productId);
-                                    Rating.Rating.add(Long.parseLong(String.valueOf(starPosition+1)));
-                                }
-                            }
-                        });
-                    }
-                });
-            }
+//            setRating(rating);
+//            for(int i = 0; i < rateNowLayoutContainer.getChildCount(); i++){
+//                final int starPosition = i;
+//                rateNowLayoutContainer.getChildAt(i).setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        setRating(starPosition);
+//                        DocumentReference documentReference = FirebaseFirestore.getInstance().collection("PRODUCTS").document(productId);
+//                        FirebaseFirestore.getInstance().runTransaction(new Transaction.Function<Object>() {
+//                            @Nullable
+//                            @Override
+//                            public Object apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+//                                DocumentSnapshot documentSnapshot = transaction.get(documentReference);
+//                                if(rating!=0){
+//                                    Long increase = documentSnapshot.getLong("mark_"+(starPosition+1))+1;
+//                                    Long decrease = documentSnapshot.getLong("mark_"+(rating+1))-1;
+//                                    transaction.update(documentReference, "mark_"+(starPosition+1), increase);
+//                                    transaction.update(documentReference, "mark_"+(rating+1), decrease);
+//                                }else{
+//                                    Long increase = documentSnapshot.getLong("mark_"+(starPosition+1))+1;
+//                                    transaction.update(documentReference, "mark_"+(starPosition+1), increase);
+//
+//                                }
+//                                return null;
+//                            }
+//                        }).addOnSuccessListener(new OnSuccessListener<Object>() {
+//                            @Override
+//                            public void onSuccess(Object o) {
+//                                Order.orderItemModelList.get(position).setRating(starPosition+1);
+//                                if(Rating.RatedId.contains(productId)){
+//                                    Rating.Rating.set(Rating.RatedId.indexOf(productId), Long.parseLong(String.valueOf(starPosition+1)));
+//                                }else{
+//                                    Rating.RatedId.add(productId);
+//                                    Rating.Rating.add(Long.parseLong(String.valueOf(starPosition+1)));
+//                                }
+//                            }
+//                        });
+//                    }
+//                });
+//            }
 
             deliveryStatus.setText(orderStatus + " " +String.valueOf(date));
         }

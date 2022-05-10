@@ -44,7 +44,26 @@
 
             <include layout="@layout/product_images_layout" />
 
-            <include layout="@layout/product_description_layout" />
+<!--            <include layout="@layout/product_description_layout" />-->
+            <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Description: "
+            android:layout_margin="16dp"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/product_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:text="Lorem Ipsum "
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="" />
 
             <include layout="@layout/rating_layout" />
         </LinearLayout>

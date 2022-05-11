@@ -83,7 +83,7 @@
             android:paddingTop="4dp"
             android:paddingEnd="16dp"
             android:paddingBottom="4dp"
-            android:text="Edit"
+            android:text="Изменить"
             android:textAlignment="center"
             android:textSize="10sp" />
 
@@ -95,7 +95,7 @@
             android:paddingTop="4dp"
             android:paddingEnd="16dp"
             android:paddingBottom="4dp"
-            android:text="Remove"
+            android:text="Удалить"
             android:textAlignment="center"
             android:textSize="10sp" />
     </LinearLayout>

@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="Up-sells"
+        android:text="Топ продаж"
         android:textStyle="bold"
         android:textColor="@color/black"
         android:textSize="20sp"
@@ -27,8 +27,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:text="All"
         android:backgroundTint="@color/background"
+        android:text="Все"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -80,15 +80,9 @@ public class MyOrdersFragment extends Fragment {
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         myOrdersRecyclerView.setLayoutManager(layoutManager);
 
-//        List<OrderItemModel> orderItemModelList = new ArrayList<>();
-//        orderItemModelList.add(new OrderItemModel("1", "https://", "QQ", "Ordered", "Q", "12", "22", new Date(), new Date(), new Date(),new Date(),new Date(), "12", "petr", "12", "32", (long)1));
-//        orderItemModelList.add(new OrderItemModel(R.drawable.product_item_1, 3 , "MacBook", "Jun 21 2020"));
-//        orderItemModelList.add(new OrderItemModel(R.drawable.product_item, 0 , "MacBook", "Cancelled"));
-
         OrderAdapter orderAdapter = new OrderAdapter(Order.orderItemModelList);
         myOrdersRecyclerView.setAdapter(orderAdapter);
         orderAdapter.notifyDataSetChanged();
-        Log.d("dbg", "FRAGMNET");
         Order.loadOrders(orderAdapter);
 
         return view;

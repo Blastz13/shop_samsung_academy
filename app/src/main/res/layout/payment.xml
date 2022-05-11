@@ -12,7 +12,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="Payment method"
+        android:text="Метод оплаты"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"

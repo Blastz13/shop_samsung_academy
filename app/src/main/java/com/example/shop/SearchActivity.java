@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -21,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
@@ -56,7 +58,8 @@ public class SearchActivity extends AppCompatActivity {
                 list.clear();
                 listId.clear();
 
-                final String[] tags = query.toLowerCase().split(" ");
+                final List<String> tags = new ArrayList<String>(Arrays.asList(query.toLowerCase().split(" ")));
+                tags.add(query);
                 for(final String tag : tags){
                     tag.trim();
                     FirebaseFirestore.getInstance().collection("PRODUCTS")
@@ -81,7 +84,14 @@ public class SearchActivity extends AppCompatActivity {
                                         listId.add(wishlistModel.getProductId());
                                     }
                                 }
-                                if(tag.equals(tags[tags.length-1])){
+
+                                Log.d("dbg", "======");
+                                Log.d("dbg", tag);
+                                Log.d("dbg", query);
+                                Log.d("dbg", tags.get(tags.size() - 1));
+                                Log.d("dbg", "======");
+
+                                if(tag.equals(tags.get(tags.size() - 1))){
                                     if(list.size() == 0){
                                         notFound.setVisibility(View.VISIBLE);
                                         recyclerView.setVisibility(View.GONE);

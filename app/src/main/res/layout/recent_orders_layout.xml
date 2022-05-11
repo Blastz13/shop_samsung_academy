@@ -15,7 +15,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:elevation="6dp"
-        android:text="No recent orders"
+        android:text="Заказы отсутствуют"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -40,26 +40,29 @@
             android:id="@+id/imageView25"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_marginRight="8dp" />
+            android:layout_marginRight="8dp"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/imageView26"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_marginRight="8dp" />
+            android:layout_marginRight="8dp"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/imageView27"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_marginRight="8dp" />
+            android:layout_marginRight="8dp"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/imageView28"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginRight="8dp"
-            />
+            android:visibility="gone" />
 
 
     </LinearLayout>

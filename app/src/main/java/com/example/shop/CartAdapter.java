@@ -166,9 +166,9 @@ public class CartAdapter extends RecyclerView.Adapter {
             }
 
             if (inStock) {
-                productPrice.setText(productPriceText + " $");
+                productPrice.setText(productPriceText + " ₽");
                 productPrice.setTextColor(itemView.getContext().getResources().getColor(R.color.black));
-                discountPrice.setText(discountProductPriceText + " $");
+                discountPrice.setText(discountProductPriceText + " ₽");
             } else {
                 productPrice.setText("Out of Stock");
                 productPrice.setTextColor(itemView.getContext().getResources().getColor(R.color.grey));
@@ -177,7 +177,7 @@ public class CartAdapter extends RecyclerView.Adapter {
 
             if(countOffersApplied > 0){
                 offersApplied.setVisibility(View.VISIBLE);
-                offersApplied.setText(countOffersApplied + " Offers applied");
+                offersApplied.setText("Товар в наличии");
             }
             else{
                 offersApplied.setVisibility(View.INVISIBLE);
@@ -196,7 +196,7 @@ public class CartAdapter extends RecyclerView.Adapter {
                         ProductDetailActivity.is_cart_query = true;
                         Cart.removeItemCart(position);
 //                        if(Cart.cartItemModelList.size() == 0) {
-                            cartTotalAmount.setText(0 + " $");
+                            cartTotalAmount.setText(0 + " ₽");
 //                        }
                     }
                 }
@@ -223,17 +223,17 @@ public class CartAdapter extends RecyclerView.Adapter {
         }
 
         private void setTotalAmount(int totalItemText, int totalItemPriceText, String deliveryPriceText, int totalAmountText, int savedAmountText){
-            totalItems.setText("Price: " + totalItemText);
-            totalItemPrice.setText(totalItemPriceText + " $");
+            totalItems.setText("Стоимость: " + totalItemText);
+            totalItemPrice.setText(totalItemPriceText + " ₽");
             if(deliveryPriceText.equals("Free")){
                 deliveryPrice.setText(deliveryPriceText);
             }
             else {
-                deliveryPrice.setText(deliveryPriceText + " $");
+                deliveryPrice.setText(deliveryPriceText + " ₽");
             }
-            totalAmount.setText(totalAmountText + " $");
-            cartTotalAmount.setText(totalAmountText + " $");
-            savedAmount.setText("You saved " + savedAmountText);
+            totalAmount.setText(totalAmountText + " ₽");
+            cartTotalAmount.setText(totalAmountText + " ₽");
+            savedAmount.setText("Вы сэкономили " + savedAmountText + " ₽");
             if (totalItemPriceText == 0){
                 Cart.cartItemModelList.remove(Cart.cartItemModelList.size()-1);
             }else{

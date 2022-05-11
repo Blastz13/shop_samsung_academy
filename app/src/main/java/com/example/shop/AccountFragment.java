@@ -230,10 +230,11 @@ public class AccountFragment extends Fragment {
                                                 @Override
                                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                     if(task.isSuccessful()){
-                                                        orderTitle.setText("Your recent orders");
+                                                        orderTitle.setText("Последние заказы");
 
 //                                                        for(OrderItemModel orderItemModel: Order.orderItemModelList){
                                                             if (i[0] < 4) {
+                                                                recentOrders.getChildAt(i[0]).setVisibility(View.VISIBLE);
                                                                 Glide.with(getContext()).load(task.getResult().get("product_image_1").toString()).apply(new RequestOptions().placeholder(R.mipmap.app_ico)).into((ImageView) recentOrders.getChildAt(i[0]));
                                                                 i[0]++;
                                                             }

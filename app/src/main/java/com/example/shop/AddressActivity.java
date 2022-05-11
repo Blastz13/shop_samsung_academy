@@ -65,7 +65,7 @@ public class AddressActivity extends AppCompatActivity {
             note.setText(addressesModel.getNote());
             name.setText(addressesModel.getName());
             phone.setText(addressesModel.getPhone());
-            saveAddressButton.setText("Update Address");
+            saveAddressButton.setText("Обновить адрес");
         }else {
             position = (Address.addressesModelList.size()+1);
         }
@@ -171,7 +171,7 @@ public class AddressActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setTitle("New address");
+        toolbar.setTitle("Новый адрес");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 

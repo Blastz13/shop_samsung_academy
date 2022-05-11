@@ -72,7 +72,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle("Order detail");
+        getSupportActionBar().setTitle("Детали заказа");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         position = getIntent().getIntExtra("position", -1);
@@ -117,13 +117,13 @@ public class OrderDetailActivity extends AppCompatActivity {
         totalPrice = findViewById(R.id.total_price);
         savedAmount = findViewById(R.id.saved_amount);
 
-        totalItemsPrice.setText(orderItemModel.getProductPrice().toString() + " $");
-        if(orderItemModel.getDeliveryPrice().equals("FREE")){
+        totalItemsPrice.setText(orderItemModel.getProductPrice().toString() + " ₽");
+        if(orderItemModel.getDeliveryPrice().equals("Free")){
             deliveryPrice.setText(orderItemModel.getDeliveryPrice());
             totalPrice.setText(totalItemsPrice.getText().toString());
         }else {
-            deliveryPrice.setText(orderItemModel.getDeliveryPrice() + " $");
-            totalPrice.setText((Integer.parseInt(orderItemModel.getProductPrice()) + Integer.parseInt(orderItemModel.getDeliveryPrice())) + " $");
+            deliveryPrice.setText(orderItemModel.getDeliveryPrice() + " ₽");
+            totalPrice.setText((Integer.parseInt(orderItemModel.getProductPrice()) + Integer.parseInt(orderItemModel.getDeliveryPrice())) + " ₽");
 
         }
 //        if(!orderItemModel.getDiscountPrice().equals("0")){
@@ -138,13 +138,12 @@ public class OrderDetailActivity extends AppCompatActivity {
 
         productTitle.setText(orderItemModel.getProductTitle());
         if(orderItemModel.getDiscountPrice().equals("0")){
-            productPrice.setText(orderItemModel.getProductPrice() + " $");
+            productPrice.setText(orderItemModel.getProductPrice() + " ₽");
         }
         else{
-            productPrice.setText(orderItemModel.getProductPrice() + " $");
+            productPrice.setText(orderItemModel.getProductPrice() + " ₽");
         }
         Glide.with(this).load(orderItemModel.getProductImage()).into(productImage);
-        Log.d("dbg", orderItemModel.getDeliveryStatus());
         switch (orderItemModel.getDeliveryStatus()){
             case "Ordered":
                 orderedIndicator.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.green)));

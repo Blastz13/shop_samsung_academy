@@ -47,7 +47,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Viewholder> 
 
     @Override
     public void onBindViewHolder(@NonNull OrderAdapter.Viewholder holder, int position) {
-        Log.d("dbg", "ADAPTER");
         String resource = orderItemModelList.get(position).getProductImage();
         String productId = orderItemModelList.get(position).getProductId();
         int rating = orderItemModelList.get(position).getRating();

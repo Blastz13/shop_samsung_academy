@@ -22,7 +22,7 @@
             android:id="@+id/search_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:defaultQueryHint="Search"
+            app:defaultQueryHint="Поиск"
             app:iconifiedByDefault="false"
             tools:layout_editor_absoluteY="4dp" />
 

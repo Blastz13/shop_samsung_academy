@@ -160,10 +160,8 @@ public class DeliveryActivity extends AppCompatActivity {
     }
 
     private void createOrder(){
-        Log.d("dbg", "!!Create order!!");
         for(CartItemModel cartItemModel : cartItemModelList){
             if(cartItemModel.getType() == CartItemModel.CART_ITEM){
-                Log.d("dbg", cartItemModel.getProductId());
                 Map<Object, Object> orderDetail = new HashMap<>();
                 orderDetail.put("order_id", orderID);
                 orderDetail.put("product_id", cartItemModel.getProductId());

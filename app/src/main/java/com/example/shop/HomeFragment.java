@@ -246,7 +246,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 Intent viewAllIntent = new Intent(getContext(), AllProductsActivity.class);
                 viewAllIntent.putExtra("type_layout", 0);
-                viewAllIntent.putExtra("category_title", "Popular products");
+                viewAllIntent.putExtra("category_title", "Популярные товары");
                 getContext().startActivity(viewAllIntent);
             }
         });
@@ -256,7 +256,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 Intent viewAllIntent = new Intent(getContext(), AllProductsActivity.class);
                 viewAllIntent.putExtra("type_layout", 1);
-                viewAllIntent.putExtra("category_title", "Up-sells");
+                viewAllIntent.putExtra("category_title", "Топ продаж");
                 getContext().startActivity(viewAllIntent);
             }
         });

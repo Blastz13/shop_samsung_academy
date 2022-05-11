@@ -82,6 +82,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
         private TextView paymentMethod;
         private TextView rating;
         private TextView totalRating;
+        private TextView isInStock;
         private View priceDivider;
         private ImageView removeButton;
 
@@ -93,11 +94,11 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
 //            freeCoupon = itemView.findViewById(R.id.free_coupon_wishlist);
             productPrice = itemView.findViewById(R.id.product_price_wishlist);
             productDiscountPrice = itemView.findViewById(R.id.product_discount_price_wishlist);
-            paymentMethod = itemView.findViewById(R.id.payment_method_wishlist);
             rating = itemView.findViewById(R.id.product_rating_preview);
             totalRating = itemView.findViewById(R.id.total_rating_wishlist);
             priceDivider = itemView.findViewById(R.id.price_divider_wishlist);
             removeButton = itemView.findViewById(R.id.remove_product_wishlist);
+            isInStock = itemView.findViewById(R.id.payment_method_wishlist);
         }
 
         private void setData(String productId, String resource, String title, long freeCouponsNumber, String averageRate, long totalRatingsNumber, String price, String discountPrice){
@@ -117,15 +118,16 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
 //                freeCoupon.setVisibility(View.INVISIBLE);
 //            }
             rating.setText(averageRate);
-            totalRating.setText(totalRatingsNumber + " ratings");
+            isInStock.setText("В наличии");
+            totalRating.setText(totalRatingsNumber + " Оценок");
             if(discountPrice.equals("0")){
-                productPrice.setText(price + " $");
+                productPrice.setText(price + " ₽");
                 productDiscountPrice.setVisibility(View.GONE);
 
             }
             else {
-                productPrice.setText(price+ " $");
-                productDiscountPrice.setText(discountPrice + " $");
+                productPrice.setText(price+ " ₽");
+                productDiscountPrice.setText(discountPrice + " ₽");
             }
 
             if(isWishList){

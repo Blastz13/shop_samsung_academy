@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="Popular products"
+        android:text="Популярные товары"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@color/black"
@@ -28,9 +28,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="All"
-        android:textColor="@color/white"
         android:backgroundTint="@color/background"
+        android:text="Все"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

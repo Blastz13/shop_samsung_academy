@@ -48,7 +48,7 @@ public class MyAddressesActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setTitle("My addresses");
+        toolbar.setTitle("Адреса");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         previousAddress = Address.selectedAddress;

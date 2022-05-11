@@ -144,15 +144,15 @@ public class ProductDetailActivity extends AppCompatActivity {
                                     productTitle.setText(documentSnapshot.get("product_title").toString());
                                     productRatingPreview.setText(documentSnapshot.get("avg_rating").toString());
                                     averageRating.setText(documentSnapshot.get("avg_rating").toString());
-                                    productTotalRating.setText(documentSnapshot.get("total_rating").toString());
+                                    productTotalRating.setText(documentSnapshot.get("total_rating").toString() + " Оценок");
                                     if(documentSnapshot.get("product_discount_price").toString().equals("0")){
-                                        productPrice.setText(documentSnapshot.get("product_price").toString() + " $");
+                                        productPrice.setText(documentSnapshot.get("product_price").toString() + " ₽");
                                         productDiscountPrice.setVisibility(View.GONE);
 
                                     }
                                     else{
-                                        productPrice.setText(documentSnapshot.get("product_price").toString() + " $");
-                                        productDiscountPrice.setText(documentSnapshot.get("product_discount_price").toString() + " $");
+                                        productPrice.setText(documentSnapshot.get("product_price").toString() + " ₽");
+                                        productDiscountPrice.setText(documentSnapshot.get("product_discount_price").toString() + " ₽");
                                     }
 
                                     productDescription.setText(documentSnapshot.get("product_description").toString());
@@ -256,8 +256,8 @@ public class ProductDetailActivity extends AppCompatActivity {
                                     }
                                     else {
                                         TextView outStock = (TextView) addToCartBtn.getChildAt(0);
-                                        outStock.setText("Out of Stock");
-                                        outStock.setTextColor(getResources().getColor(R.color.grey));
+                                        outStock.setText("Товар закончился");
+                                        outStock.setTextColor(getResources().getColor(R.color.black));
                                         outStock.setCompoundDrawables(null, null, null, null);
                                     }
                                     productImagesAdapter.notifyDataSetChanged();
@@ -292,7 +292,6 @@ public class ProductDetailActivity extends AppCompatActivity {
                                 tempDocumentSnapshot.get("avg_rating").toString(),
                                 tempDocumentSnapshot.get("product_price").toString(),
                                 tempDocumentSnapshot.get("product_discount_price").toString()));
-//                    Todo: FIX
                     Map<String, Object> add_product_id = new HashMap<>();
                     for(int j=0; j < WishFragment.wl.size(); j++){
                         add_product_id.put("product_id_"+j, WishFragment.wl.get(j));
@@ -330,38 +329,18 @@ public class ProductDetailActivity extends AppCompatActivity {
         });
 
         ProductDetailAdapter productDetailAdapter = new ProductDetailAdapter(getSupportFragmentManager(), 1);
-//        productDetailViewPager.setAdapter(productDetailAdapter);
-//        productDetailViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(productDetailTabLayout));
-//        productDetailTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//            @Override
-//            public void onTabSelected(TabLayout.Tab tab) {
-//                productDetailViewPager.setCurrentItem(tab.getPosition());
-//            }
-//
-//            @Override
-//            public void onTabUnselected(TabLayout.Tab tab) {
-//
-//            }
-//
-//            @Override
-//            public void onTabReselected(TabLayout.Tab tab) {
-//
-//            }
-//        });
+
         rateNowLayoutContainer = findViewById(R.id.rate_now_container);
         for(int i = 0; i < rateNowLayoutContainer.getChildCount(); i++){
             final int starPosition = i;
             rateNowLayoutContainer.getChildAt(i).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d("dbg", "CLick");
                     if (!is_rating_query) {
                         is_rating_query = true;
                         setRating(starPosition);
                         Map<String, Object> updateRatingProducts = new HashMap<>();
                         if (Rating.RatedId.contains(productId)) {
-                            Log.d("dbg", "Contains");
-                            Log.d("dbg", String.valueOf(InitRating));
                             TextView[] mas = {productRatingMark1, productRatingMark2, productRatingMark3, productRatingMark4 ,productRatingMark5};
                             updateRatingProducts.put("mark_" + (InitRating + 1), Long.parseLong(mas[InitRating].getText().toString())-1);
                             updateRatingProducts.put("mark_" + (starPosition + 1),  Long.parseLong(mas[starPosition].getText().toString())+1);
@@ -388,7 +367,6 @@ public class ProductDetailActivity extends AppCompatActivity {
                                             tempRating.put("size_list", (long)Rating.RatedId.size()+1);
                                             tempRating.put("product_id_" + Rating.RatedId.size(), productId);
                                             tempRating.put("rating_" + Rating.RatedId.size(), (long) starPosition + 1);
-                                            Log.d("dbg", "?????");
                                         }
 
                                         firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid())
@@ -421,17 +399,6 @@ public class ProductDetailActivity extends AppCompatActivity {
                                                         totalRatingFigure.setText(String.valueOf(Long.parseLong(tempDocumentSnapshot.get("total_rating").toString()) + 1));
                                                         totalRatingFigure.setText(String.valueOf(Long.parseLong(tempDocumentSnapshot.get("total_rating").toString()) + 1));
 
-
-//                                                    progressBarMark1.setMax(Integer.parseInt(documentSnapshot.get("total_rating").toString()));
-//                                                    progressBarMark1.setProgress(Integer.parseInt(documentSnapshot.get("mark_1").toString()));
-//                                                    progressBarMark2.setMax(Integer.parseInt(documentSnapshot.get("total_rating").toString()));
-//                                                    progressBarMark2.setProgress(Integer.parseInt(documentSnapshot.get("mark_2").toString()));
-//                                                    progressBarMark3.setMax(Integer.parseInt(documentSnapshot.get("total_rating").toString()));
-//                                                    progressBarMark3.setProgress(Integer.parseInt(documentSnapshot.get("mark_3").toString()));
-//                                                    progressBarMark4.setMax(Integer.parseInt(documentSnapshot.get("total_rating").toString()));
-//                                                    progressBarMark4.setProgress(Integer.parseInt(documentSnapshot.get("mark_4").toString()));
-//                                                    progressBarMark5.setMax(Integer.parseInt(documentSnapshot.get("total_rating").toString()));
-//                                                    progressBarMark5.setProgress(Integer.parseInt(documentSnapshot.get("mark_5").toString()));
                                                     }
                                                     for(int i=0; i <=4; i++){
                                                         prg[i].setMax(Integer.parseInt(totalRatingFigure.getText().toString()));
@@ -477,7 +444,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         for(int i=1; i < 6; i++){
             totalStars += (Long.parseLong(mas[i-1].getText().toString()))*i;
         }
-        float total_count = Long.parseLong(productTotalRating.getText().toString());
+        float total_count = Long.parseLong(productTotalRatings.getText().toString());
         if (total_count == 0){
             total_count+=1;
         }

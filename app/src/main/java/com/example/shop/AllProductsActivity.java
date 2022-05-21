@@ -65,7 +65,7 @@ public class AllProductsActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if(task.isSuccessful()){
                                 for(QueryDocumentSnapshot documentSnapshot: task.getResult()){
-                                    if((long)documentSnapshot.get("type") == 2){
+                                    if((long)documentSnapshot.get("type") == 1){
                                         for(int i=1; i <= (long) documentSnapshot.get("count_products"); i++){
                                             wishlistModelList.add(new WishlistModel(documentSnapshot.get("product_id_"+i).toString(),
                                                     documentSnapshot.get("product_image_"+i).toString(),

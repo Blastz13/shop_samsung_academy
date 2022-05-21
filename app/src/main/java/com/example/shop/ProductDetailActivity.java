@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -209,6 +210,10 @@ public class ProductDetailActivity extends AppCompatActivity {
                                         addToCartBtn.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
+                                                Toast toast = Toast.makeText(getApplicationContext(),
+                                                        "Товар добавлен в корзину", Toast.LENGTH_LONG);
+                                                toast.show();
+
                                                 if(!is_cart_query){
                                                     is_cart_query = true;
                                                     if(isAddedToCart){
@@ -395,6 +400,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                                                         Rating.Rating.add((long) starPosition + 1);
                                                         mas[starPosition].setText(String.valueOf(Integer.parseInt(mas[starPosition].getText().toString())+1));
 
+                                                        productTotalRatings.setText(String.valueOf(Long.parseLong(tempDocumentSnapshot.get("total_rating").toString()) + 1));
                                                         productTotalRating.setText(String.valueOf(Long.parseLong(tempDocumentSnapshot.get("total_rating").toString()) + 1));
                                                         totalRatingFigure.setText(String.valueOf(Long.parseLong(tempDocumentSnapshot.get("total_rating").toString()) + 1));
                                                         totalRatingFigure.setText(String.valueOf(Long.parseLong(tempDocumentSnapshot.get("total_rating").toString()) + 1));

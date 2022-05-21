@@ -216,7 +216,11 @@ public class HomeFragment extends Fragment {
                         if(task.isSuccessful()){
                             for(QueryDocumentSnapshot documentSnapshot: task.getResult()){
                                     if ((long)documentSnapshot.get("type") == 1) {
-                                        for (int i = 1; i <= (long) documentSnapshot.get("count_products"); i++) {
+                                        long count_products = (long) documentSnapshot.get("count_products");
+                                        if(count_products >4){
+                                            count_products = 4;
+                                        }
+                                        for (int i = 1; i <= count_products; i++) {
                                             horizontalProductScrollModelList.add(new HorizontalProductScrollModel(documentSnapshot.get("product_id_" + i).toString(),
                                                     documentSnapshot.get("product_image_" + i).toString(),
                                                     documentSnapshot.get("product_title_" + i).toString(),
@@ -226,7 +230,11 @@ public class HomeFragment extends Fragment {
                                         }
                                     }
                                     else if((long)documentSnapshot.get("type") == 2){
-                                        for(int i=1; i <= (long) documentSnapshot.get("count_products"); i++){
+                                        long count_products = (long) documentSnapshot.get("count_products");
+                                        if(count_products >4){
+                                            count_products = 4;
+                                        }
+                                        for(int i=1; i <= count_products; i++){
                                             gridProductScrollModelList.add(new HorizontalProductScrollModel(documentSnapshot.get("product_id_"+i).toString(),
                                                     documentSnapshot.get("product_image_"+i).toString(),
                                                     documentSnapshot.get("product_title_"+i).toString(),

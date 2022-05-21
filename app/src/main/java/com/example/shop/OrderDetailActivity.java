@@ -126,17 +126,9 @@ public class OrderDetailActivity extends AppCompatActivity {
             totalPrice.setText((Integer.parseInt(orderItemModel.getProductPrice()) + Integer.parseInt(orderItemModel.getDeliveryPrice())) + " ₽");
 
         }
-//        if(!orderItemModel.getDiscountPrice().equals("0")){
-//            savedAmount.setText("You saved " );
-//        }
-//        else {
-//
-//        }
-//        totalPrice.setText(orderItemModel.get);
-
-
 
         productTitle.setText(orderItemModel.getProductTitle());
+
         if(orderItemModel.getDiscountPrice().equals("0")){
             productPrice.setText(orderItemModel.getProductPrice() + " ₽");
         }

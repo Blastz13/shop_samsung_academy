@@ -14,8 +14,12 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -76,6 +80,7 @@ public class CartFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
+        Map<String, Object> addAddress = new HashMap<>();
 
         cartItemsRecyclerView = view.findViewById(R.id.cart_items_recyclerview);
         continueButton = view.findViewById(R.id.cart_continue_btn);

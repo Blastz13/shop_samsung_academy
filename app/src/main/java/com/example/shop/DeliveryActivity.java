@@ -17,13 +17,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.shop.Addresses.Address;
+import com.example.shop.Addresses.MyAddressesActivity;
+import com.example.shop.Cart.Cart;
+import com.example.shop.Cart.CartAdapter;
+import com.example.shop.Cart.CartItemModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -129,12 +133,6 @@ public class DeliveryActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         deliveryItemsRecyclerView.setLayoutManager(layoutManager);
-//        List<CartItemModel> cartItemModelList = new ArrayList<>();
-//        cartItemModelList.add(new CartItemModel(0, R.drawable.product_item, "NoteBook", 2, "500$", "200$", 1,0,0));
-//        cartItemModelList.add(new CartItemModel(0, R.drawable.product_item_1, "NoteBook", 2, "500$", "200$", 1,1,0));
-//        cartItemModelList.add(new CartItemModel(0, R.drawable.product_item, "NoteBook", 2, "500$", "200$", 1,1,0));
-//        cartItemModelList.add(new CartItemModel(0, R.drawable.product_item_1, "NoteBook", 2, "500$", "200$", 1,1,0));
-//        cartItemModelList.add(new CartItemModel(1, "Price", "10000$", "Free", "10000$", "You saved 10$"));
 
         CartAdapter cartAdapter = new CartAdapter(cartItemModelList, totalAmount, false);
         deliveryItemsRecyclerView.setAdapter(cartAdapter);

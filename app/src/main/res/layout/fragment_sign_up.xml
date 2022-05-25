@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignUpFragment"
+    tools:context=".Auth.SignUpFragment"
     android:background="@color/background">
 
     <androidx.constraintlayout.widget.ConstraintLayout

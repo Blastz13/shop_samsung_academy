@@ -47,8 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.navigationHostFragment);
         NavController navController = navHostFragment.getNavController();
-//TODO: FIX
-//        NavController navController = Navigation.findNavController(this, R.id.navigationHostFragment);
+
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
@@ -56,6 +55,6 @@ public class MainActivity extends AppCompatActivity {
         if(getIntent().getBooleanExtra("is_cart", false)){
             navController.navigate(R.id.cartFragment);
         }
-//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
     }
 }

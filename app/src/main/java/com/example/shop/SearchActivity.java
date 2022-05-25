@@ -11,12 +11,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.shop.Wish.WishlistAdapter;
+import com.example.shop.Wish.WishlistModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -84,12 +84,6 @@ public class SearchActivity extends AppCompatActivity {
                                         listId.add(wishlistModel.getProductId());
                                     }
                                 }
-
-                                Log.d("dbg", "======");
-                                Log.d("dbg", tag);
-                                Log.d("dbg", query);
-                                Log.d("dbg", tags.get(tags.size() - 1));
-                                Log.d("dbg", "======");
 
                                 if(tag.equals(tags.get(tags.size() - 1))){
                                     if(list.size() == 0){

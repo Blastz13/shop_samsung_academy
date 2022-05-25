@@ -1,9 +1,10 @@
 package com.example.shop;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
+import com.example.shop.Order.MyOrdersFragment;
+import com.example.shop.Order.Order;
+import com.example.shop.Product.ProductDetailActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,7 +31,7 @@ public class Rating {
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
                         List<String> orderProductsId = new ArrayList<>();
-                        for(int i=0; i < Order.orderItemModelList.size(); i++){
+                        for(int i = 0; i < Order.orderItemModelList.size(); i++){
                             orderProductsId.add(Order.orderItemModelList.get(i).getProductId());
                         }
                         for (long i = 0; i < (long) task.getResult().get("size_list"); i++) {

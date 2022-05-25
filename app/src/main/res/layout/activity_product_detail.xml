@@ -5,7 +5,7 @@
     android:id="@+id/product_detail_constraintlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProductDetailActivity">
+    tools:context=".Product.ProductDetailActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"

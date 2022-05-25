@@ -18,36 +18,36 @@
             android:name=".SearchActivity"
             android:exported="false" />
         <activity
-            android:name=".AllProductsActivity"
+            android:name=".Category.AllProductsActivity"
             android:exported="false" />
         <activity
-            android:name=".MyAddressesActivity"
+            android:name=".Addresses.MyAddressesActivity"
             android:exported="false" />
         <activity
-            android:name=".AddressActivity"
+            android:name=".Addresses.AddressActivity"
             android:exported="false" />
         <activity
             android:name=".DeliveryActivity"
             android:exported="false" />
         <activity
-            android:name=".OrderDetailActivity"
+            android:name=".Order.OrderDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ProductDetailActivity"
+            android:name=".Product.ProductDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".CategoryActivity"
+            android:name=".Category.CategoryActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".RegistrationActivity"
+            android:name=".Auth.RegistrationActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".Auth.LoginActivity"
             android:exported="false" />
         <activity
             android:name=".SplashActivity"
